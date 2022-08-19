@@ -13,6 +13,9 @@
 - Fluent Validations
 - Entity Framework Core
 - Polly
+- Bogus
+- Fluent Validations
+- Xunit
 
 ### Infrastructure
 
@@ -29,6 +32,7 @@
 - Clean architecture
 - SOLID
 - Unit of work
+- Triple A (Arrange, Act, Assert)
 
 ## C4 Diagram
 
