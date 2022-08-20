@@ -1,4 +1,4 @@
-﻿using Domain.Excpetions;
+﻿using Domain.Validation;
 
 namespace Domain.Entity;
 
@@ -21,10 +21,32 @@ public class Category
         Validate();
     }
 
-    public void Validate() {
-        if (string.IsNullOrWhiteSpace(Name))
-            throw new EntityValidationExcpetion($"{nameof(Name)} should not be empty or null");
-        if (string.IsNullOrWhiteSpace(Description))
-            throw new EntityValidationExcpetion($"{nameof(Name)} should not be empty or null");
+    public void Activate()
+    {
+        IsActive = true;
+        Validate();
+    }
+    public void Deactivate()
+    {
+        IsActive = false;
+        Validate();
+    }
+
+    public void Update(string name, string? description = null)
+    {
+        Name = name;
+        Description = description ?? Description;
+
+        Validate();
+    }
+
+    private void Validate()
+    {
+        DomainValidation.NotNullOrEmpty(Name, nameof(Name));
+        DomainValidation.MinLength(Name, 3, nameof(Name));
+        DomainValidation.MaxLength(Name, 255, nameof(Name));
+
+        DomainValidation.NotNull(Description, nameof(Description));
+        DomainValidation.MaxLength(Description, 10_000, nameof(Description));
     }
 }
