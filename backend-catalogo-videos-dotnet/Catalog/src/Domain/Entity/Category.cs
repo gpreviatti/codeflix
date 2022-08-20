@@ -1,4 +1,6 @@
-﻿namespace Domain.Entity;
+﻿using Domain.Excpetions;
+
+namespace Domain.Entity;
 
 public class Category
 {
@@ -15,5 +17,14 @@ public class Category
         Description = description;
         IsActive = isActive;
         CreatedAt = DateTime.Now;
+
+        Validate();
+    }
+
+    public void Validate() {
+        if (string.IsNullOrWhiteSpace(Name))
+            throw new EntityValidationExcpetion($"{nameof(Name)} should not be empty or null");
+        if (string.IsNullOrWhiteSpace(Description))
+            throw new EntityValidationExcpetion($"{nameof(Name)} should not be empty or null");
     }
 }

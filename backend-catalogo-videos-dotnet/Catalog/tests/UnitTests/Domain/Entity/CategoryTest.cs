@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using Domain.Entity;
+using Domain.Excpetions;
 
 namespace Unit.Domain.Entity;
 
@@ -43,5 +44,33 @@ public class CategoryTest
         Assert.True(category.CreatedAt > datetimeBefore);
         Assert.True(category.CreatedAt < DateTime.Now);
         Assert.Equal(isActive, category.IsActive);
+    }
+
+    [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsEmpty))]
+    [Trait("Domain", "Category - Aggregates")]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("   ")]
+    public void InstantiateErrorWhenNameIsEmpty(string? name)
+    {
+        void action() => new Category(name, "category description");
+
+        Assert
+            .Throws<EntityValidationExcpetion>(action)
+            .Message.Equals("Name should not be empty or null");
+    }
+
+    [Theory(DisplayName = nameof(InstantiateErrorWhenDescriptionIsEmpty))]
+    [Trait("Domain", "Category - Aggregates")]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("   ")]
+    public void InstantiateErrorWhenDescriptionIsEmpty(string? category)
+    {
+        void action() => new Category("category name", category);
+
+        Assert
+            .Throws<EntityValidationExcpetion>(action)
+            .Message.Equals("Description should not be empty or null");
     }
 }
