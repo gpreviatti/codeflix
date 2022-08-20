@@ -21,11 +21,11 @@ public class DomainValidation
     public static void MinLength(string target, int minLength, string fieldName)
     {
         if (target.Length < minLength)
-            throw new EntityValidationException($"{fieldName} should be at least {minLength} characters long");
+            throw new EntityValidationException($"{fieldName} should be at least {minLength} characters");
     }
     public static void MaxLength(string target, int maxLength, string fieldName)
     {
         if (target.Length > maxLength)
-            throw new EntityValidationException($"{fieldName} should be less or equal {maxLength} characters long");
+            throw new EntityValidationException($"{fieldName} should be less or equal {maxLength} characters");
     }
 }
