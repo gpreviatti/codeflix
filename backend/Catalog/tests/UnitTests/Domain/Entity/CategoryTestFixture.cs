@@ -18,6 +18,7 @@ public class CategoryTestFixture : BaseFixture
 
         if (categoryName.Length > 255)
             categoryName = categoryName[..255];
+
         return categoryName;
     }
 

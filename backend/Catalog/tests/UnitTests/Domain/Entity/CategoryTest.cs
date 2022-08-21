@@ -184,7 +184,7 @@ public class CategoryTest
         category.Update(newName);
 
         category.Name.Should().Be(newName);
-        category.Description.Should().Be(currentDescription);
+        category.Description.Should().Be(currentDescription, "Description not was updated");
     }
 
     [Theory(DisplayName = nameof(UpdateErrorWhenNameIsEmpty))]
@@ -195,11 +195,12 @@ public class CategoryTest
     public void UpdateErrorWhenNameIsEmpty(string? name)
     {
         var category = _categoryTestFixture.GetValidCategory();
-        Action action =
-            () => category.Update(name!);
 
-        action.Should().Throw<EntityValidationException>()
-            .WithMessage("Name should not be empty or null");
+        var action = () => category.Update(name!);
+
+        action.Should()
+              .Throw<EntityValidationException>()
+              .WithMessage("Name should not be empty or null");
     }
 
     [Theory(DisplayName = nameof(UpdateErrorWhenNameIsLessThan3Characters))]
@@ -212,8 +213,7 @@ public class CategoryTest
     {
         var category = _categoryTestFixture.GetValidCategory();
 
-        Action action =
-            () => category.Update(invalidName);
+        var action = () => category.Update(invalidName);
 
         action.Should()
             .Throw<EntityValidationException>()
@@ -227,12 +227,11 @@ public class CategoryTest
         var category = _categoryTestFixture.GetValidCategory();
         var invalidName = _categoryTestFixture.Faker.Lorem.Letter(256);
 
-        Action action =
-            () => category.Update(invalidName);
+        var action = () => category.Update(invalidName);
 
         action.Should()
-            .Throw<EntityValidationException>()
-            .WithMessage("Name should be less or equal 255 characters");
+              .Throw<EntityValidationException>()
+              .WithMessage("Name should be less or equal 255 characters");
     }
 
     [Fact(DisplayName = nameof(UpdateErrorWhenDescriptionIsGreaterThan10_000Characters))]
@@ -240,16 +239,15 @@ public class CategoryTest
     public void UpdateErrorWhenDescriptionIsGreaterThan10_000Characters()
     {
         var category = _categoryTestFixture.GetValidCategory();
-        var invalidDescription =
-            _categoryTestFixture.Faker.Commerce.ProductDescription();
+        var invalidDescription = _categoryTestFixture.Faker.Commerce.ProductDescription();
+
         while (invalidDescription.Length <= 10_000)
             invalidDescription = $"{invalidDescription} {_categoryTestFixture.Faker.Commerce.ProductDescription()}";
 
-        Action action =
-            () => category.Update("Category New Name", invalidDescription);
+        var action = () => category.Update("Category New Name", invalidDescription);
 
         action.Should()
-            .Throw<EntityValidationException>()
-            .WithMessage("Description should be less or equal 10000 characters");
+              .Throw<EntityValidationException>()
+              .WithMessage("Description should be less or equal 10000 characters");
     }
 }

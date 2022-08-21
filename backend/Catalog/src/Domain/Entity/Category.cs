@@ -1,10 +1,10 @@
-﻿using Domain.Validation;
+﻿using Domain.SeedWork;
+using Domain.Validation;
 
 namespace Domain.Entity;
 
-public class Category
+public class Category : AggregateRoot
 {
-    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -12,7 +12,6 @@ public class Category
 
     public Category(string name, string description, bool isActive = false)
     {
-        Id = Guid.NewGuid();
         Name = name;
         Description = description;
         IsActive = isActive;
@@ -26,6 +25,7 @@ public class Category
         IsActive = true;
         Validate();
     }
+
     public void Deactivate()
     {
         IsActive = false;
