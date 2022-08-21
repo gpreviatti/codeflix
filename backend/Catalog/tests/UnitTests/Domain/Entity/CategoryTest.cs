@@ -28,7 +28,7 @@ public class CategoryTest
         category.CreatedAt.Should().NotBeSameDateAs(default);
         (category.CreatedAt >= datetimeBefore).Should().BeTrue();
         (category.CreatedAt <= DateTime.Now.AddSeconds(1)).Should().BeTrue();
-        (category.IsActive).Should().BeFalse();
+        category.IsActive.Should().BeFalse();
     }
 
 
@@ -50,7 +50,7 @@ public class CategoryTest
         category.CreatedAt.Should().NotBeSameDateAs(default);
         (category.CreatedAt >= datetimeBefore).Should().BeTrue();
         (category.CreatedAt <= DateTime.Now.AddSeconds(1)).Should().BeTrue();
-        (category.IsActive).Should().Be(isActive);
+        category.IsActive.Should().Be(isActive);
     }
 
     [Theory(DisplayName = nameof(InstantiateErrorWhenNameIsEmpty))]
@@ -62,7 +62,7 @@ public class CategoryTest
     {
         var validCategory = _categoryTestFixture.GetValidCategory();
 
-        Action action = () => new Category(name!, validCategory.Description);
+        var action = () => new Category(name!, validCategory.Description);
 
         action.Should()
             .Throw<EntityValidationException>()
@@ -89,7 +89,7 @@ public class CategoryTest
     {
         var validCategory = _categoryTestFixture.GetValidCategory();
 
-        Action action = () => new Category(invalidName, validCategory.Description);
+        var action = () => new Category(invalidName, validCategory.Description);
 
         action.Should()
             .Throw<EntityValidationException>()
@@ -115,7 +115,7 @@ public class CategoryTest
         var validCategory = _categoryTestFixture.GetValidCategory();
         var invalidName = string.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
 
-        Action action = () => new Category(invalidName, validCategory.Description);
+        var action = () => new Category(invalidName, validCategory.Description);
 
         action.Should()
             .Throw<EntityValidationException>()
@@ -129,7 +129,7 @@ public class CategoryTest
         var invalidDescription = string.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
         var validCategory = _categoryTestFixture.GetValidCategory();
 
-        Action action = () => new Category(validCategory.Name, invalidDescription);
+        var action = () => new Category(validCategory.Name, invalidDescription);
 
         action.Should()
             .Throw<EntityValidationException>()
