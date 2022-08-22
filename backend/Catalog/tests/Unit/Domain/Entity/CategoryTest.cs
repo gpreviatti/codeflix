@@ -10,7 +10,10 @@ public class CategoryTest
 {
     private readonly CategoryTestFixture _categoryTestFixture;
 
-    public CategoryTest(CategoryTestFixture categoryTestFixture) => _categoryTestFixture = categoryTestFixture;
+    public CategoryTest(CategoryTestFixture categoryTestFixture) 
+    {
+        _categoryTestFixture = categoryTestFixture;
+    }
 
     [Fact(DisplayName = nameof(Instantiate))]
     [Trait("Domain", "Category - Aggregates")]
@@ -30,7 +33,6 @@ public class CategoryTest
         (category.CreatedAt <= DateTime.Now.AddSeconds(1)).Should().BeTrue();
         category.IsActive.Should().BeFalse();
     }
-
 
     [Theory(DisplayName = nameof(InstantiateWithIsActive))]
     [Trait("Domain", "Category - Aggregates")]
@@ -75,7 +77,7 @@ public class CategoryTest
     {
         var validCategory = _categoryTestFixture.GetValidCategory();
 
-        Action action = () => new Category(validCategory.Name, null!);
+        var action = () => new Category(validCategory.Name, null!);
 
         action.Should()
             .Throw<EntityValidationException>()
@@ -122,9 +124,9 @@ public class CategoryTest
             .WithMessage("Name should be less or equal 255 characters");
     }
 
-    [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsGreaterThan10_000Characters))]
+    [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsGreaterThan10000Characters))]
     [Trait("Domain", "Category - Aggregates")]
-    public void InstantiateErrorWhenDescriptionIsGreaterThan10_000Characters()
+    public void InstantiateErrorWhenDescriptionIsGreaterThan10000Characters()
     {
         var invalidDescription = string.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
         var validCategory = _categoryTestFixture.GetValidCategory();
@@ -239,10 +241,7 @@ public class CategoryTest
     public void UpdateErrorWhenDescriptionIsGreaterThan10_000Characters()
     {
         var category = _categoryTestFixture.GetValidCategory();
-        var invalidDescription = _categoryTestFixture.Faker.Commerce.ProductDescription();
-
-        while (invalidDescription.Length <= 10_000)
-            invalidDescription = $"{invalidDescription} {_categoryTestFixture.Faker.Commerce.ProductDescription()}";
+        var invalidDescription = _categoryTestFixture.Faker.Lorem.Letter(10001);
 
         var action = () => category.Update("Category New Name", invalidDescription);
 

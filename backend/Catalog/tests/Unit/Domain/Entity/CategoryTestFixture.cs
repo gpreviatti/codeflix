@@ -26,8 +26,8 @@ public class CategoryTestFixture : BaseFixture
     {
         var categoryDescription = Faker.Commerce.ProductDescription();
 
-        if (categoryDescription.Length > 10_000)
-            categoryDescription = categoryDescription[..10_000];
+        if (categoryDescription.Length > 10000)
+            categoryDescription = categoryDescription[..10000];
 
         return categoryDescription;
     }
@@ -36,5 +36,4 @@ public class CategoryTestFixture : BaseFixture
 }
 
 [CollectionDefinition(nameof(CategoryTestFixture))]
-public class CategoryTestFixtureCollection : ICollectionFixture<CategoryTestFixture>
-{ }
+public class CategoryTestFixtureCollection : ICollectionFixture<CategoryTestFixture> { }
