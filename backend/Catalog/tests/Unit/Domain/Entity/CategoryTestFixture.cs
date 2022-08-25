@@ -5,6 +5,9 @@ using Xunit;
 
 namespace Unit.Domain.Entity;
 
+[CollectionDefinition(nameof(CategoryTestFixture))]
+public class CategoryTestFixtureCollection : ICollectionFixture<CategoryTestFixture> { }
+
 public class CategoryTestFixture : BaseFixture
 {
     public CategoryTestFixture() : base() { }
@@ -34,6 +37,3 @@ public class CategoryTestFixture : BaseFixture
 
     public Category GetValidCategory() => new(GetValidCategoryName(), GetValidCategoryDescription());
 }
-
-[CollectionDefinition(nameof(CategoryTestFixture))]
-public class CategoryTestFixtureCollection : ICollectionFixture<CategoryTestFixture> { }
