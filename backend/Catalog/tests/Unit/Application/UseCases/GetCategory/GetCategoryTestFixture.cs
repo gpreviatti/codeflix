@@ -1,23 +1,21 @@
-﻿using Application.Dtos.Category;
-using Application.Interfaces;
-using Application.Interfaces.UseCases;
-using Application.UseCases.Category;
+﻿using Application.Interfaces.UseCases;
+using Domain.Entity;
 using Domain.Repository;
 using Moq;
 using Unit.Common;
+using CategoryUseCase = Application.UseCases.Category;
 
-namespace Unit.Application.UseCases;
+namespace Unit.Application.UseCases.GetCategory;
 
-public class CreateCategoryTestFixture : BaseFixture
+public class GetCategoryTestFixture : BaseFixture
 {
     protected readonly Mock<ICategoryRepository> _respoitoryMock = new();
-    protected readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
 
-    protected ICreateCategory _createCategory;
+    protected IGetCategory _getCategory;
 
-    public CreateCategoryTestFixture()
+    public GetCategoryTestFixture()
     {
-        _createCategory = new CreateCategory(_respoitoryMock.Object, _unitOfWorkMock.Object);
+        _getCategory = new CategoryUseCase.GetCategory(_respoitoryMock.Object);
     }
 
     public string GetValidCategoryName()
@@ -43,7 +41,7 @@ public class CreateCategoryTestFixture : BaseFixture
         return categoryDescription;
     }
 
-    public CreateCategoryInput GetValidCategoryInput() => new(
+    public Category GetValidCategory() => new(
         GetValidCategoryName(),
         GetValidCategoryDescription(),
         GetRandomBoolean()

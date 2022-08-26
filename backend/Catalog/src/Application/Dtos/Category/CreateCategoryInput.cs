@@ -1,6 +1,8 @@
-﻿namespace Application.Dtos.Category;
+﻿using MediatR;
 
-public class CreateCategoryInput
+namespace Application.Dtos.Category;
+
+public class CreateCategoryInput : IRequest<CreateCategoryOutput>
 {
     public string Name { get; set; }
     public string Description { get; set; }

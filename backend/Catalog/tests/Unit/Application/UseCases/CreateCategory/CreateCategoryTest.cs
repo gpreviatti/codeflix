@@ -5,14 +5,14 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace Unit.Application.UseCases;
+namespace Unit.Application.UseCases.CreateCategory;
 
 public class CreateCategoryTest : CreateCategoryTestFixture
 {
     [Fact(DisplayName = nameof(CreateCategory))]
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategory()
-    {   
+    {
         var input = GetValidCategoryInput();
 
         var output = await _createCategory.Handle(input, CancellationToken.None);
@@ -26,11 +26,11 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         output.CreatedAt.Should().NotBe(default);
 
         _respoitoryMock.Verify(
-            r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()), 
+            r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );
         _unitOfWorkMock.Verify(
-            u => u.Commit(It.IsAny<CancellationToken>()), 
+            u => u.Commit(It.IsAny<CancellationToken>()),
             Times.Once()
         );
     }
@@ -87,10 +87,14 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         );
     }
 
-    [Theory(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
+    [Theory(DisplayName = nameof(ThrowWhenCantInstantiateCategory))]
     [Trait("Application", "CreateCategory - Use Cases")]
-    [MemberData(nameof(GetInvalidInputs))]
-    public async Task ThrowWhenCantInstantiateAggregate(
+    [MemberData(
+        nameof(CreateCategoryTestDataGenerator.GetInvalidInputs),
+        parameters: 24,
+        MemberType = typeof(CreateCategoryTestDataGenerator)
+    )]
+    public async Task ThrowWhenCantInstantiateCategory(
         string exceptionMessage,
         CreateCategoryInput input
     )
@@ -101,38 +105,5 @@ public class CreateCategoryTest : CreateCategoryTestFixture
             .Should()
             .ThrowAsync<EntityValidationException>()
             .WithMessage(exceptionMessage);
-    }
-
-    private static IEnumerable<object[]> GetInvalidInputs() 
-    {
-        var fixture = new CreateCategoryTestFixture();
-        var inputList = new List<object[]>();
-
-        // Nome não pode ser menor que 3 caracteres
-        var inputShortName = fixture.GetValidCategoryInput();
-        inputShortName.Name = inputShortName.Name[..2];
-        inputList.Add(new object[] { "Name should be at least 3 characters", inputShortName } );
-
-        // Nome não pode ser mais que 255 caracteres
-        var inputTooLongName = fixture.GetValidCategoryInput();
-        inputTooLongName.Name = fixture.Faker.Lorem.Letter(256);
-        inputList.Add(new object[] { "Name should be less or equal 255 characters", inputTooLongName });
-
-        // Nome não pode ser null
-        var inputNullName = fixture.GetValidCategoryInput();
-        inputNullName.Name = null!;
-        inputList.Add(new object[] { "Name should not be empty or null", inputNullName });
-
-        // Descricao não pode ser nula
-        var inputNullDescription = fixture.GetValidCategoryInput();
-        inputNullDescription.Description = null!;
-        inputList.Add(new object[] { "Description should not be null", inputNullDescription });
-
-        // Descricao não pode ser maior que 10000 caracters
-        var inputTooLongDescription = fixture.GetValidCategoryInput();
-        inputTooLongDescription.Description = fixture.Faker.Lorem.Letter(10001);
-        inputList.Add(new object[] { "Description should be less or equal 10000 characters", inputTooLongDescription });
-
-        return inputList;
     }
 }
