@@ -18,14 +18,14 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.GetType().Should().Be<CreateCategoryOutput>();
+        output.GetType().Should().Be<CategoryOutput>();
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
         output.IsActive.Should().Be(input.IsActive);
         output.CreatedAt.Should().NotBe(default);
 
-        _respoitoryMock.Verify(
+        _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );
@@ -44,14 +44,14 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.GetType().Should().Be<CreateCategoryOutput>();
+        output.GetType().Should().Be<CategoryOutput>();
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be("");
         output.IsActive.Should().Be(true);
         output.CreatedAt.Should().NotBe(default);
 
-        _respoitoryMock.Verify(
+        _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );
@@ -70,14 +70,14 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.GetType().Should().Be<CreateCategoryOutput>();
+        output.GetType().Should().Be<CategoryOutput>();
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
         output.IsActive.Should().Be(true);
         output.CreatedAt.Should().NotBe(default);
 
-        _respoitoryMock.Verify(
+        _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );

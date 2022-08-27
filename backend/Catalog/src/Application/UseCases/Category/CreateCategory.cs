@@ -16,7 +16,7 @@ public class CreateCategory : ICreateCategory
 		_unitOfWork = unitOfWork;
 	}
 
-	public async Task<CreateCategoryOutput> Handle(
+	public async Task<CategoryOutput> Handle(
 		CreateCategoryInput input, 
 		CancellationToken cancellationToken
 	)
@@ -31,6 +31,6 @@ public class CreateCategory : ICreateCategory
 
 		await _unitOfWork.Commit(cancellationToken);
 
-		return CreateCategoryOutput.FromCategory(category);
+		return CategoryOutput.FromCategory(category);
 	}
 }

@@ -3,4 +3,4 @@ using MediatR;
 
 namespace Application.Interfaces.UseCases;
 
-public interface IGetCategory : IRequestHandler<GetCategoryInput, GetCategoryOutput> { }
+public interface IDeleteCategory : IRequestHandler<DeleteCategoryInput> { }
