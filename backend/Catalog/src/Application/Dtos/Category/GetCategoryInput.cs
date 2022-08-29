@@ -2,7 +2,7 @@
 
 namespace Application.Dtos.Category;
 
-public class GetCategoryInput : IRequest<GetCategoryOutput>
+public class GetCategoryInput : IRequest<CategoryOutput>
 {
     public Guid Id { get; set; }
 

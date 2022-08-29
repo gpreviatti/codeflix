@@ -13,13 +13,13 @@ public class GetCategory : IGetCategory
 		_categoryRepository = categoryRepository;
 	}
 
-	public async Task<GetCategoryOutput> Handle(
+	public async Task<CategoryOutput> Handle(
 		GetCategoryInput input,
 		CancellationToken cancellationToken
 	)
 	{
 		var category = await _categoryRepository.Get(input.Id, cancellationToken);
 
-		return GetCategoryOutput.FromCategory(category);
+		return CategoryOutput.FromCategory(category);
 	}
 }
