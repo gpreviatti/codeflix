@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Category;
+using Application.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -26,6 +27,27 @@ public class GetCategoryTest : GetCategoryTestFixture
         output.Description.Should().Be(category.Description);
         output.IsActive.Should().Be(category.IsActive);
         output.CreatedAt.Should().NotBe(default);
+
+        _respoitoryMock.Verify(
+            r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()),
+            Times.Once()
+        );
+    }
+
+    [Fact(DisplayName = nameof(NotFoundExceptionWhenCategoryDoesntExist))]
+    [Trait("Application", "NotFoundExceptionWhenCategoryDoesntExist - Use Cases")]
+    public async Task NotFoundExceptionWhenCategoryDoesntExist()
+    {
+        var guid = Guid.NewGuid();
+        _respoitoryMock
+            .Setup(r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new NotFoundException($"Category '{guid} not found"));
+
+        var input = new GetCategoryInput(guid);
+
+        var task = async () => await _getCategory.Handle(input, CancellationToken.None);
+
+        await task.Should().ThrowAsync<NotFoundException>();
 
         _respoitoryMock.Verify(
             r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()),

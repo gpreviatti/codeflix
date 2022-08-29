@@ -1,7 +1,7 @@
 ﻿using Application.Dtos.Category;
 using Application.Validation;
-using FluentAssertions;
 using FluentValidation;
+using FluentValidation.TestHelper;
 using Xunit;
 
 namespace Unit.Application.UseCases.GetCategory;
@@ -15,11 +15,9 @@ public class GetCategoryInputValidatorTest
         var validInput = new GetCategoryInput(Guid.NewGuid());
         var validator = new GetCategoryInputValidation();
 
-        var validationResult = validator.Validate(validInput);
+        var validationResult = validator.TestValidate(validInput);
 
-        validationResult.Should().NotBeNull();
-        validationResult.IsValid.Should().BeTrue();
-        validationResult.Errors.Should().HaveCount(0);
+        validationResult.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact(DisplayName = nameof(InvalidWhenEmptyGuidId))]
@@ -30,12 +28,10 @@ public class GetCategoryInputValidatorTest
         var invalidInput = new GetCategoryInput(Guid.Empty);
         var validator = new GetCategoryInputValidation();
 
-        var validationResult = validator.Validate(invalidInput);
+        var validationResult = validator.TestValidate(invalidInput);
 
-        validationResult.Should().NotBeNull();
-        validationResult.IsValid.Should().BeFalse();
-        validationResult.Errors.Should().HaveCount(1);
-        validationResult.Errors[0].ErrorMessage
-            .Should().Be("'Id' must not be empty.");
+        validationResult
+        .ShouldHaveAnyValidationError()
+        .WithErrorMessage("'Id' must not be empty.");
     }
 }
