@@ -140,7 +140,7 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         string expectedExceptionMessage
     )
     {
-        var exampleCategory = GetExampleCategory();
+        var exampleCategory = GetValidCategory();
         input.Id = exampleCategory.Id;
 
         _repositoryMock.Setup(x => x.Get(

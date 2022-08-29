@@ -12,7 +12,7 @@ public class DeleteCategoryTest : DeleteCategoryTestFixture
     [Trait("Application", "DeleteCategory - Use Cases")]
     public async Task DeleteCategory()
     {
-        var categoryExample = GetExampleCategory();
+        var categoryExample = GetValidCategory();
         _repositoryMock.Setup(x => x.Get(
             categoryExample.Id,
             It.IsAny<CancellationToken>())

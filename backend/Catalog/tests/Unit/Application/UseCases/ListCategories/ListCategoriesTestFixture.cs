@@ -20,7 +20,7 @@ public class ListCategoriesTestFixture : CategoryBaseFixture
     {
         var list = new List<Category>();
         for (int i = 0; i < length; i++)
-            list.Add(GetExampleCategory());
+            list.Add(GetValidCategory());
         return list;
     }
 

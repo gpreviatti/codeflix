@@ -31,7 +31,7 @@ public class CategoryBaseFixture : BaseFixture
         return categoryDescription;
     }
 
-    public Category GetExampleCategory() => new(
+    public Category GetValidCategory() => new(
         GetValidCategoryName(),
         GetValidCategoryDescription(),
         GetRandomBoolean()
