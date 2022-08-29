@@ -10,7 +10,8 @@ public class DeleteCategoryTestFixture : CategoryBaseFixture
 	public DeleteCategoryTestFixture()
 	{
 		_deleteCategory = new CategoryUseCase.DeleteCategory(
-			_repositoryMock.Object, _unitOfWorkMock.Object
+			_repositoryMock.Object, 
+			_unitOfWorkMock.Object
 		);
 	}
 }
