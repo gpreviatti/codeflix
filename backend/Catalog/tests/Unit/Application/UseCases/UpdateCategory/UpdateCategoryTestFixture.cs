@@ -26,28 +26,35 @@ public class UpdateCategoryTestFixture : CategoryBaseFixture
     public UpdateCategoryInput GetInvalidInputShortName()
     {
         var invalidInputShortName = GetValidInput();
-        invalidInputShortName.Name =
-            invalidInputShortName.Name.Substring(0, 2);
+        
+        invalidInputShortName.Name = invalidInputShortName.Name[..2];
+        
         return invalidInputShortName;
     }
 
     public UpdateCategoryInput GetInvalidInputTooLongName()
     {
         var invalidInputTooLongName = GetValidInput();
-        var tooLongNameForCategory = Faker.Commerce.ProductName();
-        while (tooLongNameForCategory.Length <= 255)
-            tooLongNameForCategory = $"{tooLongNameForCategory} {Faker.Commerce.ProductName()}";
-        invalidInputTooLongName.Name = tooLongNameForCategory;
+        var tooLongName = Faker.Commerce.ProductName();
+
+        while (tooLongName.Length <= 255)
+            tooLongName = $"{tooLongName} {Faker.Commerce.ProductName()}";
+
+        invalidInputTooLongName.Name = tooLongName;
+
         return invalidInputTooLongName;
     }
 
     public UpdateCategoryInput GetInvalidInputTooLongDescription()
     {
         var invalidInputTooLongDescription = GetValidInput();
-        var tooLongDescriptionForCategory = Faker.Commerce.ProductDescription();
-        while (tooLongDescriptionForCategory.Length <= 10_000)
-            tooLongDescriptionForCategory = $"{tooLongDescriptionForCategory} {Faker.Commerce.ProductDescription()}";
-        invalidInputTooLongDescription.Description = tooLongDescriptionForCategory;
+        var tooLongDescription = Faker.Commerce.ProductDescription();
+
+        while (tooLongDescription.Length <= 10000)
+            tooLongDescription = $"{tooLongDescription} {Faker.Commerce.ProductDescription()}";
+
+        invalidInputTooLongDescription.Description = tooLongDescription;
+        
         return invalidInputTooLongDescription;
     }
 }

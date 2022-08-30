@@ -19,7 +19,10 @@ public class UpdateCategory : IUpdateCategory
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CategoryOutput> Handle(UpdateCategoryInput request, CancellationToken cancellationToken)
+    public async Task<CategoryOutput> Handle(
+        UpdateCategoryInput request, 
+        CancellationToken cancellationToken
+    )
     {
         var category = await _categoryRepository.Get(request.Id, cancellationToken);
         

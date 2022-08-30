@@ -18,14 +18,14 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         MemberType = typeof(UpdateCategoryTestDataGenerator)
     )]
     public async Task UpdateCategory(
-        Category exampleCategory,
+        Category category,
         UpdateCategoryInput input
     )
     {
         _repositoryMock.Setup(x => x.Get(
-            exampleCategory.Id,
-            It.IsAny<CancellationToken>())
-        ).ReturnsAsync(exampleCategory);
+            category.Id,
+            It.IsAny<CancellationToken>()
+        )).ReturnsAsync(category);
 
         var output = await _updateCategory.Handle(input, CancellationToken.None);
 
@@ -33,9 +33,21 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
         output.IsActive.Should().Be((bool)input.IsActive!);
-        _repositoryMock.Verify(x => x.Get(exampleCategory.Id,It.IsAny<CancellationToken>()), Times.Once);
-        _repositoryMock.Verify(x => x.Update(exampleCategory,It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()),Times.Once);
+
+        _repositoryMock.Verify(x => x.Get(
+            category.Id,It.IsAny<CancellationToken>()), 
+            Times.Once
+        );
+
+        _repositoryMock.Verify(x => x.Update(
+            category,It.IsAny<CancellationToken>()), 
+            Times.Once
+        );
+
+        _unitOfWorkMock.Verify(
+            x => x.Commit(It.IsAny<CancellationToken>()),
+            Times.Once
+        );
     }
 
     [Theory(DisplayName = nameof(UpdateCategoryWithoutProvidingIsActive))]
@@ -66,9 +78,20 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
         output.IsActive.Should().Be(exampleCategory.IsActive);
-        _repositoryMock.Verify(x => x.Get(exampleCategory.Id, It.IsAny<CancellationToken>()), Times.Once);
-        _repositoryMock.Verify(x => x.Update(exampleCategory, It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()),Times.Once);
+    
+        _repositoryMock.Verify(
+            x => x.Get(input.Id, It.IsAny<CancellationToken>()),
+            Times.Once
+        );
+        _repositoryMock.Verify(
+            x => x.Update(exampleCategory, It.IsAny<CancellationToken>()), 
+            Times.Once
+        );
+
+        _unitOfWorkMock.Verify(
+            x => x.Commit(It.IsAny<CancellationToken>()),
+            Times.Once
+        );
     }
 
 
@@ -99,8 +122,16 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(exampleCategory.Description);
         output.IsActive.Should().Be(exampleCategory.IsActive);
-        _repositoryMock.Verify(x => x.Get(exampleCategory.Id, It.IsAny<CancellationToken>()) , Times.Once);
-        _repositoryMock.Verify(x => x.Update( exampleCategory, It.IsAny<CancellationToken>()) , Times.Once);
+        
+        _repositoryMock.Verify(
+            x => x.Get(input.Id, It.IsAny<CancellationToken>()),
+            Times.Once
+        );
+        
+        _repositoryMock.Verify(
+            x => x.Update( exampleCategory, It.IsAny<CancellationToken>()) , 
+            Times.Once
+        );
 
         _unitOfWorkMock.Verify(x => x.Commit(
             It.IsAny<CancellationToken>()),
@@ -122,10 +153,10 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
 
         await task.Should().ThrowAsync<NotFoundException>();
 
-        _repositoryMock.Verify(x => x.Get(
-            input.Id,
-            It.IsAny<CancellationToken>())
-        , Times.Once);
+        _repositoryMock.Verify(
+            x => x.Get(input.Id, It.IsAny<CancellationToken>()),
+            Times.Once
+        );
     }
 
     [Theory(DisplayName = nameof(ThrowWhenCantUpdateCategory))]
@@ -150,12 +181,13 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
 
         var task = async () => await _updateCategory.Handle(input, CancellationToken.None);
 
-        await task.Should().ThrowAsync<EntityValidationException>()
+        await task.Should()
+            .ThrowAsync<EntityValidationException>()
             .WithMessage(expectedExceptionMessage);
 
-        _repositoryMock.Verify(x => x.Get(
-            exampleCategory.Id,
-            It.IsAny<CancellationToken>()),
-        Times.Once);
+        _repositoryMock.Verify(
+            x => x.Get(exampleCategory.Id, It.IsAny<CancellationToken>()),
+            Times.Once
+        );
     }
 }

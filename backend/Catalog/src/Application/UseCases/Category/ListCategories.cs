@@ -13,7 +13,10 @@ public class ListCategories: IListCategories
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<ListCategoriesOutput> Handle(ListCategoriesInput request, CancellationToken cancellationToken)
+    public async Task<ListCategoriesOutput> Handle(
+        ListCategoriesInput request, 
+        CancellationToken cancellationToken
+    )
     {
         var searchOutput = await _categoryRepository.Search(
             new(
