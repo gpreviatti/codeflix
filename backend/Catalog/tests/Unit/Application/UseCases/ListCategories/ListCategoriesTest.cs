@@ -1,7 +1,5 @@
 ﻿using Application.Dtos.Category;
-using Application.Exceptions;
 using Domain.Entity;
-using Domain.Excpetions;
 using Domain.SeedWork.SearchableRepository;
 using FluentAssertions;
 using Moq;
@@ -18,10 +16,10 @@ public class ListCategoriesTest : ListCategoriesTestFixture
         var categoriesExampleList = GetExampleCategoriesList();
         var input = GetExampleInput();
         var outputRepositorySearch = new SearchOutput<Category>(
-            currentPage: input.Page,
-            perPage: input.PerPage,
-            items: categoriesExampleList,
-            total: new Random().Next(50, 200)
+            input.Page,
+            input.PerPage,
+            new Random().Next(50, 200),
+            categoriesExampleList
         );
 
         _repositoryMock.Setup(x => x.Search(
@@ -42,10 +40,13 @@ public class ListCategoriesTest : ListCategoriesTestFixture
         output.PerPage.Should().Be(outputRepositorySearch.PerPage);
         output.Total.Should().Be(outputRepositorySearch.Total);
         output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
-        ((List<CategoryOutput>)output.Items).ForEach(outputItem =>
+
+        output.Items.ToList().ForEach(outputItem =>
         {
-            var repositoryCategory = outputRepositorySearch.Items
-                .FirstOrDefault(x => x.Id == outputItem.Id);
+            var repositoryCategory = outputRepositorySearch
+                    .Items
+                    .FirstOrDefault(x => x.Id == outputItem.Id);
+
             outputItem.Should().NotBeNull();
             outputItem.Name.Should().Be(repositoryCategory!.Name);
             outputItem.Description.Should().Be(repositoryCategory!.Description);
@@ -65,18 +66,18 @@ public class ListCategoriesTest : ListCategoriesTestFixture
         ), Times.Once);
     }
 
-
     [Fact(DisplayName = nameof(ListOkWhenEmpty))]
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task ListOkWhenEmpty()
     {
         var input = GetExampleInput();
         var outputRepositorySearch = new SearchOutput<Category>(
-            currentPage: input.Page,
-            perPage: input.PerPage,
-            items: new List<Category>().AsReadOnly(),
-            total: 0
+            input.Page,
+            input.PerPage,
+            0,
+            new List<Category>().AsReadOnly()
         );
+
         _repositoryMock.Setup(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page
@@ -119,10 +120,10 @@ public class ListCategoriesTest : ListCategoriesTestFixture
     {
         var categoriesExampleList = GetExampleCategoriesList();
         var outputRepositorySearch = new SearchOutput<Category>(
-            currentPage: input.Page,
-            perPage: input.PerPage,
-            items: (IReadOnlyList<Category>)categoriesExampleList,
-            total: new Random().Next(50, 200)
+            input.Page,
+            input.PerPage,
+            new Random().Next(50, 200),
+            categoriesExampleList
         );
         _repositoryMock.Setup(x => x.Search(
             It.Is<SearchInput>(
@@ -142,10 +143,13 @@ public class ListCategoriesTest : ListCategoriesTestFixture
         output.PerPage.Should().Be(outputRepositorySearch.PerPage);
         output.Total.Should().Be(outputRepositorySearch.Total);
         output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
-        ((List<CategoryOutput>)output.Items).ForEach(outputItem =>
+
+        output.Items.ToList().ForEach(outputItem =>
         {
-            var repositoryCategory = outputRepositorySearch.Items
+            var repositoryCategory = outputRepositorySearch
+                .Items
                 .FirstOrDefault(x => x.Id == outputItem.Id);
+
             outputItem.Should().NotBeNull();
             outputItem.Name.Should().Be(repositoryCategory!.Name);
             outputItem.Description.Should().Be(repositoryCategory!.Description);

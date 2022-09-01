@@ -8,7 +8,9 @@ public class UpdateCategoryTestDataGenerator
         for (int indice = 0; indice < times; indice++)
         {
             var exampleCategory = fixture.GetValidCategory();
+            
             var exampleInput = fixture.GetValidInput(exampleCategory.Id);
+
             yield return new object[] {
                 exampleCategory, exampleInput
             };
@@ -42,8 +44,6 @@ public class UpdateCategoryTestDataGenerator
                         fixture.GetInvalidInputTooLongDescription(),
                         "Description should be less or equal 10000 characters"
                     });
-                    break;
-                default:
                     break;
             }
         }
