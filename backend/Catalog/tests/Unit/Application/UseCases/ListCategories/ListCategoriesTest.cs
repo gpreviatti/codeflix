@@ -9,7 +9,7 @@ namespace Unit.Application.UseCases.UpdateCategory;
 
 public class ListCategoriesTest : ListCategoriesTestFixture
 {
-    [Fact(DisplayName = nameof(List))]
+    [Fact]
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task List()
     {
@@ -66,7 +66,7 @@ public class ListCategoriesTest : ListCategoriesTestFixture
         ), Times.Once);
     }
 
-    [Fact(DisplayName = nameof(ListOkWhenEmpty))]
+    [Fact]
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task ListOkWhenEmpty()
     {
@@ -109,7 +109,7 @@ public class ListCategoriesTest : ListCategoriesTestFixture
         ), Times.Once);
     }
 
-    [Theory(DisplayName = nameof(ListInputWithoutAllParameters))]
+    [Theory]
     [Trait("Application", "ListCategories - Use Cases")]
     [MemberData(
         nameof(ListCategoriesTestDataGenerator.GetInputsWithoutAllParameter),

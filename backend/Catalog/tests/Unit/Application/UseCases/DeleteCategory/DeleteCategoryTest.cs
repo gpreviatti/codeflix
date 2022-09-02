@@ -8,7 +8,7 @@ namespace Unit.Application.UseCases.DeleteCategory;
 
 public class DeleteCategoryTest : DeleteCategoryTestFixture
 {
-    [Fact(DisplayName = nameof(DeleteCategory))]
+    [Fact]
     [Trait("Application", "DeleteCategory - Use Cases")]
     public async Task DeleteCategory()
     {
@@ -38,7 +38,7 @@ public class DeleteCategoryTest : DeleteCategoryTestFixture
         );
     }
 
-    [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]
+    [Fact]
     [Trait("Application", "DeleteCategory - Use Cases")]
     public async Task ThrowWhenCategoryNotFound()
     {

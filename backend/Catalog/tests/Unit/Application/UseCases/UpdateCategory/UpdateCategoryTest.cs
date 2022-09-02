@@ -10,7 +10,7 @@ namespace Unit.Application.UseCases.UpdateCategory;
 
 public class UpdateCategoryTest : UpdateCategoryTestFixture
 {
-    [Theory(DisplayName = nameof(UpdateCategory))]
+    [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
         nameof(UpdateCategoryTestDataGenerator.GetCategoriesToUpdate),
@@ -50,7 +50,7 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         );
     }
 
-    [Theory(DisplayName = nameof(UpdateCategoryWithoutProvidingIsActive))]
+    [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
         nameof(UpdateCategoryTestDataGenerator.GetCategoriesToUpdate),
@@ -95,7 +95,7 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
     }
 
 
-    [Theory(DisplayName = nameof(UpdateCategoryOnlyName))]
+    [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
         nameof(UpdateCategoryTestDataGenerator.GetCategoriesToUpdate),
@@ -139,7 +139,7 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         );
     }
 
-    [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]
+    [Fact]
     [Trait("Application", "UpdateCategory - Use Cases")]
     public async Task ThrowWhenCategoryNotFound()
     {
@@ -159,7 +159,7 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
         );
     }
 
-    [Theory(DisplayName = nameof(ThrowWhenCantUpdateCategory))]
+    [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
         nameof(UpdateCategoryTestDataGenerator.GetInvalidInputs),

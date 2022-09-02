@@ -8,7 +8,7 @@ namespace Unit.Application.UseCases.GetCategory;
 
 public class GetCategoryTest : GetCategoryTestFixture
 {
-    [Fact(DisplayName = nameof(GetCategory))]
+    [Fact]
     [Trait("Application", "GetCategory - Use Cases")]
     public async Task GetCategory()
     {
@@ -34,7 +34,7 @@ public class GetCategoryTest : GetCategoryTestFixture
         );
     }
 
-    [Fact(DisplayName = nameof(NotFoundExceptionWhenCategoryDoesntExist))]
+    [Fact]
     [Trait("Application", "NotFoundExceptionWhenCategoryDoesntExist - Use Cases")]
     public async Task NotFoundExceptionWhenCategoryDoesntExist()
     {

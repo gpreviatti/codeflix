@@ -9,7 +9,7 @@ namespace Unit.Application.UseCases.CreateCategory;
 
 public class CreateCategoryTest : CreateCategoryTestFixture
 {
-    [Fact(DisplayName = nameof(CreateCategory))]
+    [Fact]
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategory()
     {
@@ -35,7 +35,7 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         );
     }
 
-    [Fact(DisplayName = nameof(CreateCategoryWithOnlyName))]
+    [Fact]
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategoryWithOnlyName()
     {
@@ -61,7 +61,7 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         );
     }
 
-    [Fact(DisplayName = nameof(CreateCategoryWithNameAndDescription))]
+    [Fact]
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategoryWithNameAndDescription()
     {
@@ -87,7 +87,7 @@ public class CreateCategoryTest : CreateCategoryTestFixture
         );
     }
 
-    [Theory(DisplayName = nameof(ThrowWhenCantInstantiateCategory))]
+    [Theory]
     [Trait("Application", "CreateCategory - Use Cases")]
     [MemberData(
         nameof(CreateCategoryTestDataGenerator.GetInvalidInputs),
