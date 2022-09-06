@@ -1,16 +1,16 @@
 ﻿using Bogus;
+using Domain.SeedWork;
 using Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Integration.Data.Repositories;
 public class BaseFixture
 {
-    protected Faker Faker { get; set; }
-	protected readonly CatalogDbContext dbContext;
+	protected Faker Faker { get; set; } = new Faker("pt_BR");
+    protected CatalogDbContext dbContext;
 
     public BaseFixture()
 	{
-		Faker = new Faker("pt_BR");
 		dbContext = CreateDbContext();
 	}
 
@@ -20,5 +20,5 @@ public class BaseFixture
 		.Options
 	);
 
-	public async Task<int> SaveChanges() => await dbContext.SaveChangesAsync();
+    public async Task<int> SaveChanges() => await dbContext.SaveChangesAsync();
 }

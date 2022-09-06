@@ -24,7 +24,7 @@ public class CategoryRepository : ICategoryRepository
         );
 
         if (category == null)
-            new Exception($"Category '{id}' not found.");
+            throw new NullReferenceException($"Category '{id}' not found.");
         
         return category!;
     }
@@ -40,6 +40,7 @@ public class CategoryRepository : ICategoryRepository
         CancellationToken cancellationToken)
     {
         var toSkip = (input.Page - 1) * input.PerPage;
+
         var query = _categories.AsNoTracking();
         query = AddOrderToQuery(query, input.OrderBy, input.Order);
         

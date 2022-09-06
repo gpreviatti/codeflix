@@ -1,6 +1,6 @@
-﻿using Domain.Entity;
+﻿using Entity = Domain.Entity;
 
-namespace Integration.Data.Repositories;
+namespace Integration.Data.Repositories.Category;
 public class CategoryRepositoryTestFixture : BaseFixture
 {
     public string GetValidCategoryName()
@@ -26,5 +26,9 @@ public class CategoryRepositoryTestFixture : BaseFixture
         return categoryDescription;
     }
 
-    public Category GetCategory() => new(GetValidCategoryName(), GetValidCategoryDescription());
+    public Entity.Category GetCategory() => 
+        new(GetValidCategoryName(), GetValidCategoryDescription());
+
+    public List<Entity.Category> GetCategories(int length = 10) =>
+        Enumerable.Range(1, length).Select(_ => GetCategory()).ToList();
 }
