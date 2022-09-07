@@ -101,6 +101,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
         result.Should().BeNull();
     }
 
+    #region Search
     [Theory(DisplayName = nameof(Search))]
     [Trait("Data", "Category - Repositories")]
     [InlineData("name", SearchOrder.Asc)]
@@ -118,7 +119,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
 
         var page = 1;
         var perPage = 10;
-        SearchInput input = new(page, perPage, "", order, searchOrder);
+        var input = new SearchInput(page, perPage, "", order, searchOrder);
 
         var result = await repoistory.Search(input, CancellationToken.None);
 
@@ -142,7 +143,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
 
         var page = 1;
         var perPage = 10;
-        SearchInput input = new(page, perPage, searchTerm, "name", SearchOrder.Desc);
+        var input = new SearchInput(page, perPage, searchTerm, "name", SearchOrder.Desc);
 
         var result = await repoistory.Search(input, CancellationToken.None);
 
@@ -151,4 +152,21 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
         result.Items.Count.Should().Be(recordsFiltred);
         result.Total.Should().Be(totalItens);
     }
+
+    [Fact(DisplayName = nameof(SearcReturnsEmpty))]
+    [Trait("Data", "Category - Repositories")]
+    public async Task SearcReturnsEmpty()
+    {
+        var page = 1;
+        var perPage = 10;
+        var input = new SearchInput(page, perPage, "", "", SearchOrder.Desc);
+
+        var result = await repoistory.Search(input, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.CurrentPage.Should().Be(page);
+        result.Items.Count.Should().Be(0);
+        result.Total.Should().Be(0);
+    }
+    #endregion
 }
