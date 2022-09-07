@@ -102,7 +102,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     }
 
     #region Search
-    [Theory(DisplayName = nameof(Search))]
+    [Theory(DisplayName = nameof(SearchWithOrder))]
     [Trait("Data", "Category - Repositories")]
     [InlineData("name", SearchOrder.Asc)]
     [InlineData("name", SearchOrder.Desc)]
@@ -111,7 +111,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [InlineData("createdat", SearchOrder.Asc)]
     [InlineData("createdat", SearchOrder.Desc)]
     [InlineData("", SearchOrder.Desc)]
-    public async Task Search(string order, SearchOrder searchOrder)
+    public async Task SearchWithOrder(string order, SearchOrder searchOrder)
     {
         var categories = GetCategories(15);
         await dbContext.AddRangeAsync(categories);

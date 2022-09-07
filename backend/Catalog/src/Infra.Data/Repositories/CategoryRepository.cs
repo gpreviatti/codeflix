@@ -37,7 +37,8 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<SearchOutput<Category>> Search(
         SearchInput input,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var toSkip = (input.Page - 1) * input.PerPage;
 
