@@ -20,12 +20,12 @@ public class UpdateCategory : IUpdateCategory
     }
 
     public async Task<CategoryOutput> Handle(
-        UpdateCategoryInput request, 
+        UpdateCategoryInput request,
         CancellationToken cancellationToken
     )
     {
         var category = await _categoryRepository.Get(request.Id, cancellationToken);
-        
+
         category.Update(request.Name, request.Description);
 
         if (request.IsActive != null && request.IsActive != category.IsActive)

@@ -17,10 +17,10 @@ public abstract class CategoryBaseFixture : BaseFixture
 
         while (categoryName.Length < 3)
             categoryName = Faker.Commerce.Categories(1)[0];
-        
+
         if (categoryName.Length > 255)
             categoryName = categoryName[..255];
-        
+
         return categoryName;
     }
 
@@ -34,9 +34,12 @@ public abstract class CategoryBaseFixture : BaseFixture
         return categoryDescription;
     }
 
-    public Category GetValidCategory() => new(
+    public Category GetValidCategory()
+    {
+        return new(
         GetValidCategoryName(),
         GetValidCategoryDescription(),
         GetRandomBoolean()
     );
+    }
 }

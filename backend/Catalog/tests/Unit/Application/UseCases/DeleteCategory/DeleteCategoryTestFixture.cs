@@ -7,11 +7,11 @@ public class DeleteCategoryTestFixture : CategoryBaseFixture
 {
     protected readonly IDeleteCategory _deleteCategory;
 
-	public DeleteCategoryTestFixture()
-	{
-		_deleteCategory = new CategoryUseCase.DeleteCategory(
-			_repositoryMock.Object, 
-			_unitOfWorkMock.Object
-		);
-	}
+    public DeleteCategoryTestFixture()
+    {
+        _deleteCategory = new CategoryUseCase.DeleteCategory(
+            _repositoryMock.Object,
+            _unitOfWorkMock.Object
+        );
+    }
 }

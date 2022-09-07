@@ -17,7 +17,7 @@ public class GetCategoryTest : GetCategoryTestFixture
             .Setup(r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(category);
 
-        var input = new GetCategoryInput(category.Id);
+        GetCategoryInput input = new(category.Id);
 
         var output = await _getCategory.Handle(input, CancellationToken.None);
 
@@ -43,9 +43,9 @@ public class GetCategoryTest : GetCategoryTestFixture
             .Setup(r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new NotFoundException($"Category '{guid} not found"));
 
-        var input = new GetCategoryInput(guid);
+        GetCategoryInput input = new(guid);
 
-        var task = async () => await _getCategory.Handle(input, CancellationToken.None);
+        Func<Task<CategoryOutput>> task = async () => await _getCategory.Handle(input, CancellationToken.None);
 
         await task.Should().ThrowAsync<NotFoundException>();
 

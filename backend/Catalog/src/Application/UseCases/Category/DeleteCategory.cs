@@ -12,7 +12,7 @@ public class DeleteCategory : IDeleteCategory
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteCategory(
-        ICategoryRepository categoryRepository, 
+        ICategoryRepository categoryRepository,
         IUnitOfWork unitOfWork
     )
     {
@@ -21,7 +21,7 @@ public class DeleteCategory : IDeleteCategory
     }
 
     public async Task<Unit> Handle(
-        DeleteCategoryInput request, 
+        DeleteCategoryInput request,
         CancellationToken cancellationToken
     )
     {
@@ -30,7 +30,7 @@ public class DeleteCategory : IDeleteCategory
         await _categoryRepository.Delete(category, cancellationToken);
 
         await _unitOfWork.Commit(cancellationToken);
-        
+
         return Unit.Value;
     }
 }

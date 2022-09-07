@@ -4,7 +4,7 @@ using Domain.Repository;
 
 namespace Application.UseCases.Category;
 
-public class ListCategories: IListCategories
+public class ListCategories : IListCategories
 {
     private readonly ICategoryRepository _categoryRepository;
 
@@ -14,7 +14,7 @@ public class ListCategories: IListCategories
     }
 
     public async Task<ListCategoriesOutput> Handle(
-        ListCategoriesInput request, 
+        ListCategoriesInput request,
         CancellationToken cancellationToken
     )
     {

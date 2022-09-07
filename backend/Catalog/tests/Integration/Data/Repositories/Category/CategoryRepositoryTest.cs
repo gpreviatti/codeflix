@@ -1,4 +1,5 @@
 ﻿using Domain.Repository;
+using Domain.SeedWork.SearchableRepository;
 using FluentAssertions;
 using Infra.Data.Repositories;
 
@@ -98,5 +99,56 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
         var result = await CreateDbContext().Categories.FindAsync(category.Id);
 
         result.Should().BeNull();
+    }
+
+    [Theory(DisplayName = nameof(Search))]
+    [Trait("Data", "Category - Repositories")]
+    [InlineData("name", SearchOrder.Asc)]
+    [InlineData("name", SearchOrder.Desc)]
+    [InlineData("id", SearchOrder.Asc)]
+    [InlineData("id", SearchOrder.Desc)]
+    [InlineData("createdat", SearchOrder.Asc)]
+    [InlineData("createdat", SearchOrder.Desc)]
+    [InlineData("", SearchOrder.Desc)]
+    public async Task Search(string order, SearchOrder searchOrder)
+    {
+        var categories = GetCategories(15);
+        await dbContext.AddRangeAsync(categories);
+        await SaveChanges();
+
+        var page = 1;
+        var perPage = 10;
+        SearchInput input = new(page, perPage, "", order, searchOrder);
+
+        var result = await repoistory.Search(input, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.CurrentPage.Should().Be(page);
+        result.Items.Count.Should().Be(perPage);
+    }
+
+    [Fact(DisplayName = nameof(SearchWithSearchTerm))]
+    [Trait("Data", "Category - Repositories")]
+    public async Task SearchWithSearchTerm()
+    {
+        var totalItens = 15;
+        var categories = GetCategories(totalItens);
+        await dbContext.AddRangeAsync(categories);
+        await SaveChanges();
+
+        var searchTerm = categories.FirstOrDefault()!.Name;
+        var recordsFiltred = categories
+            .Where(c => c.Name.Equals(searchTerm)).Count();
+
+        var page = 1;
+        var perPage = 10;
+        SearchInput input = new(page, perPage, searchTerm, "name", SearchOrder.Desc);
+
+        var result = await repoistory.Search(input, CancellationToken.None);
+
+        result.Should().NotBeNull();
+        result.CurrentPage.Should().Be(page);
+        result.Items.Count.Should().Be(recordsFiltred);
+        result.Total.Should().Be(totalItens);
     }
 }

@@ -43,16 +43,17 @@ public class CategoryRepository : ICategoryRepository
 
         var query = _categories.AsNoTracking();
         query = AddOrderToQuery(query, input.OrderBy, input.Order);
-        
+
+        var total = await query.CountAsync(cancellationToken);
+
         if (!string.IsNullOrWhiteSpace(input.Search))
             query = query.Where(x => x.Name.Contains(input.Search));
-        
-        var total = await query.CountAsync();
 
         var items = await query
             .Skip(toSkip)
             .Take(input.PerPage)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
+
         return new(input.Page, input.PerPage, total, items);
     }
 
@@ -60,32 +61,34 @@ public class CategoryRepository : ICategoryRepository
         IQueryable<Category> query,
         string orderProperty,
         SearchOrder order
-    )
+    ) => (orderProperty.ToLower(), order) switch
     {
-        var orderedQuery = (orderProperty.ToLower(), order) switch
-        {
-            ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name).ThenBy(x => x.Id),
-            ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name).ThenByDescending(x => x.Id),
-            ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),
-            ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
-            ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
-            ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
-            _ => query.OrderBy(x => x.Name).ThenBy(x => x.Id)
-        };
-        return orderedQuery;
-    }
+        ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name).ThenBy(x => x.Id),
+        ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name).ThenByDescending(x => x.Id),
+        ("id", SearchOrder.Asc) => query.OrderBy(x => x.Id),
+        ("id", SearchOrder.Desc) => query.OrderByDescending(x => x.Id),
+        ("createdat", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
+        ("createdat", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
+        _ => query.OrderBy(x => x.Name).ThenBy(x => x.Id)
+    };
 
     public async Task<IReadOnlyList<Guid>> GetIdsListByIds(
         List<Guid> ids,
         CancellationToken cancellationToken
-    ) => await _categories.AsNoTracking()
-        .Where(category => ids.Contains(category.Id))
-        .Select(category => category.Id).ToListAsync();
+    )
+    { 
+        return await _categories.AsNoTracking()
+            .Where(category => ids.Contains(category.Id))
+            .Select(category => category.Id).ToListAsync(cancellationToken);
+    } 
 
     public async Task<IReadOnlyList<Category>> GetListByIds(
         List<Guid> ids, 
         CancellationToken cancellationToken
-    ) => await _categories.AsNoTracking()
+    )
+    {
+        return await _categories.AsNoTracking()
             .Where(category => ids.Contains(category.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
+    }
 }

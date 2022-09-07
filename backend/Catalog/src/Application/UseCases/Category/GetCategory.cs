@@ -6,20 +6,20 @@ namespace Application.UseCases.Category;
 
 public class GetCategory : IGetCategory
 {
-	private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
-	public GetCategory(ICategoryRepository categoryRepository)
-	{
-		_categoryRepository = categoryRepository;
-	}
+    public GetCategory(ICategoryRepository categoryRepository)
+    {
+        _categoryRepository = categoryRepository;
+    }
 
-	public async Task<CategoryOutput> Handle(
-		GetCategoryInput input,
-		CancellationToken cancellationToken
-	)
-	{
-		var category = await _categoryRepository.Get(input.Id, cancellationToken);
+    public async Task<CategoryOutput> Handle(
+        GetCategoryInput input,
+        CancellationToken cancellationToken
+    )
+    {
+        var category = await _categoryRepository.Get(input.Id, cancellationToken);
 
-		return CategoryOutput.FromCategory(category);
-	}
+        return CategoryOutput.FromCategory(category);
+    }
 }
