@@ -5,6 +5,7 @@ public class SearchOutput<TAggregate> where TAggregate : AggregateRoot
     public int CurrentPage { get; set; }
     public int PerPage { get; set; }
     public int Total { get; set; }
+    public int Filtred { get; set; }
     public IReadOnlyList<TAggregate> Items { get; set; }
 
     public SearchOutput(
@@ -18,5 +19,6 @@ public class SearchOutput<TAggregate> where TAggregate : AggregateRoot
         PerPage = perPage;
         Total = total;
         Items = items;
+        Filtred = items.Count;
     }
 }
