@@ -128,9 +128,9 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
         result.Items.Count.Should().Be(perPage);
     }
 
-    [Fact(DisplayName = nameof(SearchWithSearchTerm))]
+    [Fact(DisplayName = nameof(SearchWithTerm))]
     [Trait("Data", "Category - Repositories")]
-    public async Task SearchWithSearchTerm()
+    public async Task SearchWithTerm()
     {
         var totalItens = 15;
         var categories = GetCategories(totalItens);
