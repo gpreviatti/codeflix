@@ -149,7 +149,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
 
         result.Should().NotBeNull();
         result.CurrentPage.Should().Be(page);
-        result.Items.Count.Should().Be(recordsFiltred);
+        result.Filtred.Should().Be(recordsFiltred);
         result.Total.Should().Be(totalItens);
     }
 
@@ -165,6 +165,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
 
         result.Should().NotBeNull();
         result.CurrentPage.Should().Be(page);
+        result.Filtred.Should().Be(0);
         result.Items.Count.Should().Be(0);
         result.Total.Should().Be(0);
     }

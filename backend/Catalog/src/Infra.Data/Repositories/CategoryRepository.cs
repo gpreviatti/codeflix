@@ -76,11 +76,11 @@ public class CategoryRepository : ICategoryRepository
         List<Guid> ids,
         CancellationToken cancellationToken
     )
-    { 
+    {
         return await _categories.AsNoTracking()
             .Where(category => ids.Contains(category.Id))
             .Select(category => category.Id).ToListAsync(cancellationToken);
-    } 
+    }
 
     public async Task<IReadOnlyList<Category>> GetListByIds(
         List<Guid> ids, 
