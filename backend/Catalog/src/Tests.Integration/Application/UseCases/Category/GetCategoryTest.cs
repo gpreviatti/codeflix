@@ -6,11 +6,10 @@ using FluentAssertions;
 namespace Tests.Integration.Application.UseCases.Category;
 public class GetCategoryTest : CategoryTestFixture
 {
-    private IGetCategory _getCategory;
+    private readonly IGetCategory _getCategory;
 
     public GetCategoryTest()
     {
-
         _getCategory = new GetCategory(_categoryRepository);
     }
 
@@ -22,7 +21,7 @@ public class GetCategoryTest : CategoryTestFixture
         await dbContext.AddAsync(category);
         await dbContext.SaveChangesAsync();
 
-         var input = new GetCategoryInput(category.Id);
+        var input = new GetCategoryInput(category.Id);
 
         var output = await _getCategory.Handle(input, CancellationToken.None);
 
@@ -39,8 +38,7 @@ public class GetCategoryTest : CategoryTestFixture
     public async Task NotFoundExceptionWhenCategoryDoesntExist()
     {
         var guid = Guid.NewGuid();
-
-         var input = new GetCategoryInput(guid);
+        var input = new GetCategoryInput(guid);
 
         var task = async () => await _getCategory.Handle(input, CancellationToken.None);
 
