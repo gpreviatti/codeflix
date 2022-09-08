@@ -17,7 +17,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Insert()
     {
-        var category = GetCategory();
+        var category = GetValidCategory();
 
         await repoistory.Insert(category, CancellationToken.None);
         await SaveChanges();
@@ -35,7 +35,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Get()
     {
-        var category = GetCategory();
+        var category = GetValidCategory();
         await dbContext.AddAsync(category);
         await SaveChanges();
 
@@ -66,7 +66,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Update()
     {
-        var category = GetCategory();
+        var category = GetValidCategory();
         await dbContext.AddAsync(category);
         await dbContext.SaveChangesAsync();
 
@@ -89,7 +89,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Delete()
     {
-        var category = GetCategory();
+        var category = GetValidCategory();
         await dbContext.AddAsync(category);
         await SaveChanges();
 
