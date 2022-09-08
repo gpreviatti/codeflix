@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Domain.Entity;
+﻿using Domain.Entity;
 using Domain.Repository;
 using Moq;
 using Unit.Common;

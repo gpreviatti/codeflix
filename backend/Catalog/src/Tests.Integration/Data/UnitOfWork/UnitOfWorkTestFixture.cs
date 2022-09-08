@@ -1,8 +1,16 @@
-﻿using Entity = Domain.Entity;
+﻿using Domain.Repository;
+using Entity = Domain.Entity;
 
-namespace Tests.Integration.Data.Repositories.Category;
-public class CategoryRepositoryTestFixture : BaseFixture
+namespace Tests.Integration.Data.UnitOfWork;
+public abstract class UnitOfWorkTestFixture : BaseFixture
 {
+    protected IUnitOfWork unitOfWork;
+
+    public UnitOfWorkTestFixture()
+    {
+        unitOfWork = new Infra.Data.UnitOfWork(dbContext);
+    }
+
     public string GetValidCategoryName()
     {
         var categoryName = "";

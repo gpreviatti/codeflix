@@ -2,7 +2,7 @@
 using Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Integration.Data.Repositories;
+namespace Tests.Integration.Data;
 public class BaseFixture : IDisposable
 {
     protected Faker Faker { get; set; } = new Faker("pt_BR");
@@ -10,12 +10,12 @@ public class BaseFixture : IDisposable
 
     public BaseFixture()
     {
-        dbContext = CreateDbContext();
+        dbContext = CreateDbContext(Guid.NewGuid());
     }
 
-    public CatalogDbContext CreateDbContext() => new(
+    public static CatalogDbContext CreateDbContext(Guid guid) => new(
         new DbContextOptionsBuilder<CatalogDbContext>()
-            .UseInMemoryDatabase("fc-db-integration-tests")
+            .UseInMemoryDatabase($"fc-db-integration-tests-{guid}")
             .Options
     );
 

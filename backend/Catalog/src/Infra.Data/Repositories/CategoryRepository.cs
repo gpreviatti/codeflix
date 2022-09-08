@@ -58,7 +58,7 @@ public class CategoryRepository : ICategoryRepository
         return new(input.Page, input.PerPage, total, items);
     }
 
-    private IQueryable<Category> AddOrderToQuery(
+    private static IQueryable<Category> AddOrderToQuery(
         IQueryable<Category> query,
         string orderProperty,
         SearchOrder order

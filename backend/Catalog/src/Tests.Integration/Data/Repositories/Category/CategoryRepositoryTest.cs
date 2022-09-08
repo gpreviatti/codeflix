@@ -3,7 +3,7 @@ using Domain.SeedWork.SearchableRepository;
 using FluentAssertions;
 using Infra.Data.Repositories;
 
-namespace Integration.Data.Repositories.Category;
+namespace Tests.Integration.Data.Repositories.Category;
 public class CategoryRepositoryTest : CategoryRepositoryTestFixture
 {
     private ICategoryRepository repoistory;
@@ -73,7 +73,6 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
         var newName = Faker.Commerce.ProductName();
         category.Update(newName);
         category.Deactivate();
-        dbContext = CreateDbContext();
         repoistory = new CategoryRepository(dbContext);
 
         await repoistory.Update(category, CancellationToken.None);
@@ -96,7 +95,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
 
         await repoistory.Delete(category, CancellationToken.None);
         await SaveChanges();
-        var result = await CreateDbContext().Categories.FindAsync(category.Id);
+        var result = await CreateDbContext(Guid.NewGuid()).Categories.FindAsync(category.Id);
 
         result.Should().BeNull();
     }
