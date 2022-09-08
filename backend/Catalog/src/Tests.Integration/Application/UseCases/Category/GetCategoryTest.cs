@@ -42,6 +42,8 @@ public class GetCategoryTest : CategoryTestFixture
 
         var task = async () => await _getCategory.Handle(input, CancellationToken.None);
 
-        await task.Should().ThrowAsync<NullReferenceException>();
+        await task.Should()
+            .ThrowAsync<NullReferenceException>()
+            .WithMessage($"Category '{guid}' not found.");
     }
 }
