@@ -2,13 +2,14 @@
 using Domain.Excpetions;
 using Domain.Validation;
 using FluentAssertions;
+using Tests.Common.Generators;
 using Xunit;
 
 namespace Unit.Domain.Validation;
 
 public class DomainValidationTest
 {
-    private Faker Faker { get; set; } = new Faker();
+    private Faker Faker { get; set; } = CommonGenerator.GetFaker();
 
     [Fact(DisplayName = nameof(NotNullOk))]
     [Trait("Domain", "DomainValidation - Validation")]

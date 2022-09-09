@@ -1,19 +1,31 @@
 ﻿using Application.Dtos.Category;
+using Application.Interfaces.UseCases;
 using Domain.Entity;
 using Domain.Excpetions;
 using FluentAssertions;
 using Moq;
+using Tests.Common.Generators.Dtos;
 using Xunit;
+using CategoryUseCases = Application.UseCases.Category;
 
 namespace Unit.Application.UseCases.CreateCategory;
 
-public class CreateCategoryTest : CreateCategoryTestFixture
+public class CreateCategoryTest : CategoryBaseFixture
 {
+    private readonly ICreateCategory _createCategory;
+
+    public CreateCategoryTest()
+    {
+        _createCategory = new CategoryUseCases.CreateCategory(
+            _repositoryMock.Object, _unitOfWorkMock.Object
+        );
+    }
+
     [Fact]
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategory()
     {
-        var input = GetValidCategoryInput();
+        var input = CreateCategoryInputGenerator.GetValidCategoryInput();
 
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
@@ -90,9 +102,9 @@ public class CreateCategoryTest : CreateCategoryTestFixture
     [Theory]
     [Trait("Application", "CreateCategory - Use Cases")]
     [MemberData(
-        nameof(CreateCategoryTestDataGenerator.GetInvalidInputs),
+        nameof(CreateCategoryInputGenerator.GetInvalidInputs),
         parameters: 24,
-        MemberType = typeof(CreateCategoryTestDataGenerator)
+        MemberType = typeof(CreateCategoryInputGenerator)
     )]
     public async Task ThrowWhenCantInstantiateCategory(
         string exceptionMessage,

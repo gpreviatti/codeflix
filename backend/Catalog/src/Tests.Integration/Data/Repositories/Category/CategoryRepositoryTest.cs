@@ -2,6 +2,7 @@
 using Domain.SeedWork.SearchableRepository;
 using FluentAssertions;
 using Infra.Data.Repositories;
+using Tests.Common.Generators.Entities;
 
 namespace Tests.Integration.Data.Repositories.Category;
 public class CategoryRepositoryTest : CategoryRepositoryTestFixture
@@ -17,7 +18,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Insert()
     {
-        var category = GetValidCategory();
+        var category = CategoryGenerator.GetCategory();
 
         await repoistory.Insert(category, CancellationToken.None);
         await SaveChanges();
@@ -35,7 +36,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Get()
     {
-        var category = GetValidCategory();
+        var category = CategoryGenerator.GetCategory();
         await dbContext.AddAsync(category);
         await SaveChanges();
 
@@ -66,7 +67,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Update()
     {
-        var category = GetValidCategory();
+        var category = CategoryGenerator.GetCategory();
         await dbContext.AddAsync(category);
         await dbContext.SaveChangesAsync();
 
@@ -89,7 +90,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [Trait("Data", "Category - Repositories")]
     public async Task Delete()
     {
-        var category = GetValidCategory();
+        var category = CategoryGenerator.GetCategory();
         await dbContext.AddAsync(category);
         await SaveChanges();
 
@@ -112,7 +113,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     [InlineData("", SearchOrder.Desc)]
     public async Task SearchWithOrder(string order, SearchOrder searchOrder)
     {
-        var categories = GetCategories(15);
+        var categories = CategoryGenerator.GetCategories(15);
         await dbContext.AddRangeAsync(categories);
         await SaveChanges();
 
@@ -132,7 +133,7 @@ public class CategoryRepositoryTest : CategoryRepositoryTestFixture
     public async Task SearchWithTerm()
     {
         var totalItens = 15;
-        var categories = GetCategories(totalItens);
+        var categories = CategoryGenerator.GetCategories(totalItens);
         await dbContext.AddRangeAsync(categories);
         await SaveChanges();
 

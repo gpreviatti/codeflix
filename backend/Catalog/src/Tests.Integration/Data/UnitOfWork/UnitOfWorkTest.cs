@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Tests.Common.Generators.Entities;
 
 namespace Tests.Integration.Data.UnitOfWork;
 
@@ -10,7 +11,7 @@ public class UnitOfWorkTest : UnitOfWorkTestFixture
     public async Task Commit()
     {
         unitOfWork = new Infra.Data.UnitOfWork(dbContext);
-        var categories = GetCategories(2);
+        var categories = CategoryGenerator.GetCategories(2);
         await dbContext.Categories.AddRangeAsync(categories);
 
         await unitOfWork.Commit(CancellationToken.None);

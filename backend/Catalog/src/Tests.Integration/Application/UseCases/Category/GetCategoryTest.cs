@@ -2,6 +2,7 @@
 using Application.Interfaces.UseCases;
 using Application.UseCases.Category;
 using FluentAssertions;
+using Tests.Common.Generators.Entities;
 
 namespace Tests.Integration.Application.UseCases.Category;
 public class GetCategoryTest : CategoryTestFixture
@@ -17,7 +18,7 @@ public class GetCategoryTest : CategoryTestFixture
     [Trait("Integration", "GetCategoryTest - Use Cases")]
     public async Task GetCategory()
     {
-        var category = GetValidCategory();
+        var category = CategoryGenerator.GetCategory();
         await dbContext.AddAsync(category);
         await dbContext.SaveChangesAsync();
 
