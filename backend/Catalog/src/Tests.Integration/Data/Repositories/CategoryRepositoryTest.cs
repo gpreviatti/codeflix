@@ -1,11 +1,10 @@
 ﻿using Domain.Repository;
 using Domain.SeedWork.SearchableRepository;
-using FluentAssertions;
 using Infra.Data.Repositories;
 using Tests.Common.Generators.Entities;
 
-namespace Tests.Integration.Data.Repositories.Category;
-public class CategoryRepositoryTest : CategoryRepositoryTestFixture
+namespace Tests.Integration.Data.Repositories;
+public class CategoryRepositoryTest : BaseFixture
 {
     private ICategoryRepository repoistory;
 

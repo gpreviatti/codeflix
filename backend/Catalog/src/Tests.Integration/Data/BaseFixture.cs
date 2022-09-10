@@ -1,11 +1,12 @@
 ﻿using Bogus;
 using Infra.Data;
 using Microsoft.EntityFrameworkCore;
+using Tests.Common.Generators;
 
 namespace Tests.Integration.Data;
 public abstract class BaseFixture : IDisposable
 {
-    protected Faker Faker { get; set; } = new Faker("pt_BR");
+    protected Faker Faker { get; set; } = CommonGenerator.GetFaker();
     protected CatalogDbContext dbContext;
 
     public BaseFixture()

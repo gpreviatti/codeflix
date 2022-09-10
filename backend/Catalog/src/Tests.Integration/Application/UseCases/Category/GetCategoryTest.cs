@@ -1,10 +1,10 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
 using Application.UseCases.Category;
-using FluentAssertions;
 using Tests.Common.Generators.Entities;
 
 namespace Tests.Integration.Application.UseCases.Category;
+
 public class GetCategoryTest : CategoryTestFixture
 {
     private readonly IGetCategory _getCategory;

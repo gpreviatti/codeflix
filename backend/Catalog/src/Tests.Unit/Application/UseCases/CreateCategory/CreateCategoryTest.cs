@@ -2,10 +2,8 @@
 using Application.Interfaces.UseCases;
 using Domain.Entity;
 using Domain.Excpetions;
-using FluentAssertions;
-using Moq;
+using Tests.Common.Generators;
 using Tests.Common.Generators.Dtos;
-using Xunit;
 using CategoryUseCases = Application.UseCases.Category;
 
 namespace Unit.Application.UseCases.CreateCategory;
@@ -51,7 +49,8 @@ public class CreateCategoryTest : CategoryBaseFixture
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategoryWithOnlyName()
     {
-        var input = new CreateCategoryInput(GetValidCategoryName(), "");
+        var name = CommonGenerator.GetFaker().Commerce.ProductName();
+        var input = new CreateCategoryInput(name, "");
 
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
@@ -77,7 +76,7 @@ public class CreateCategoryTest : CategoryBaseFixture
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategoryWithNameAndDescription()
     {
-        var input = new CreateCategoryInput(GetValidCategoryName(), GetValidCategoryDescription());
+        var input = CreateCategoryInputGenerator.GetValidCategoryInput();
 
         var output = await _createCategory.Handle(input, CancellationToken.None);
 

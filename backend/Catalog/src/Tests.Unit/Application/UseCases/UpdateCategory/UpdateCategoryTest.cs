@@ -1,21 +1,30 @@
 ﻿using Application.Dtos.Category;
 using Application.Exceptions;
+using Application.Interfaces.UseCases;
 using Domain.Entity;
 using Domain.Excpetions;
-using FluentAssertions;
-using Moq;
-using Xunit;
+using Tests.Common.Generators.Dtos;
+using Tests.Common.Generators.Entities;
+using UpdateCategoryUseCase = Application.UseCases.Category.UpdateCategory;
 
 namespace Unit.Application.UseCases.UpdateCategory;
 
-public class UpdateCategoryTest : UpdateCategoryTestFixture
+public class UpdateCategoryTest : CategoryBaseFixture
 {
+    protected readonly IUpdateCategory _updateCategory;
+
+    public UpdateCategoryTest()
+    {
+        _updateCategory = new UpdateCategoryUseCase(
+            _repositoryMock.Object, _unitOfWorkMock.Object
+        );
+    }
     [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
-        nameof(UpdateCategoryTestDataGenerator.GetCategoriesToUpdate),
+        nameof(UpdateCategoryInputGenerator.GetCategoriesToUpdate),
         parameters: 10,
-        MemberType = typeof(UpdateCategoryTestDataGenerator)
+        MemberType = typeof(UpdateCategoryInputGenerator)
     )]
     public async Task UpdateCategory(
         Category category,
@@ -53,9 +62,9 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
     [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
-        nameof(UpdateCategoryTestDataGenerator.GetCategoriesToUpdate),
+        nameof(UpdateCategoryInputGenerator.GetCategoriesToUpdate),
         parameters: 10,
-        MemberType = typeof(UpdateCategoryTestDataGenerator)
+        MemberType = typeof(UpdateCategoryInputGenerator)
     )]
     public async Task UpdateCategoryWithoutProvidingIsActive(
         Category exampleCategory,
@@ -98,9 +107,9 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
     [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
-        nameof(UpdateCategoryTestDataGenerator.GetCategoriesToUpdate),
+        nameof(UpdateCategoryInputGenerator.GetCategoriesToUpdate),
         parameters: 10,
-        MemberType = typeof(UpdateCategoryTestDataGenerator)
+        MemberType = typeof(UpdateCategoryInputGenerator)
     )]
     public async Task UpdateCategoryOnlyName(
         Category exampleCategory,
@@ -143,7 +152,7 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
     [Trait("Application", "UpdateCategory - Use Cases")]
     public async Task ThrowWhenCategoryNotFound()
     {
-        var input = GetValidInput();
+        var input = UpdateCategoryInputGenerator.GetValidCategoryInput();
         _repositoryMock.Setup(x => x.Get(
             input.Id,
             It.IsAny<CancellationToken>())
@@ -162,16 +171,16 @@ public class UpdateCategoryTest : UpdateCategoryTestFixture
     [Theory]
     [Trait("Application", "UpdateCategory - Use Cases")]
     [MemberData(
-        nameof(UpdateCategoryTestDataGenerator.GetInvalidInputs),
+        nameof(UpdateCategoryInputGenerator.GetInvalidInputs),
         parameters: 12,
-        MemberType = typeof(UpdateCategoryTestDataGenerator)
+        MemberType = typeof(UpdateCategoryInputGenerator)
     )]
     public async Task ThrowWhenCantUpdateCategory(
         UpdateCategoryInput input,
         string expectedExceptionMessage
     )
     {
-        var exampleCategory = GetValidCategory();
+        var exampleCategory = CategoryGenerator.GetCategory();
         input.Id = exampleCategory.Id;
 
         _repositoryMock.Setup(x => x.Get(

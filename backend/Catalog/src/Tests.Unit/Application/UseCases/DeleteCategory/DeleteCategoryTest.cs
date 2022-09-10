@@ -1,18 +1,28 @@
 ﻿using Application.Dtos.Category;
 using Application.Exceptions;
-using FluentAssertions;
-using Moq;
-using Xunit;
+using Application.Interfaces.UseCases;
+using Tests.Common.Generators.Entities;
+using CategoryUseCase = Application.UseCases.Category;
 
 namespace Unit.Application.UseCases.DeleteCategory;
 
-public class DeleteCategoryTest : DeleteCategoryTestFixture
+public class DeleteCategoryTest : CategoryBaseFixture
 {
+    protected readonly IDeleteCategory _deleteCategory;
+
+    public DeleteCategoryTest()
+    {
+        _deleteCategory = new CategoryUseCase.DeleteCategory(
+            _repositoryMock.Object,
+            _unitOfWorkMock.Object
+        );
+    }
+
     [Fact]
     [Trait("Application", "DeleteCategory - Use Cases")]
     public async Task DeleteCategory()
     {
-        var categoryExample = GetValidCategory();
+        var categoryExample = CategoryGenerator.GetCategory();
         _repositoryMock.Setup(x => x.Get(
             categoryExample.Id,
             It.IsAny<CancellationToken>()

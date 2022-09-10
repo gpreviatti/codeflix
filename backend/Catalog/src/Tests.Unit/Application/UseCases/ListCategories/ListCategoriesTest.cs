@@ -1,20 +1,27 @@
 ﻿using Application.Dtos.Category;
+using Application.Interfaces.UseCases;
 using Domain.Entity;
 using Domain.SeedWork.SearchableRepository;
-using FluentAssertions;
-using Moq;
-using Xunit;
+using Tests.Common.Generators.Dtos;
+using CategoryUseCase = Application.UseCases.Category;
 
 namespace Unit.Application.UseCases.UpdateCategory;
 
-public class ListCategoriesTest : ListCategoriesTestFixture
+public class ListCategoriesTest : CategoryBaseFixture
 {
+    protected readonly IListCategories _listCategories;
+
+    public ListCategoriesTest()
+    {
+        _listCategories = new CategoryUseCase.ListCategories(_repositoryMock.Object);
+    }
+
     [Fact]
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task List()
     {
-        var categoriesExampleList = GetExampleCategoriesList();
-        var input = GetExampleInput();
+        var categoriesExampleList = ListCategoriesInputGenerator.GetExampleCategoriesList();
+        var input = ListCategoriesInputGenerator.GetExampleInput();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
             input.PerPage,
@@ -70,7 +77,7 @@ public class ListCategoriesTest : ListCategoriesTestFixture
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task ListOkWhenEmpty()
     {
-        var input = GetExampleInput();
+        var input = ListCategoriesInputGenerator.GetExampleInput();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
             input.PerPage,
@@ -112,13 +119,13 @@ public class ListCategoriesTest : ListCategoriesTestFixture
     [Theory]
     [Trait("Application", "ListCategories - Use Cases")]
     [MemberData(
-        nameof(ListCategoriesTestDataGenerator.GetInputsWithoutAllParameter),
+        nameof(ListCategoriesInputGenerator.GetInputsWithoutAllParameter),
         parameters: 14,
-        MemberType = typeof(ListCategoriesTestDataGenerator)
+        MemberType = typeof(ListCategoriesInputGenerator)
     )]
     public async Task ListInputWithoutAllParameters(ListCategoriesInput input)
     {
-        var categoriesExampleList = GetExampleCategoriesList();
+        var categoriesExampleList = ListCategoriesInputGenerator.GetExampleCategoriesList();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
             input.PerPage,

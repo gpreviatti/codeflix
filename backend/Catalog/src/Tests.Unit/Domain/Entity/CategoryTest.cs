@@ -1,15 +1,14 @@
 ﻿using Domain.Entity;
 using Domain.Excpetions;
-using FluentAssertions;
 using Tests.Common.Generators;
 using Tests.Common.Generators.Entities;
-using Xunit;
+using Unit.Common;
 
 namespace Unit.Domain.Entity;
 
-[Collection(nameof(CategoryTestFixture))]
-public class CategoryTest : CategoryTestFixture
+public class CategoryTest : BaseFixture
 {
+    #region Instantiate
     [Fact(DisplayName = nameof(Instantiate))]
     [Trait("Domain", "Category - Aggregates")]
     public void Instantiate()
@@ -95,7 +94,6 @@ public class CategoryTest : CategoryTestFixture
 
     public static IEnumerable<object[]> GetNamesWithLessThan3Characters(int numberOfTests = 6)
     {
-        var fixture = new CategoryTestFixture();
         for (int i = 0; i < numberOfTests; i++)
         {
             var isOdd = i % 2 == 1;
@@ -132,7 +130,9 @@ public class CategoryTest : CategoryTestFixture
             .Throw<EntityValidationException>()
             .WithMessage("Description should be less or equal 10000 characters");
     }
+    #endregion
 
+    #region IsActive
     [Fact(DisplayName = nameof(Activate))]
     [Trait("Domain", "Category - Aggregates")]
     public void Activate()
@@ -156,7 +156,9 @@ public class CategoryTest : CategoryTestFixture
 
         category.IsActive.Should().BeFalse();
     }
+    #endregion
 
+    #region Update
     [Fact(DisplayName = nameof(Update))]
     [Trait("Domain", "Category - Aggregates")]
     public void Update()
@@ -244,4 +246,5 @@ public class CategoryTest : CategoryTestFixture
               .Throw<EntityValidationException>()
               .WithMessage("Description should be less or equal 10000 characters");
     }
+    #endregion
 }

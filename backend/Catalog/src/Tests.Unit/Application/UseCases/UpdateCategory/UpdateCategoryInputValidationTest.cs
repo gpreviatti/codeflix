@@ -1,18 +1,17 @@
 ﻿using Application.Validation;
-using FluentAssertions;
 using FluentValidation;
 using FluentValidation.TestHelper;
-using Xunit;
+using Tests.Common.Generators.Dtos;
 
 namespace Unit.Application.UseCases.UpdateCategory;
 
-public class UpdateCategoryInputValidationTest : UpdateCategoryTestFixture
+public class UpdateCategoryInputValidationTest
 {
     [Fact(DisplayName = nameof(ValidateWhenValid))]
     [Trait("Application", "UpdateCategoryInputValidator - Use Cases")]
     public void ValidateWhenValid()
     {
-        var input = GetValidInput();
+        var input = UpdateCategoryInputGenerator.GetValidCategoryInput();
         var validator = new UpdateCategoryInputValidation();
 
         var validateResult = validator.TestValidate(input);
@@ -25,7 +24,7 @@ public class UpdateCategoryInputValidationTest : UpdateCategoryTestFixture
     public void DontValidateWhenEmptyGuid()
     {
         ValidatorOptions.Global.LanguageManager.Enabled = false;
-        var input = GetValidInput(Guid.Empty);
+        var input = UpdateCategoryInputGenerator.GetValidCategoryInput(Guid.Empty);
         var validator = new UpdateCategoryInputValidation();
 
         var validateResult = validator.TestValidate(input);

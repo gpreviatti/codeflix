@@ -1,19 +1,26 @@
 ﻿using Application.Dtos.Category;
 using Application.Exceptions;
-using FluentAssertions;
-using Moq;
-using Xunit;
+using Application.Interfaces.UseCases;
+using Tests.Common.Generators.Entities;
+using CategoryUseCase = Application.UseCases.Category;
 
 namespace Unit.Application.UseCases.GetCategory;
 
-public class GetCategoryTest : GetCategoryTestFixture
+public class GetCategoryTest : CategoryBaseFixture
 {
+    protected IGetCategory _getCategory;
+
+    public GetCategoryTest()
+    {
+        _getCategory = new CategoryUseCase.GetCategory(_repositoryMock.Object);
+    }
+
     [Fact]
     [Trait("Application", "GetCategory - Use Cases")]
     public async Task GetCategory()
     {
-        var category = GetValidCategory();
-        _respoitoryMock
+        var category = CategoryGenerator.GetCategory();
+        _repositoryMock
             .Setup(r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(category);
 
@@ -28,7 +35,7 @@ public class GetCategoryTest : GetCategoryTestFixture
         output.IsActive.Should().Be(category.IsActive);
         output.CreatedAt.Should().NotBe(default);
 
-        _respoitoryMock.Verify(
+        _repositoryMock.Verify(
             r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );
@@ -39,7 +46,7 @@ public class GetCategoryTest : GetCategoryTestFixture
     public async Task NotFoundExceptionWhenCategoryDoesntExist()
     {
         var guid = Guid.NewGuid();
-        _respoitoryMock
+        _repositoryMock
             .Setup(r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new NotFoundException($"Category '{guid} not found"));
 
@@ -49,7 +56,7 @@ public class GetCategoryTest : GetCategoryTestFixture
 
         await task.Should().ThrowAsync<NotFoundException>();
 
-        _respoitoryMock.Verify(
+        _repositoryMock.Verify(
             r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );

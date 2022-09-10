@@ -2,7 +2,6 @@
 using Application.Validation;
 using FluentValidation;
 using FluentValidation.TestHelper;
-using Xunit;
 
 namespace Unit.Application.UseCases.GetCategory;
 
