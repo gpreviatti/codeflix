@@ -1,0 +1,33 @@
+﻿using Application.Dtos.Category;
+using Application.Interfaces.UseCases;
+using Application.UseCases.Category;
+using Tests.Common.Generators.Dtos;
+
+namespace Tests.Integration.Application.UseCases.Category;
+
+public class CreateCategoryTest : CategoryTestFixture
+{
+    private readonly ICreateCategory _createCategory;
+
+    public CreateCategoryTest()
+    {
+        _createCategory = new CreateCategory(_categoryRepository, _unitOfWork);
+    }
+
+    [Fact]
+    [Trait("Integration", "Create - Use Cases")]
+    public async Task Create()
+    {
+        var input = CreateCategoryInputGenerator.GetCategoryInput();
+
+        var output = await _createCategory.Handle(input, CancellationToken.None);
+
+        output.Should().NotBeNull();
+        output.GetType().Should().Be<CategoryOutput>();
+        output.Id.Should().NotBeEmpty();
+        output.Name.Should().Be(input.Name);
+        output.Description.Should().Be(input.Description);
+        output.IsActive.Should().Be(input.IsActive);
+        output.CreatedAt.Should().NotBe(default);
+    }
+}

@@ -20,7 +20,7 @@ public class ListCategoriesTest : CategoryBaseFixture
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task List()
     {
-        var categoriesExampleList = ListCategoriesInputGenerator.GetExampleCategoriesList();
+        var categoriesExampleList = ListCategoriesInputGenerator.GetCategories();
         var input = ListCategoriesInputGenerator.GetExampleInput();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
@@ -125,7 +125,7 @@ public class ListCategoriesTest : CategoryBaseFixture
     )]
     public async Task ListInputWithoutAllParameters(ListCategoriesInput input)
     {
-        var categoriesExampleList = ListCategoriesInputGenerator.GetExampleCategoriesList();
+        var categoriesExampleList = ListCategoriesInputGenerator.GetCategories();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
             input.PerPage,

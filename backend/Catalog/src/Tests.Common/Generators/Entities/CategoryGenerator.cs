@@ -6,6 +6,10 @@ public class CategoryGenerator : CommonGenerator
 {
     public static Category GetCategory() => FakerCategory();
 
+    public static string GetProductName() => GetFaker().Commerce.ProductName();
+
+    public static string GetProductDescription() => GetFaker().Commerce.ProductDescription();
+
     public static IList<Category> GetCategories(int count)
     {
         var categories = new List<Category>();
@@ -17,7 +21,7 @@ public class CategoryGenerator : CommonGenerator
     }
 
     private static Category FakerCategory() => new(
-        GetFaker().Commerce.ProductName(),
-        GetFaker().Commerce.ProductDescription()
+        GetProductName(),
+        GetProductDescription()
     );
 }

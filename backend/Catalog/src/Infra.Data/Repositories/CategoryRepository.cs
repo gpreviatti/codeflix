@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Infra.Data.Repositories;
 public class CategoryRepository : ICategoryRepository
 {
-    private readonly CatalogDbContext _context;
+    private CatalogDbContext _context;
     private DbSet<Category> _categories => _context.Set<Category>();
 
     public CategoryRepository(CatalogDbContext context) => _context = context;

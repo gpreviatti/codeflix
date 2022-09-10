@@ -1,14 +1,18 @@
 ﻿using Domain.Repository;
+using Infra.Data;
 using Infra.Data.Repositories;
 using Tests.Integration.Data;
 
 namespace Tests.Integration.Application.UseCases.Category;
 public abstract class CategoryTestFixture : BaseFixture
 {
-    protected readonly ICategoryRepository _categoryRepository;
+    protected ICategoryRepository _categoryRepository;
+    protected IUnitOfWork _unitOfWork;
 
-	public CategoryTestFixture()
+    public CategoryTestFixture()
 	{
 		_categoryRepository = new CategoryRepository(dbContext);
-	}
+        _unitOfWork = new UnitOfWork(dbContext);
+
+    }
 }

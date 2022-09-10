@@ -11,7 +11,7 @@ public class UpdateCategoryInputValidationTest
     [Trait("Application", "UpdateCategoryInputValidator - Use Cases")]
     public void ValidateWhenValid()
     {
-        var input = UpdateCategoryInputGenerator.GetValidCategoryInput();
+        var input = UpdateCategoryInputGenerator.GetCategory();
         var validator = new UpdateCategoryInputValidation();
 
         var validateResult = validator.TestValidate(input);
@@ -24,7 +24,7 @@ public class UpdateCategoryInputValidationTest
     public void DontValidateWhenEmptyGuid()
     {
         ValidatorOptions.Global.LanguageManager.Enabled = false;
-        var input = UpdateCategoryInputGenerator.GetValidCategoryInput(Guid.Empty);
+        var input = UpdateCategoryInputGenerator.GetCategory(Guid.Empty);
         var validator = new UpdateCategoryInputValidation();
 
         var validateResult = validator.TestValidate(input);

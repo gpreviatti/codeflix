@@ -152,7 +152,7 @@ public class UpdateCategoryTest : CategoryBaseFixture
     [Trait("Application", "UpdateCategory - Use Cases")]
     public async Task ThrowWhenCategoryNotFound()
     {
-        var input = UpdateCategoryInputGenerator.GetValidCategoryInput();
+        var input = UpdateCategoryInputGenerator.GetCategory();
         _repositoryMock.Setup(x => x.Get(
             input.Id,
             It.IsAny<CancellationToken>())

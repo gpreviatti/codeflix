@@ -6,7 +6,7 @@ using Tests.Common.Generators.Entities;
 namespace Tests.Common.Generators.Dtos;
 public class ListCategoriesInputGenerator : CommonGenerator
 {
-    public static List<Category> GetExampleCategoriesList(int length = 10)
+    public static List<Category> GetCategories(int length = 10)
     {
         var list = new List<Category>();
 

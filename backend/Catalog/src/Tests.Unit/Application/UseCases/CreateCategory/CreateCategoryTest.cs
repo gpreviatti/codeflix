@@ -23,7 +23,7 @@ public class CreateCategoryTest : CategoryBaseFixture
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategory()
     {
-        var input = CreateCategoryInputGenerator.GetValidCategoryInput();
+        var input = CreateCategoryInputGenerator.GetCategoryInput();
 
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
@@ -76,7 +76,7 @@ public class CreateCategoryTest : CategoryBaseFixture
     [Trait("Application", "CreateCategory - Use Cases")]
     public async Task CreateCategoryWithNameAndDescription()
     {
-        var input = CreateCategoryInputGenerator.GetValidCategoryInput();
+        var input = CreateCategoryInputGenerator.GetCategoryInput();
 
         var output = await _createCategory.Handle(input, CancellationToken.None);
 

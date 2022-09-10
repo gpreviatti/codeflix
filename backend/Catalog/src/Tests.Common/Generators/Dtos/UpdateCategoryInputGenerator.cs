@@ -4,7 +4,7 @@ using Tests.Common.Generators.Entities;
 namespace Tests.Common.Generators.Dtos;
 public class UpdateCategoryInputGenerator : CommonGenerator
 {
-    public static UpdateCategoryInput GetValidCategoryInput(Guid? id = null) => new(
+    public static UpdateCategoryInput GetCategory(Guid? id = null) => new(
         id ?? Guid.NewGuid(),
         GetFaker().Commerce.ProductName(),
         GetFaker().Commerce.ProductDescription(),
@@ -13,7 +13,7 @@ public class UpdateCategoryInputGenerator : CommonGenerator
 
     public static UpdateCategoryInput GetInvalidInputShortName()
     {
-        var inputShortName = GetValidCategoryInput();
+        var inputShortName = GetCategory();
         
         inputShortName.Name = inputShortName.Name[..2];
 
@@ -22,28 +22,28 @@ public class UpdateCategoryInputGenerator : CommonGenerator
 
     public static UpdateCategoryInput GetInvalidInputTooLongName()
     {
-        var inputTooLongName = GetValidCategoryInput();
+        var inputTooLongName = GetCategory();
         inputTooLongName.Name = GetFaker().Lorem.Letter(256);
         return inputTooLongName;
     }
 
     public static UpdateCategoryInput GetInvalidInputNameNull()
     {
-        var inputNullName = GetValidCategoryInput();
+        var inputNullName = GetCategory();
         inputNullName.Name = null!;
         return inputNullName;
     }
 
     public static UpdateCategoryInput GetInvalidInputDescriptionNull()
     {
-        var inputNullDescription = GetValidCategoryInput();
+        var inputNullDescription = GetCategory();
         inputNullDescription.Description = null!;
         return inputNullDescription;
     }
 
     public static UpdateCategoryInput GetInvalidInputDescriptionTooLongDescription()
     {
-        var inputTooLongDescription = GetValidCategoryInput();
+        var inputTooLongDescription = GetCategory();
 
         inputTooLongDescription.Description = GetFaker().Lorem.Letter(10001);
         
@@ -56,7 +56,7 @@ public class UpdateCategoryInputGenerator : CommonGenerator
         {
             var exampleCategory = CategoryGenerator.GetCategory();
 
-            var exampleInput = GetValidCategoryInput(exampleCategory.Id);
+            var exampleInput = GetCategory(exampleCategory.Id);
 
             yield return new object[] {
                 exampleCategory, exampleInput

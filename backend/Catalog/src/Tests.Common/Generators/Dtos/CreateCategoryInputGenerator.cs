@@ -3,7 +3,7 @@
 namespace Tests.Common.Generators.Dtos;
 public class CreateCategoryInputGenerator : CommonGenerator
 {
-    public static CreateCategoryInput GetValidCategoryInput() => new(
+    public static CreateCategoryInput GetCategoryInput() => new(
         GetFaker().Commerce.ProductName(),
         GetFaker().Commerce.ProductDescription(),
         true
@@ -11,7 +11,7 @@ public class CreateCategoryInputGenerator : CommonGenerator
 
     public static CreateCategoryInput GetInvalidInputShortName()
     {
-        var inputShortName = GetValidCategoryInput();
+        var inputShortName = GetCategoryInput();
         
         inputShortName.Name = inputShortName.Name[..2];
 
@@ -20,28 +20,28 @@ public class CreateCategoryInputGenerator : CommonGenerator
 
     public static CreateCategoryInput GetInvalidInputTooLongName()
     {
-        var inputTooLongName = GetValidCategoryInput();
+        var inputTooLongName = GetCategoryInput();
         inputTooLongName.Name = GetFaker().Lorem.Letter(256);
         return inputTooLongName;
     }
 
     public static CreateCategoryInput GetInvalidInputNameNull()
     {
-        var inputNullName = GetValidCategoryInput();
+        var inputNullName = GetCategoryInput();
         inputNullName.Name = null!;
         return inputNullName;
     }
 
     public static CreateCategoryInput GetInvalidInputDescriptionNull()
     {
-        var inputNullDescription = GetValidCategoryInput();
+        var inputNullDescription = GetCategoryInput();
         inputNullDescription.Description = null!;
         return inputNullDescription;
     }
 
     public static CreateCategoryInput GetInvalidInputDescriptionTooLongDescription()
     {
-        var inputTooLongDescription = GetValidCategoryInput();
+        var inputTooLongDescription = GetCategoryInput();
 
         inputTooLongDescription.Description = GetFaker().Lorem.Letter(10001);
         
