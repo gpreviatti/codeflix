@@ -10,7 +10,7 @@ public class ListCategoriesInputGenerator : CommonGenerator
     {
         var list = new List<Category>();
 
-        for (int i = 0; i < length; i++)
+        for (var i = 0; i < length; i++)
             list.Add(CategoryGenerator.GetCategory());
 
         return list;
@@ -34,56 +34,28 @@ public class ListCategoriesInputGenerator : CommonGenerator
     public static IEnumerable<object[]> GetInputsWithoutAllParameter(int times = 14)
     {
         var inputExample = GetExampleInput();
-        for (int i = 0; i < times; i++)
+        for (var i = 0; i < times; i++)
         {
-            switch (i % 7)
+            yield return (i % 7) switch
             {
-                case 0:
-                    yield return new object[] {
-                        new ListCategoriesInput()
-                    };
-                    break;
-                case 1:
-                    yield return new object[] {
-                        new ListCategoriesInput(inputExample.Page)
-                    };
-                    break;
-                case 3:
-                    yield return new object[] {
-                        new ListCategoriesInput(
-                            inputExample.Page,
-                            inputExample.PerPage
-                        )
-                    };
-                    break;
-                case 4:
-                    yield return new object[] {
-                        new ListCategoriesInput(
-                            inputExample.Page,
-                            inputExample.PerPage,
-                            inputExample.Search
-                        )
-                    };
-                    break;
-                case 5:
-                    yield return new object[] {
-                        new ListCategoriesInput(
-                            inputExample.Page,
-                            inputExample.PerPage,
-                            inputExample.Search,
-                            inputExample.Sort
-                        )
-                    };
-                    break;
-                case 6:
-                    yield return new object[] { inputExample };
-                    break;
-                default:
-                    yield return new object[] {
-                        new ListCategoriesInput()
-                    };
-                    break;
-            }
+                1 => new object[] { 
+                    new ListCategoriesInput(inputExample.Page) 
+                },
+                3 => new object[] { 
+                    new ListCategoriesInput(inputExample.Page, inputExample.PerPage) 
+                },
+                4 => new object[] { 
+                    new ListCategoriesInput(inputExample.Page, inputExample.PerPage, inputExample.Search)
+                },
+                5 => new object[] { 
+                    new ListCategoriesInput(
+                        inputExample.Page, inputExample.PerPage, 
+                        inputExample.Search, inputExample.Sort
+                    )
+                },
+                6 => new object[] { inputExample },
+                _ => new object[] { new ListCategoriesInput()}
+            };
         }
     }
 }

@@ -69,29 +69,24 @@ public class UpdateCategoryInputGenerator : CommonGenerator
         var invalidInputsList = new List<object[]>();
         var totalInvalidCases = 3;
 
-        for (int index = 0; index < times; index++)
+        for (var index = 0; index < times; index++)
         {
-            switch (index % totalInvalidCases)
+            invalidInputsList.Add((index % totalInvalidCases) switch
             {
-                case 0:
-                    invalidInputsList.Add(new object[] {
+                0 => new object[] {
                         GetInvalidInputShortName(),
                         "Name should be at least 3 characters"
-                    });
-                    break;
-                case 1:
-                    invalidInputsList.Add(new object[] {
+                },
+                1 => new object[] {
                         GetInvalidInputTooLongName(),
                         "Name should be less or equal 255 characters"
-                    });
-                    break;
-                case 2:
-                    invalidInputsList.Add(new object[] {
+                    },
+                2 => new object[] {
                         GetInvalidInputDescriptionTooLongDescription(),
                         "Description should be less or equal 10000 characters"
-                    });
-                    break;
-            }
+                },
+                _ => Array.Empty<object>()
+            });
         }
 
         return invalidInputsList;

@@ -52,46 +52,17 @@ public class CreateCategoryInputGenerator : CommonGenerator
     {
         var inputList = new List<object[]>();
         var totalInvalidCases = 4;
-        for (int i = 0; i < times; i++)
+        for (var i = 0; i < times; i++)
         {
-            switch (i % totalInvalidCases)
+            inputList.Add((i % totalInvalidCases) switch
             {
-                case 0:
-                    // Nome não pode ser menor que 3 caracteres
-                    inputList.Add(new object[] {
-                        "Name should be at least 3 characters",
-                        GetInvalidInputShortName()
-                    });
-                    break;
-                case 1:
-                    // Nome não pode ser mais que 255 caracteres
-                    inputList.Add(new object[] {
-                        "Name should be less or equal 255 characters",
-                        GetInvalidInputTooLongName()
-                    });
-                    break;
-                case 2:
-                    // Nome não pode ser null
-                    inputList.Add(new object[] {
-                        "Name should not be empty or null",
-                        GetInvalidInputNameNull()
-                    });
-                    break;
-                case 3:
-                    // Descricao não pode ser nula
-                    inputList.Add(new object[] {
-                        "Description should not be null",
-                        GetInvalidInputDescriptionNull()
-                    });
-                    break;
-                case 4:
-                    // Descricao não pode ser maior que 10000 caracters
-                    inputList.Add(new object[] {
-                        "Description should be less or equal 10000 characters",
-                        GetInvalidInputDescriptionTooLongDescription()
-                    });
-                    break;
-            }
+                0 => new object[] { "Name should be at least 3 characters", GetInvalidInputShortName() },
+                1 => new object[] { "Name should be less or equal 255 characters", GetInvalidInputTooLongName() },
+                2 => new object[] { "Name should not be empty or null", GetInvalidInputNameNull() },
+                3 => new object[] { "Description should not be null", GetInvalidInputDescriptionNull() },
+                4 => new object[] { "Description should be less or equal 10000 characters", GetInvalidInputDescriptionTooLongDescription() },
+                _ => Array.Empty<object>()
+            });
         }
 
         return inputList;
