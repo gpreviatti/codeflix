@@ -26,8 +26,7 @@ public class GetCategoryTest : CategoryTestFixture
 
         var output = await _getCategory.Handle(input, CancellationToken.None);
 
-        output.Should().NotBeNull();
-        output.GetType().Should().Be<CategoryOutput>();
+        output.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
         output.Id.Should().Be(category.Id);
         output.Description.Should().Be(category.Description);
         output.IsActive.Should().Be(category.IsActive);

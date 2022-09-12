@@ -13,6 +13,5 @@ public abstract class CategoryTestFixture : BaseFixture
 	{
 		_categoryRepository = new CategoryRepository(dbContext);
         _unitOfWork = new UnitOfWork(dbContext);
-
     }
 }

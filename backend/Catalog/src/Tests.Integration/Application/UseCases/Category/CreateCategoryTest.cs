@@ -22,12 +22,11 @@ public class CreateCategoryTest : CategoryTestFixture
 
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
-        output.Should().NotBeNull();
-        output.GetType().Should().Be<CategoryOutput>();
+        output.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
-        output.IsActive.Should().Be(input.IsActive);
+        output.IsActive.Should().BeTrue();
         output.CreatedAt.Should().NotBe(default);
     }
 }
