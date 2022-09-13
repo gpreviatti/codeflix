@@ -23,7 +23,8 @@ public class UpdateCategory : IUpdateCategory
         CancellationToken cancellationToken
     )
     {
-        var category = await _categoryRepository.Get(request.Id, cancellationToken);
+        var category = await _categoryRepository
+                .Get(request.Id, cancellationToken);
 
         category.Update(request.Name, request.Description);
 
