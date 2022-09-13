@@ -18,7 +18,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category> Get(Guid id, CancellationToken cancellationToken)
     {
-        var category = await _categories.FirstAsync(
+        var category = await _categories.FirstOrDefaultAsync(
             x => x.Id == id,
             cancellationToken
         );
