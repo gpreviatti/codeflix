@@ -10,11 +10,11 @@ public class CategoryGenerator : CommonGenerator
 
     public static string GetProductDescription() => GetFaker().Commerce.ProductDescription();
 
-    public static IList<Category> GetCategories(int count)
+    public static IList<Category> GetCategories(int count = 10)
     {
         var categories = new List<Category>();
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             categories.Add(FakerCategory());
         
         return categories;

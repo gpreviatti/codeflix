@@ -3,6 +3,7 @@ using Application.Interfaces.UseCases;
 using Domain.Entity;
 using Domain.SeedWork.SearchableRepository;
 using Tests.Common.Generators.Dtos;
+using Tests.Common.Generators.Entities;
 using CategoryUseCase = Application.UseCases.Category;
 
 namespace Unit.Application.UseCases.UpdateCategory;
@@ -20,8 +21,8 @@ public class ListCategoriesTest : CategoryBaseFixture
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task List()
     {
-        var categoriesExampleList = ListCategoriesInputGenerator.GetCategories();
-        var input = ListCategoriesInputGenerator.GetExampleInput();
+        var categoriesExampleList = CategoryGenerator.GetCategories().ToList();
+        var input = ListCategoriesInputGenerator.GetInput();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
             input.PerPage,
@@ -77,7 +78,7 @@ public class ListCategoriesTest : CategoryBaseFixture
     [Trait("Application", "ListCategories - Use Cases")]
     public async Task ListOkWhenEmpty()
     {
-        var input = ListCategoriesInputGenerator.GetExampleInput();
+        var input = ListCategoriesInputGenerator.GetInput();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
             input.PerPage,
@@ -125,13 +126,14 @@ public class ListCategoriesTest : CategoryBaseFixture
     )]
     public async Task ListInputWithoutAllParameters(ListCategoriesInput input)
     {
-        var categoriesExampleList = ListCategoriesInputGenerator.GetCategories();
+        var categoriesExampleList = CategoryGenerator.GetCategories().ToList();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
             input.PerPage,
             new Random().Next(50, 200),
             categoriesExampleList
         );
+
         _repositoryMock.Setup(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page

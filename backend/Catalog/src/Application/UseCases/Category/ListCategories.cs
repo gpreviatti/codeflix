@@ -31,9 +31,10 @@ public class ListCategories : IListCategories
 
         var items = searchOutput.Items.Select(CategoryOutput.FromCategory).ToList();
 
-        return new ListCategoriesOutput(
+        return new(
             searchOutput.CurrentPage,
             searchOutput.PerPage,
+            searchOutput.Filtred,
             searchOutput.Total,
             items
         );

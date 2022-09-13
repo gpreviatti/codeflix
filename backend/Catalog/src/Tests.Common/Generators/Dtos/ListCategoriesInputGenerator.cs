@@ -1,22 +1,10 @@
 ﻿using Application.Dtos.Category;
-using Domain.Entity;
 using Domain.SeedWork.SearchableRepository;
-using Tests.Common.Generators.Entities;
 
 namespace Tests.Common.Generators.Dtos;
 public class ListCategoriesInputGenerator : CommonGenerator
 {
-    public static List<Category> GetCategories(int length = 10)
-    {
-        var list = new List<Category>();
-
-        for (var i = 0; i < length; i++)
-            list.Add(CategoryGenerator.GetCategory());
-
-        return list;
-    }
-
-    public static ListCategoriesInput GetExampleInput()
+    public static ListCategoriesInput GetInput()
     {
         var random = new Random();
         var productName = GetFaker().Commerce.ProductName();
@@ -33,7 +21,7 @@ public class ListCategoriesInputGenerator : CommonGenerator
 
     public static IEnumerable<object[]> GetInputsWithoutAllParameter(int times = 14)
     {
-        var inputExample = GetExampleInput();
+        var inputExample = GetInput();
         for (var i = 0; i < times; i++)
         {
             yield return (i % 7) switch

@@ -28,7 +28,11 @@ public class ListCategoryTest : CategoryTestFixture
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
         output.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
-        output.Items.Should().HaveCount(count);
+        output.Page.Should().Be(input.Page);
+        output.PerPage.Should().Be(input.PerPage);
+        output.Filtred.Should().Be(count);
+        output.Total.Should().Be(count);
+        output.Items.Count.Should().Be(count);
     }
 
     [Fact]
@@ -48,6 +52,10 @@ public class ListCategoryTest : CategoryTestFixture
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
         output.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
-        output.Items.Should().HaveCount(categoriesFiltred.Count());
+        output.Page.Should().Be(input.Page);
+        output.PerPage.Should().Be(input.PerPage);
+        output.Filtred.Should().Be(categoriesFiltred.Count());
+        output.Items.Count.Should().Be(categoriesFiltred.Count());
+        output.Total.Should().Be(categories.Count);
     }
 }
