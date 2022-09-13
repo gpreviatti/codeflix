@@ -37,4 +37,22 @@ public class UpdateCategoryTest : CategoryTestFixture
         output.IsActive.Should().Be(category.IsActive);
         output.CreatedAt.Should().NotBe(default);
     }
+
+    [Fact]
+    [Trait("Integration", "UpdateThrowsWhenNotFoundCategory - Use Cases")]
+    public async Task UpdateThrowsWhenNotFoundCategory()
+    {
+        var category = CategoryGenerator.GetCategory();
+
+        var newName = Faker.Commerce.ProductName();
+        var input = new UpdateCategoryInput(category.Id, newName);
+
+        var action = async () => await _updateCategory
+            .Handle(input, CancellationToken.None);
+
+        await action
+            .Should()
+            .ThrowAsync<NullReferenceException>()
+            .WithMessage($"Category '{category.Id}' not found.");
+    }
 }
