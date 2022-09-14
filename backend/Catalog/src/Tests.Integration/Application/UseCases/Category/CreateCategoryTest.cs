@@ -15,7 +15,7 @@ public class CreateCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "Create - Use Cases")]
+    [Trait("Integration/Application", "Create - Use Cases")]
     public async Task Create()
     {
         var input = CreateCategoryInputGenerator.GetCategoryInput();

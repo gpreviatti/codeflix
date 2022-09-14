@@ -14,7 +14,7 @@ public class CategoryRepositoryTest : BaseFixture
     }
 
     [Fact(DisplayName = nameof(Insert))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     public async Task Insert()
     {
         var category = CategoryGenerator.GetCategory();
@@ -32,7 +32,7 @@ public class CategoryRepositoryTest : BaseFixture
     }
 
     [Fact(DisplayName = nameof(Get))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     public async Task Get()
     {
         var category = CategoryGenerator.GetCategory();
@@ -49,7 +49,7 @@ public class CategoryRepositoryTest : BaseFixture
     }
 
     [Fact(DisplayName = nameof(GetThrowIfNotFound))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     public async Task GetThrowIfNotFound()
     {
         var exampleId = Guid.NewGuid();
@@ -63,7 +63,7 @@ public class CategoryRepositoryTest : BaseFixture
     }
 
     [Fact(DisplayName = nameof(Update))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     public async Task Update()
     {
         var category = CategoryGenerator.GetCategory();
@@ -86,7 +86,7 @@ public class CategoryRepositoryTest : BaseFixture
     }
 
     [Fact(DisplayName = nameof(Delete))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     public async Task Delete()
     {
         var category = CategoryGenerator.GetCategory();
@@ -102,7 +102,7 @@ public class CategoryRepositoryTest : BaseFixture
 
     #region Search
     [Theory(DisplayName = nameof(SearchWithOrder))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     [InlineData("name", SearchOrder.Asc)]
     [InlineData("name", SearchOrder.Desc)]
     [InlineData("id", SearchOrder.Asc)]
@@ -128,7 +128,7 @@ public class CategoryRepositoryTest : BaseFixture
     }
 
     [Fact(DisplayName = nameof(SearchWithTerm))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     public async Task SearchWithTerm()
     {
         var totalItens = 15;
@@ -153,7 +153,7 @@ public class CategoryRepositoryTest : BaseFixture
     }
 
     [Fact(DisplayName = nameof(SearcReturnsEmpty))]
-    [Trait("Data", "Category - Repositories")]
+    [Trait("Integration/Data", "Category - Repositories")]
     public async Task SearcReturnsEmpty()
     {
         var page = 1;

@@ -3,7 +3,7 @@ using Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Tests.Common.Generators;
 
-namespace Tests.Integration.Data;
+namespace Tests.Integration;
 public abstract class BaseFixture : IDisposable
 {
     protected Faker Faker { get; set; } = CommonGenerator.GetFaker();

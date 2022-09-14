@@ -15,7 +15,7 @@ public class ListCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "List - Use Cases")]
+    [Trait("Integration/Application", "List - Use Cases")]
     public async Task List()
     {
         var count = 10;
@@ -36,7 +36,7 @@ public class ListCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "ListWithSearchTerm - Use Cases")]
+    [Trait("Integration/Application", "ListWithSearchTerm - Use Cases")]
     public async Task ListWithSearchTerm()
     {
         var count = 10;

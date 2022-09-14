@@ -15,7 +15,7 @@ public class GetCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "GetCategoryTest - Use Cases")]
+    [Trait("Integration/Application", "GetCategoryTest - Use Cases")]
     public async Task GetCategory()
     {
         var category = CategoryGenerator.GetCategory();
@@ -34,7 +34,7 @@ public class GetCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "NotFoundExceptionWhenCategoryDoesntExist - Use Cases")]
+    [Trait("Integration/Application", "NotFoundExceptionWhenCategoryDoesntExist - Use Cases")]
     public async Task NotFoundExceptionWhenCategoryDoesntExist()
     {
         var guid = Guid.NewGuid();

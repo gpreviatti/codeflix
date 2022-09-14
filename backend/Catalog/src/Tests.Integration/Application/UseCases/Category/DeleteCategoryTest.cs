@@ -16,7 +16,7 @@ public class DeleteCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "Delete - Use Cases")]
+    [Trait("Integration/Application", "Delete - Use Cases")]
     public async Task Delete()
     {
         var category = CategoryGenerator.GetCategory();
@@ -35,7 +35,7 @@ public class DeleteCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "DeleteThrowsWhenNotFoundCategory - Use Cases")]
+    [Trait("Integration/Application", "DeleteThrowsWhenNotFoundCategory - Use Cases")]
     public async Task DeleteThrowsWhenNotFoundCategory()
     {
         var category = CategoryGenerator.GetCategory();

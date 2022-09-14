@@ -15,7 +15,7 @@ public class UpdateCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "Update - Use Cases")]
+    [Trait("Integration/Application", "Update - Use Cases")]
     public async Task Update()
     {
         var category = CategoryGenerator.GetCategory();
@@ -39,7 +39,7 @@ public class UpdateCategoryTest : CategoryTestFixture
     }
 
     [Fact]
-    [Trait("Integration", "UpdateThrowsWhenNotFoundCategory - Use Cases")]
+    [Trait("Integration/Application", "UpdateThrowsWhenNotFoundCategory - Use Cases")]
     public async Task UpdateThrowsWhenNotFoundCategory()
     {
         var category = CategoryGenerator.GetCategory();
