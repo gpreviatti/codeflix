@@ -12,7 +12,6 @@ public class CreateCategoryApiTest : CategoryApiTestFixture
         var input = CreateCategoryInputGenerator.GetCategoryInput();
 
         var (response, output) = await apiClient.Post<CategoryOutput>(RESOURCE_URL, input);
-        var category = await GetById(output!.Id);
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -24,8 +23,5 @@ public class CreateCategoryApiTest : CategoryApiTestFixture
         output!.Description.Should().Be(input.Description);
         output!.IsActive.Should().BeTrue();
         output!.CreatedAt.Should().NotBe(default);
-
-        category.Should().NotBeNull();
-        category!.Name.Should().Be(output!.Name);
     }
 }
