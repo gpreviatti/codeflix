@@ -67,4 +67,22 @@ public class CreateCategoryInputGenerator : CommonGenerator
 
         return inputList;
     }
+
+    public static IEnumerable<object[]> GetE2eInvalidInputs()
+    {
+        var inputList = new List<object[]>();
+        var totalInvalidCases = 4;
+        for (var i = 0; i < 3; i++)
+        {
+            inputList.Add((i % totalInvalidCases) switch
+            {
+                0 => new object[] { "Name should be at least 3 characters", GetInvalidInputShortName() },
+                1 => new object[] { "Name should be less or equal 255 characters", GetInvalidInputTooLongName() },
+                2 => new object[] { "Description should be less or equal 10000 characters", GetInvalidInputDescriptionTooLongDescription() },
+                _ => Array.Empty<object>()
+            });
+        }
+
+        return inputList;
+    }
 }

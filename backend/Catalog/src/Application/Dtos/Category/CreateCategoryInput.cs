@@ -11,7 +11,7 @@ public class CreateCategoryInput : IRequest<CategoryOutput>
     public CreateCategoryInput(string name, string description = null!, bool isActive = true)
     {
         Name = name;
-        Description = description;
+        Description = description ?? "";
         IsActive = isActive;
     }
 }

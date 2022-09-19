@@ -1,4 +1,5 @@
 using Api.Configurations;
+using Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddUseCases()
     .AddAppConnections()
-    .AddControllers();
+    .AddControllers(
+        options => options.Filters.Add(typeof(ApiGlobalExceptionFilter))
+    );
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
