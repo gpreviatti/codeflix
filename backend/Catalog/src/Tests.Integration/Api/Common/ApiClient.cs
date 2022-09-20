@@ -1,6 +1,4 @@
-﻿
-
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 
 namespace Tests.Integration.Api.Common;
@@ -15,21 +13,34 @@ public class ApiClient
 
     public async Task<(HttpResponseMessage?, TOutput?)> Post<TOutput>(
         string resourceUrl,
-        object payload
+        object request
     ) where TOutput : class
     {
-        var streamContent = new StringContent(
-            JsonSerializer.Serialize(payload),
-            Encoding.UTF8,
-            "application/json"
-        );
+        var streamContent = Serialize(request);
 
         var response = await _httpClient.PostAsync(
             resourceUrl,
             streamContent
         );
 
-        var output = await DeseriealizeResponse<TOutput>(response);
+        var output = await Deseriealize<TOutput>(response);
+
+        return (response, output);
+    }
+
+    public async Task<(HttpResponseMessage?, TOutput?)> Put<TOutput>(
+        string resourceUrl,
+        object request
+    ) where TOutput : class
+    {
+        var streamContent = Serialize(request);
+
+        var response = await _httpClient.PutAsync(
+            resourceUrl,
+            streamContent
+        );
+
+        var output = await Deseriealize<TOutput>(response);
 
         return (response, output);
     }
@@ -38,7 +49,7 @@ public class ApiClient
     {
         var response = await _httpClient.GetAsync(resourceUrl);
 
-        var output = await DeseriealizeResponse<TOutput>(response);
+        var output = await Deseriealize<TOutput>(response);
 
         return (response, output);
     }
@@ -47,12 +58,18 @@ public class ApiClient
     {
         var response = await _httpClient.DeleteAsync(resourceUrl);
 
-        var output = await DeseriealizeResponse<TOutput>(response);
+        var output = await Deseriealize<TOutput>(response);
 
         return (response, output);
     }
 
-    private static async Task<TOutput> DeseriealizeResponse<TOutput>(HttpResponseMessage response) where TOutput : class
+    private static StringContent Serialize(object request) => new(
+        JsonSerializer.Serialize(request),
+        Encoding.UTF8,
+        "application/json"
+    );
+
+    private static async Task<TOutput> Deseriealize<TOutput>(HttpResponseMessage response) where TOutput : class
     {
         var outputString = await response.Content.ReadAsStringAsync();
 
@@ -68,6 +85,6 @@ public class ApiClient
             );
         }
 
-        return output;
+        return output!;
     }
 }
