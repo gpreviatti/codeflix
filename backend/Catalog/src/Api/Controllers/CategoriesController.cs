@@ -24,9 +24,9 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult> Create(
-        [FromBody] CreateCategoryInput createCategoryInput,
-        CancellationToken cancellationToken
-    )
+    [FromBody] CreateCategoryInput createCategoryInput,
+    CancellationToken cancellationToken
+)
     {
         var output = await _mediator.Send(createCategoryInput, cancellationToken);
 
@@ -36,9 +36,9 @@ public class CategoriesController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(CategoryOutput), StatusCodes.Status200OK)]
     public async Task<ActionResult> Get(
-        [FromRoute] Guid id,
-        CancellationToken cancellationToken
-    )
+    [FromRoute] Guid id,
+    CancellationToken cancellationToken
+)
     {
         var input = new GetCategoryInput(id);
 
@@ -47,7 +47,24 @@ public class CategoriesController : ControllerBase
         return Ok(output);
     }
 
+    [HttpPut]
+    [ProducesResponseType(typeof(CategoryOutput), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<ActionResult> Update(
+    [FromBody] UpdateCategoryInput input,
+    CancellationToken cancellationToken
+)
+    {
+        var output = await _mediator.Send(input, cancellationToken);
+
+        return Ok(output);
+    }
+
     [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult> Delete(
     [FromRoute] Guid id,
     CancellationToken cancellationToken
@@ -55,7 +72,7 @@ public class CategoriesController : ControllerBase
     {
         var input = new DeleteCategoryInput(id);
         
-        var output = await _mediator.Send(input, cancellationToken);
+        await _mediator.Send(input, cancellationToken);
 
         return NoContent();
     }
