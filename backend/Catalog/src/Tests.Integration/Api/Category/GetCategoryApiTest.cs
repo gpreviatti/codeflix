@@ -31,9 +31,9 @@ public class GetCategoryApiTest : CategoryApiTestFixture
         output!.CreatedAt.Should().NotBe(default);
     }
 
-    [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]
+    [Fact(DisplayName = nameof(ErrorCategoryNotFound))]
     [Trait("Integration/Api", "Category - Get")]
-    public async Task ThrowWhenCategoryNotFound()
+    public async Task ErrorCategoryNotFound()
     {
         var id = Guid.NewGuid();
         var (response, output) = await apiClient

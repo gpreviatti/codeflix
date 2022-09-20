@@ -29,9 +29,9 @@ public class DeleteCategoryApiTest : CategoryApiTestFixture
 
     }
 
-    [Fact(DisplayName = nameof(ThrowWhenCategoryNotFound))]
+    [Fact(DisplayName = nameof(ErrorCategoryNotFound))]
     [Trait("Integration/Api", "Category - Delete")]
-    public async Task ThrowWhenCategoryNotFound()
+    public async Task ErrorCategoryNotFound()
     {
         var id = Guid.NewGuid();
         

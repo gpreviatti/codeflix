@@ -27,13 +27,13 @@ public class CreateCategoryApiTest : CategoryApiTestFixture
         output!.CreatedAt.Should().NotBe(default);
     }
 
-    [Theory(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
+    [Theory(DisplayName = nameof(ErrorCantInstantiateAggregate))]
     [Trait("Integration/Api", "Category - Create")]
     [MemberData(
         nameof(CreateCategoryInputGenerator.GetE2eInvalidInputs),
         MemberType = typeof(CreateCategoryInputGenerator)
     )]
-    public async Task ThrowWhenCantInstantiateAggregate(
+    public async Task ErrorCantInstantiateAggregate(
         string expectedDetail,
         CreateCategoryInput input
     )
