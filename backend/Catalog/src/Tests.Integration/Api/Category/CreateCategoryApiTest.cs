@@ -1,5 +1,4 @@
 ﻿using Application.Dtos.Category;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Tests.Common.Generators.Dtos;
@@ -48,7 +47,7 @@ public class CreateCategoryApiTest : CategoryApiTestFixture
         output.Should().NotBeNull();
         output!.Title.Should().Be("One or more validation errors ocurred");
         output!.Type.Should().Be("UnprocessableEntity");
-        output!.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
+        output!.Status.Should().Be((int) HttpStatusCode.UnprocessableEntity);
         output!.Detail.Should().Be(expectedDetail);
     }
 }

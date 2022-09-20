@@ -32,4 +32,29 @@ public class CategoriesController : ControllerBase
 
         return CreatedAtAction(nameof(Create), new { output.Id }, output);
     }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(CategoryOutput), StatusCodes.Status200OK)]
+    public async Task<ActionResult> Get(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+    )
+    {
+        var input = new GetCategoryInput(id);
+        var output = await _mediator.Send(input, cancellationToken);
+
+        return Ok(output);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(
+    [FromRoute] Guid id,
+    CancellationToken cancellationToken
+)
+    {
+        var input = new DeleteCategoryInput(id);
+        var output = await _mediator.Send(input, cancellationToken);
+
+        return Ok(output);
+    }
 }

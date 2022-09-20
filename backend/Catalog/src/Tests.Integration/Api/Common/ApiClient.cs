@@ -29,10 +29,35 @@ public class ApiClient
             streamContent
         );
 
+        var output = await DeseriealizeResponse<TOutput>(response);
+
+        return (response, output);
+    }
+
+    public async Task<(HttpResponseMessage?, TOutput?)> Get<TOutput>(string resourceUrl) where TOutput : class
+    {
+        var response = await _httpClient.GetAsync(resourceUrl);
+
+        var output = await DeseriealizeResponse<TOutput>(response);
+
+        return (response, output);
+    }
+
+    public async Task<(HttpResponseMessage?, TOutput?)> Delete<TOutput>(string resourceUrl) where TOutput : class
+    {
+        var response = await _httpClient.DeleteAsync(resourceUrl);
+
+        var output = await DeseriealizeResponse<TOutput>(response);
+
+        return (response, output);
+    }
+
+    private static async Task<TOutput> DeseriealizeResponse<TOutput>(HttpResponseMessage response) where TOutput : class
+    {
         var outputString = await response.Content.ReadAsStringAsync();
 
         TOutput? output = null;
-        if(!string.IsNullOrEmpty(outputString))
+        if (!string.IsNullOrEmpty(outputString))
         {
             output = JsonSerializer.Deserialize<TOutput>(
                 outputString,
@@ -43,6 +68,6 @@ public class ApiClient
             );
         }
 
-        return (response, output);
+        return output;
     }
 }
