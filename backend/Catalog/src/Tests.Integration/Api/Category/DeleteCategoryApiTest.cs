@@ -17,13 +17,13 @@ public class DeleteCategoryApiTest : CategoryApiTestFixture
 
 
         var (responseDelete, outputDelete) = await apiClient
-            .Delete<CategoryOutput>(RESOURCE_URL + "/" + outputCreate!.Id);
+            .Delete<object>(RESOURCE_URL + "/" + outputCreate!.Id);
 
         var (responseGet, outputGet) = await apiClient
             .Get<ProblemDetails>(RESOURCE_URL + "/" + outputCreate!.Id);
 
 
-        responseDelete!.StatusCode.Should().Be(HttpStatusCode.OK);
+        responseDelete!.StatusCode.Should().Be(HttpStatusCode.NoContent);
         responseGet!.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         outputGet!.Detail.Should().Be($"Category '{outputCreate!.Id}' not found.");
 

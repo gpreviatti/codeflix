@@ -41,6 +41,7 @@ public class CategoriesController : ControllerBase
     )
     {
         var input = new GetCategoryInput(id);
+
         var output = await _mediator.Send(input, cancellationToken);
 
         return Ok(output);
@@ -53,8 +54,9 @@ public class CategoriesController : ControllerBase
 )
     {
         var input = new DeleteCategoryInput(id);
+        
         var output = await _mediator.Send(input, cancellationToken);
 
-        return Ok(output);
+        return NoContent();
     }
 }
