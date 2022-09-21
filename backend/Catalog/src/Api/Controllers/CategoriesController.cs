@@ -24,9 +24,9 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult> Create(
-    [FromBody] CreateCategoryInput createCategoryInput,
-    CancellationToken cancellationToken
-)
+        [FromBody] CreateCategoryInput createCategoryInput,
+        CancellationToken cancellationToken
+    )
     {
         var output = await _mediator.Send(createCategoryInput, cancellationToken);
 
@@ -36,12 +36,24 @@ public class CategoriesController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(CategoryOutput), StatusCodes.Status200OK)]
     public async Task<ActionResult> Get(
-    [FromRoute] Guid id,
-    CancellationToken cancellationToken
-)
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+    )
     {
         var input = new GetCategoryInput(id);
 
+        var output = await _mediator.Send(input, cancellationToken);
+
+        return Ok(output);
+    }
+
+    [HttpGet()]
+    [ProducesResponseType(typeof(ListCategoriesOutput), StatusCodes.Status200OK)]
+    public async Task<ActionResult> List(
+        [FromQuery] ListCategoriesInput input,
+        CancellationToken cancellationToken
+    )
+    {
         var output = await _mediator.Send(input, cancellationToken);
 
         return Ok(output);
@@ -52,9 +64,9 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult> Update(
-    [FromBody] UpdateCategoryInput input,
-    CancellationToken cancellationToken
-)
+        [FromBody] UpdateCategoryInput input,
+        CancellationToken cancellationToken
+    )
     {
         var output = await _mediator.Send(input, cancellationToken);
 
@@ -66,9 +78,9 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult> Delete(
-    [FromRoute] Guid id,
-    CancellationToken cancellationToken
-)
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+    )
     {
         var input = new DeleteCategoryInput(id);
         
