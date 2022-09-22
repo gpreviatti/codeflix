@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Category;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Net;
 using Tests.Common.Generators.Entities;
 
@@ -37,11 +38,19 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         {
             _ = apiClient.Post<CategoryOutput>(RESOURCE_URL, input);
         });
-        var page = 1;
-        var perPage = 10;
 
-        var (response, output) = await apiClient
-            .Get<ListCategoriesOutput>(RESOURCE_URL + $"?page={page}&perPage={perPage}");
+        var page = 1;
+        var perPage = 5;
+        var parameters = new[] {
+            KeyValuePair.Create("page", page.ToString()),
+            KeyValuePair.Create("perPage", perPage.ToString()),
+        };
+
+        var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
+
+
+        var (response, output) = await apiClient.Get<ListCategoriesOutput>(route);
+
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -67,9 +76,17 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         var page = 1;
         var perPage = 10;
         var search = inputs.FirstOrDefault()!.Name;
+        var parameters = new[] {
+            KeyValuePair.Create("page", page.ToString()),
+            KeyValuePair.Create("perPage", perPage.ToString()),
+            KeyValuePair.Create("search", search),
+        };
 
-        var (response, output) = await apiClient
-            .Get<ListCategoriesOutput>(RESOURCE_URL + $"?page={page}&perPage={perPage}&search={search}");
+        var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
+
+
+        var (response, output) = await apiClient.Get<ListCategoriesOutput>(route);
+
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
