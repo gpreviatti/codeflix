@@ -4,10 +4,10 @@ using Api.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+var connectionString = builder.Configuration.GetConnectionString("CatalogDb");
 builder.Services
     .AddUseCases()
-    .AddAppConnections()
+    .AddAppConnections(connectionString)
     .AddControllers(
         options => options.Filters.Add(typeof(ApiGlobalExceptionFilter))
     );

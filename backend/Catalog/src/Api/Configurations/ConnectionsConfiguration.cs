@@ -6,12 +6,13 @@ namespace Api.Configurations;
 public static class ConnectionsConfiguration
 {
     public static IServiceCollection AddAppConnections(
-        this IServiceCollection services
+        this IServiceCollection services,
+        string connectionString
     )
     {
         services.AddDbContext<CatalogDbContext>(options =>
         {
-            options.UseInMemoryDatabase("fc-db-integration");
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         });
 
         return services;
