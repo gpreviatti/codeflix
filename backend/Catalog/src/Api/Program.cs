@@ -8,9 +8,7 @@ var connectionString = builder.Configuration.GetConnectionString("CatalogDb");
 builder.Services
     .AddUseCases()
     .AddAppConnections(connectionString)
-    .AddControllers(
-        options => options.Filters.Add(typeof(ApiGlobalExceptionFilter))
-    );
+    .AddControllers(options => options.Filters.Add(typeof(ApiGlobalExceptionFilter)));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -4,19 +4,15 @@
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
+      "environmentVariables": { "ASPNETCORE_ENVIRONMENT": "Development" },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7241;http://localhost:5241"
     },
-    "Test": {
+    "Prd": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Test"
-      },
+      "environmentVariables": { "ASPNETCORE_ENVIRONMENT": "" },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7241;http://localhost:5241"
     }

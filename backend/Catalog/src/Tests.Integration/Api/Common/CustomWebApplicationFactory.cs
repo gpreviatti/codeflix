@@ -1,27 +1,35 @@
 ﻿using Infra.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests.Integration.Api.Common;
 
 public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    protected async override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Test");
-        builder.ConfigureServices(services =>
-        {
-            var serviceProvider = services.BuildServiceProvider();
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile($"appsettings.Test.json")
+            .Build();
 
-            using var scope = serviceProvider.CreateScope();
+        builder
+            .UseEnvironment("Test")
+            .UseConfiguration(configuration)
+            .ConfigureServices(async services =>
+            {
+                var serviceProvider = services.BuildServiceProvider();
 
-            var context = scope.ServiceProvider.GetService<CatalogDbContext>();
-            ArgumentNullException.ThrowIfNull(context);
+                using var scope = serviceProvider.CreateScope();
 
-            //context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-        });
+                var context = scope.ServiceProvider.GetService<CatalogDbContext>();
+                ArgumentNullException.ThrowIfNull(context);
+
+                //await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+            });
 
         base.ConfigureWebHost(builder);
     }
