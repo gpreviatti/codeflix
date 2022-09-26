@@ -1,6 +1,5 @@
 ﻿using Application.Dtos.Category;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Net;
 using Tests.Common.Generators.Dtos;
 
@@ -12,8 +11,7 @@ public class GetCategoryApiTest : CategoryApiTestFixture
     public async Task Get()
     {
         var input = CreateCategoryInputGenerator.GetCategoryInput();
-
-        var (responseCreate, outputCreate) = await apiClient
+        var (_, outputCreate) = await apiClient
             .Post<CategoryOutput>(RESOURCE_URL, input);
 
         var (response, output) = await apiClient
