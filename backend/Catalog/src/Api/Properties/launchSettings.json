@@ -4,7 +4,10 @@
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "environmentVariables": { "ASPNETCORE_ENVIRONMENT": "Development" },
+      "environmentVariables": { 
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CONNECTION_STRING": "Server=localhost;Port=3306;Database=catalog_dev;Uid=root;Pwd=codeflix"
+      },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7241;http://localhost:5241"
     },
@@ -12,7 +15,10 @@
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "environmentVariables": { "ASPNETCORE_ENVIRONMENT": "" },
+      "environmentVariables": { 
+        "ASPNETCORE_ENVIRONMENT": "" ,
+        "CONNECTION_STRING": "Server=localhost;Port=3306;Database=catalog_prd;Uid=root;Pwd=codeflix"
+      },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7241;http://localhost:5241"
     }
