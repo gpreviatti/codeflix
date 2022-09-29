@@ -4,7 +4,7 @@ using Api.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+var connectionString = builder.Configuration.GetConnectionString("CatalogDb");
 builder.Services
     .AddUseCases()
     .AddAppConnections(connectionString!)
