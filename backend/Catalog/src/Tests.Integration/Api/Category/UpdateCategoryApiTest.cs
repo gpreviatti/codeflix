@@ -29,8 +29,8 @@ public class UpdateCategoryApiTest : CategoryApiTestFixture
         output!.Id.Should().Be(outputCreate.Id);
         output!.Name.Should().Be(inputUpdate.Name);
         output!.Description.Should().Be(inputUpdate.Description);
-        output!.IsActive.Should().BeTrue();
-        output!.CreatedAt.Should().NotBe(default);
+        output!.Is_Active.Should().BeTrue();
+        output!.Created_At.Should().NotBe(default);
     }
 
     [Fact(DisplayName = nameof(UpdateOnlyName))]
@@ -58,8 +58,8 @@ public class UpdateCategoryApiTest : CategoryApiTestFixture
         output!.Id.Should().Be(outputCreate.Id);
         output!.Name.Should().Be(inputUpdate.Name);
         output!.Description.Should().Be(outputCreate.Description);
-        output!.IsActive.Should().Be(outputCreate.IsActive);
-        output!.CreatedAt.Should().NotBe(default);
+        output!.Is_Active.Should().Be(outputCreate.Is_Active);
+        output!.Created_At.Should().NotBe(default);
     }
 
     [Fact(DisplayName = nameof(ErrorCategoryNotFound))]

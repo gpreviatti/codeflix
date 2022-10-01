@@ -29,7 +29,7 @@ public class ListCategoryTest : CategoryTestFixture
 
         output.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
         output.Page.Should().Be(input.Page);
-        output.PerPage.Should().Be(input.PerPage);
+        output.Per_Page.Should().Be(input.Per_Page);
         output.Filtred.Should().Be(count);
         output.Total.Should().Be(count);
         output.Items.Count.Should().Be(count);
@@ -53,7 +53,7 @@ public class ListCategoryTest : CategoryTestFixture
 
         output.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
         output.Page.Should().Be(input.Page);
-        output.PerPage.Should().Be(input.PerPage);
+        output.Per_Page.Should().Be(input.Per_Page);
         output.Filtred.Should().Be(categoriesFiltred.Count());
         output.Items.Count.Should().Be(categoriesFiltred.Count());
         output.Total.Should().Be(categories.Count);

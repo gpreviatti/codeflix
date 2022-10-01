@@ -29,8 +29,8 @@ public class GetCategoryTest : CategoryTestFixture
         output.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
         output.Id.Should().Be(category.Id);
         output.Description.Should().Be(category.Description);
-        output.IsActive.Should().Be(category.IsActive);
-        output.CreatedAt.Should().NotBe(default);
+        output.Is_Active.Should().Be(category.IsActive);
+        output.Created_At.Should().NotBe(default);
     }
 
     [Fact]

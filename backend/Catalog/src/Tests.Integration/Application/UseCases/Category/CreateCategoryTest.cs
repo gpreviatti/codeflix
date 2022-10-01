@@ -26,7 +26,7 @@ public class CreateCategoryTest : CategoryTestFixture
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
-        output.IsActive.Should().BeTrue();
-        output.CreatedAt.Should().NotBe(default);
+        output.Is_Active.Should().BeTrue();
+        output.Created_At.Should().NotBe(default);
     }
 }

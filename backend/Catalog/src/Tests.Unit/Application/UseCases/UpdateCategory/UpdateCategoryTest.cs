@@ -41,7 +41,7 @@ public class UpdateCategoryTest : CategoryBaseFixture
         output.Should().NotBeNull();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
-        output.IsActive.Should().Be((bool)input.IsActive!);
+        output.Is_Active.Should().Be((bool)input.Is_Active!);
 
         _repositoryMock.Verify(x => x.Get(
             category.Id,It.IsAny<CancellationToken>()), 
@@ -86,7 +86,7 @@ public class UpdateCategoryTest : CategoryBaseFixture
         output.Should().NotBeNull();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
-        output.IsActive.Should().Be(exampleCategory.IsActive);
+        output.Is_Active.Should().Be(exampleCategory.IsActive);
     
         _repositoryMock.Verify(
             x => x.Get(input.Id, It.IsAny<CancellationToken>()),
@@ -130,7 +130,7 @@ public class UpdateCategoryTest : CategoryBaseFixture
         output.Should().NotBeNull();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(exampleCategory.Description);
-        output.IsActive.Should().Be(exampleCategory.IsActive);
+        output.Is_Active.Should().Be(exampleCategory.IsActive);
         
         _repositoryMock.Verify(
             x => x.Get(input.Id, It.IsAny<CancellationToken>()),

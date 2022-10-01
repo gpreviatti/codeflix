@@ -43,7 +43,7 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         var perPage = 5;
         var parameters = new[] {
             KeyValuePair.Create("page", page.ToString()),
-            KeyValuePair.Create("perPage", perPage.ToString()),
+            KeyValuePair.Create("per_page", perPage.ToString()),
         };
 
         var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
@@ -59,7 +59,7 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         output!.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
         output!.Items.Should().NotBeNull();
         output!.Page.Should().Be(page);
-        output!.PerPage.Should().Be(perPage);
+        output!.Per_Page.Should().Be(perPage);
         output!.Items.Count.Should().Be(perPage);
     }
 
@@ -78,7 +78,7 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         var search = inputs.FirstOrDefault()!.Name;
         var parameters = new[] {
             KeyValuePair.Create("page", page.ToString()),
-            KeyValuePair.Create("perPage", perPage.ToString()),
+            KeyValuePair.Create("per_page", perPage.ToString()),
             KeyValuePair.Create("search", search),
         };
 
@@ -95,7 +95,7 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         output!.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
         output!.Items.Should().NotBeNull();
         output!.Page.Should().Be(page);
-        output!.PerPage.Should().Be(perPage);
+        output!.Per_Page.Should().Be(perPage);
         output!.Items.Count.Should().Be(1);
         output!.Items.FirstOrDefault()!.Name.Should().Be(search);
     }

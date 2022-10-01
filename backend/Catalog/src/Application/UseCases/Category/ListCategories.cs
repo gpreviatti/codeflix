@@ -21,7 +21,7 @@ public class ListCategories : IListCategories
         var searchOutput = await _categoryRepository.Search(
             new(
                 request.Page,
-                request.PerPage,
+                request.Per_Page,
                 request.Search,
                 request.Sort,
                 request.Dir

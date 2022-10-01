@@ -7,7 +7,7 @@ public class UpdateCategoryInput : IRequest<CategoryOutput>
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
-    public bool? IsActive { get; set; }
+    public bool? Is_Active { get; set; }
 
     public UpdateCategoryInput(
         Guid id,
@@ -18,6 +18,6 @@ public class UpdateCategoryInput : IRequest<CategoryOutput>
         Id = id;
         Name = name;
         Description = description;
-        IsActive = isActive;
+        Is_Active = isActive;
     }
 }

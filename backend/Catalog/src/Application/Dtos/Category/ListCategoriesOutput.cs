@@ -6,9 +6,9 @@ public class ListCategoriesOutput : PaginatedListOutput<CategoryOutput>
 {
     public ListCategoriesOutput(
         int page,
-        int perPage,
+        int per_page,
         int filtred,
         int total,
         IReadOnlyList<CategoryOutput> items
-    ) : base(page, perPage, filtred, total, items) { }
+    ) : base(page, per_page, filtred, total, items) { }
 }

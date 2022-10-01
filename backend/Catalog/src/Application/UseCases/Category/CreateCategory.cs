@@ -23,7 +23,7 @@ public class CreateCategory : ICreateCategory
         Domain.Entity.Category category = new(
             input.Name,
             input.Description,
-            input.IsActive
+            input.Is_Active
         );
 
         await _categoryRepository.Insert(category, cancellationToken);

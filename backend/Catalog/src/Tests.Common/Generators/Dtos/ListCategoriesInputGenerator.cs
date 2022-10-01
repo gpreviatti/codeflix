@@ -30,14 +30,14 @@ public class ListCategoriesInputGenerator : CommonGenerator
                     new ListCategoriesInput(inputExample.Page) 
                 },
                 3 => new object[] { 
-                    new ListCategoriesInput(inputExample.Page, inputExample.PerPage) 
+                    new ListCategoriesInput(inputExample.Page, inputExample.Per_Page) 
                 },
                 4 => new object[] { 
-                    new ListCategoriesInput(inputExample.Page, inputExample.PerPage, inputExample.Search)
+                    new ListCategoriesInput(inputExample.Page, inputExample.Per_Page, inputExample.Search)
                 },
                 5 => new object[] { 
                     new ListCategoriesInput(
-                        inputExample.Page, inputExample.PerPage, 
+                        inputExample.Page, inputExample.Per_Page, 
                         inputExample.Search, inputExample.Sort
                     )
                 },

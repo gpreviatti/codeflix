@@ -25,7 +25,7 @@ public class ListCategoriesTest : CategoryBaseFixture
         var input = ListCategoriesInputGenerator.GetInput();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
-            input.PerPage,
+            input.Per_Page,
             new Random().Next(50, 200),
             categoriesExampleList
         );
@@ -33,7 +33,7 @@ public class ListCategoriesTest : CategoryBaseFixture
         _repositoryMock.Setup(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page
-                && searchInput.PerPage == input.PerPage
+                && searchInput.PerPage == input.Per_Page
                 && searchInput.Search == input.Search
                 && searchInput.OrderBy == input.Sort
                 && searchInput.Order == input.Dir
@@ -45,7 +45,7 @@ public class ListCategoriesTest : CategoryBaseFixture
 
         output.Should().NotBeNull();
         output.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.PerPage.Should().Be(outputRepositorySearch.PerPage);
+        output.Per_Page.Should().Be(outputRepositorySearch.PerPage);
         output.Total.Should().Be(outputRepositorySearch.Total);
         output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
 
@@ -58,14 +58,14 @@ public class ListCategoriesTest : CategoryBaseFixture
             outputItem.Should().NotBeNull();
             outputItem.Name.Should().Be(repositoryCategory!.Name);
             outputItem.Description.Should().Be(repositoryCategory!.Description);
-            outputItem.IsActive.Should().Be(repositoryCategory!.IsActive);
-            outputItem.CreatedAt.Should().Be(repositoryCategory!.CreatedAt);
+            outputItem.Is_Active.Should().Be(repositoryCategory!.IsActive);
+            outputItem.Created_At.Should().Be(repositoryCategory!.CreatedAt);
         });
 
         _repositoryMock.Verify(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page
-                && searchInput.PerPage == input.PerPage
+                && searchInput.PerPage == input.Per_Page
                 && searchInput.Search == input.Search
                 && searchInput.OrderBy == input.Sort
                 && searchInput.Order == input.Dir
@@ -81,7 +81,7 @@ public class ListCategoriesTest : CategoryBaseFixture
         var input = ListCategoriesInputGenerator.GetInput();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
-            input.PerPage,
+            input.Per_Page,
             0,
             new List<Category>().AsReadOnly()
         );
@@ -89,7 +89,7 @@ public class ListCategoriesTest : CategoryBaseFixture
         _repositoryMock.Setup(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page
-                && searchInput.PerPage == input.PerPage
+                && searchInput.PerPage == input.Per_Page
                 && searchInput.Search == input.Search
                 && searchInput.OrderBy == input.Sort
                 && searchInput.Order == input.Dir
@@ -101,14 +101,14 @@ public class ListCategoriesTest : CategoryBaseFixture
 
         output.Should().NotBeNull();
         output.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.PerPage.Should().Be(outputRepositorySearch.PerPage);
+        output.Per_Page.Should().Be(outputRepositorySearch.PerPage);
         output.Total.Should().Be(0);
         output.Items.Should().HaveCount(0);
 
         _repositoryMock.Verify(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page
-                && searchInput.PerPage == input.PerPage
+                && searchInput.PerPage == input.Per_Page
                 && searchInput.Search == input.Search
                 && searchInput.OrderBy == input.Sort
                 && searchInput.Order == input.Dir
@@ -129,7 +129,7 @@ public class ListCategoriesTest : CategoryBaseFixture
         var categoriesExampleList = CategoryGenerator.GetCategories().ToList();
         var outputRepositorySearch = new SearchOutput<Category>(
             input.Page,
-            input.PerPage,
+            input.Per_Page,
             new Random().Next(50, 200),
             categoriesExampleList
         );
@@ -137,7 +137,7 @@ public class ListCategoriesTest : CategoryBaseFixture
         _repositoryMock.Setup(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page
-                && searchInput.PerPage == input.PerPage
+                && searchInput.PerPage == input.Per_Page
                 && searchInput.Search == input.Search
                 && searchInput.OrderBy == input.Sort
                 && searchInput.Order == input.Dir
@@ -149,7 +149,7 @@ public class ListCategoriesTest : CategoryBaseFixture
 
         output.Should().NotBeNull();
         output.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.PerPage.Should().Be(outputRepositorySearch.PerPage);
+        output.Per_Page.Should().Be(outputRepositorySearch.PerPage);
         output.Total.Should().Be(outputRepositorySearch.Total);
         output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
 
@@ -162,13 +162,13 @@ public class ListCategoriesTest : CategoryBaseFixture
             outputItem.Should().NotBeNull();
             outputItem.Name.Should().Be(repositoryCategory!.Name);
             outputItem.Description.Should().Be(repositoryCategory!.Description);
-            outputItem.IsActive.Should().Be(repositoryCategory!.IsActive);
-            outputItem.CreatedAt.Should().Be(repositoryCategory!.CreatedAt);
+            outputItem.Is_Active.Should().Be(repositoryCategory!.IsActive);
+            outputItem.Created_At.Should().Be(repositoryCategory!.CreatedAt);
         });
         _repositoryMock.Verify(x => x.Search(
             It.Is<SearchInput>(
                 searchInput => searchInput.Page == input.Page
-                && searchInput.PerPage == input.PerPage
+                && searchInput.PerPage == input.Per_Page
                 && searchInput.Search == input.Search
                 && searchInput.OrderBy == input.Sort
                 && searchInput.Order == input.Dir

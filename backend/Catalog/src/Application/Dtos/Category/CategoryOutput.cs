@@ -7,8 +7,8 @@ public class CategoryOutput
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public bool IsActive { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public bool Is_Active { get; set; }
+    public DateTime Created_At { get; set; }
 
     public CategoryOutput(
         Guid id,
@@ -21,8 +21,8 @@ public class CategoryOutput
         Id = id;
         Name = name;
         Description = description;
-        IsActive = isActive;
-        CreatedAt = createdAt;
+        Is_Active = isActive;
+        Created_At = createdAt;
     }
 
     public static CategoryOutput FromCategory(DomainEntity.Category category) => new(

@@ -32,8 +32,8 @@ public class GetCategoryTest : CategoryBaseFixture
         output.GetType().Should().Be<CategoryOutput>();
         output.Id.Should().Be(category.Id);
         output.Description.Should().Be(category.Description);
-        output.IsActive.Should().Be(category.IsActive);
-        output.CreatedAt.Should().NotBe(default);
+        output.Is_Active.Should().Be(category.IsActive);
+        output.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()),

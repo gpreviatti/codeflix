@@ -32,8 +32,8 @@ public class CreateCategoryTest : CategoryBaseFixture
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
-        output.IsActive.Should().Be(input.IsActive);
-        output.CreatedAt.Should().NotBe(default);
+        output.Is_Active.Should().Be(input.Is_Active);
+        output.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
@@ -59,8 +59,8 @@ public class CreateCategoryTest : CategoryBaseFixture
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be("");
-        output.IsActive.Should().Be(true);
-        output.CreatedAt.Should().NotBe(default);
+        output.Is_Active.Should().Be(true);
+        output.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
@@ -85,8 +85,8 @@ public class CreateCategoryTest : CategoryBaseFixture
         output.Id.Should().NotBeEmpty();
         output.Name.Should().Be(input.Name);
         output.Description.Should().Be(input.Description);
-        output.IsActive.Should().Be(true);
-        output.CreatedAt.Should().NotBe(default);
+        output.Is_Active.Should().Be(true);
+        output.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
