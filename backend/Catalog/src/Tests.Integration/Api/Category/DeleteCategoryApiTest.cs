@@ -11,12 +11,10 @@ public class DeleteCategoryApiTest : CategoryApiTestFixture
     public async Task Delete()
     {
         var input = CreateCategoryInputGenerator.GetCategoryInput();
-
-        var (responseCreate, outputCreate) = await apiClient
+        var (_, outputCreate) = await apiClient
             .Post<CategoryOutput>(RESOURCE_URL, input);
 
-
-        var (responseDelete, outputDelete) = await apiClient
+        var (responseDelete, _) = await apiClient
             .Delete<object>(RESOURCE_URL + "/" + outputCreate!.Id);
 
         var (responseGet, outputGet) = await apiClient

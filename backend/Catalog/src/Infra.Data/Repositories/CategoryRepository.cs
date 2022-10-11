@@ -29,10 +29,10 @@ public class CategoryRepository : ICategoryRepository
         return category!;
     }
 
-    public Task Update(Category aggregate, CancellationToken _)
+    public Task Update(Category aggregate, CancellationToken cancellationToken)
         => Task.FromResult(_categories.Update(aggregate));
 
-    public Task Delete(Category aggregate, CancellationToken _)
+    public Task Delete(Category aggregate, CancellationToken cancellationToken)
         => Task.FromResult(_categories.Remove(aggregate));
 
     public async Task<SearchOutput<Category>> Search(

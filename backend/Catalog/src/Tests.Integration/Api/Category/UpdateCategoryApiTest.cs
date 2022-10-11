@@ -13,7 +13,7 @@ public class UpdateCategoryApiTest : CategoryApiTestFixture
     {
         var inputCreate = CreateCategoryInputGenerator.GetCategoryInput();
 
-        var (responseCreate, outputCreate) = await apiClient
+        var (_, outputCreate) = await apiClient
             .Post<CategoryOutput>(RESOURCE_URL, inputCreate);
 
         var inputUpdate = UpdateCategoryInputGenerator.GetCategory(outputCreate!.Id);
@@ -38,8 +38,7 @@ public class UpdateCategoryApiTest : CategoryApiTestFixture
     public async Task UpdateOnlyName()
     {
         var inputCreate = CreateCategoryInputGenerator.GetCategoryInput();
-
-        var (responseCreate, outputCreate) = await apiClient
+        var (_, outputCreate) = await apiClient
             .Post<CategoryOutput>(RESOURCE_URL, inputCreate);
 
         var inputUpdate = new UpdateCategoryInput(

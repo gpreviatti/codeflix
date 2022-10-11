@@ -26,7 +26,7 @@ public class DeleteCategoryTest : CategoryTestFixture
 
         var input = new DeleteCategoryInput(category.Id);
 
-        var output = await _deleteCategory.Handle(input, CancellationToken.None);
+        await _deleteCategory.Handle(input, CancellationToken.None);
         var deletedCategory = await dbContext
             .Categories
             .FirstOrDefaultAsync(c => c.Id == category.Id);

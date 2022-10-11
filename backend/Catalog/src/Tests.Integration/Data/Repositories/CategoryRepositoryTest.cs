@@ -137,8 +137,7 @@ public class CategoryRepositoryTest : BaseFixture
         await SaveChanges();
 
         var searchTerm = categories.FirstOrDefault()!.Name;
-        var recordsFiltred = categories
-            .Where(c => c.Name.Equals(searchTerm)).Count();
+        var recordsFiltred = categories.Count(c => c.Name.Equals(searchTerm));
 
         var page = 1;
         var perPage = 10;
