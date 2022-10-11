@@ -19,13 +19,13 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         });
 
         var (response, output) = await apiClient
-            .Get<BasePaginResponse<List<CategoryOutput>>>(RESOURCE_URL + "/");
+            .Get<BasePaginatedResponse<List<CategoryOutput>>>(RESOURCE_URL + "/");
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output!.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>().And.NotBeNull();
         output!.Data.Should().NotBeNull();
     }
 
@@ -50,14 +50,14 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
 
 
-        var (response, output) = await apiClient.Get<BasePaginResponse<List<CategoryOutput>>>(route);
+        var (response, output) = await apiClient.Get<BasePaginatedResponse<List<CategoryOutput>>>(route);
 
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output!.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>().And.NotBeNull();
         output!.Data.Should().NotBeNull();
         output!.Meta.Page.Should().Be(page);
         output!.Meta.Per_Page.Should().Be(perPage);
@@ -86,14 +86,14 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
 
 
-        var (response, output) = await apiClient.Get<BasePaginResponse<List<CategoryOutput>>>(route);
+        var (response, output) = await apiClient.Get<BasePaginatedResponse<List<CategoryOutput>>>(route);
 
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<BasePaginResponse<CategoryOutput>>().And.NotBeNull();
+        output!.GetType().Should().Be<BasePaginatedResponse<CategoryOutput>>().And.NotBeNull();
         output!.Data.Should().NotBeNull();
         output!.Meta.Page.Should().Be(page);
         output!.Meta.Per_Page.Should().Be(perPage);

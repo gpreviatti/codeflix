@@ -49,7 +49,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet()]
-    [ProducesResponseType(typeof(BasePaginResponse<List<CategoryOutput>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BasePaginatedResponse<List<CategoryOutput>>), StatusCodes.Status200OK)]
     public async Task<ActionResult> List(
         [FromQuery] ListCategoriesInput input,
         CancellationToken cancellationToken

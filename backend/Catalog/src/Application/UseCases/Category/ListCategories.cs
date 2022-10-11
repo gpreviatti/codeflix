@@ -14,7 +14,7 @@ public class ListCategories : IListCategories
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<BasePaginResponse<List<CategoryOutput>>> Handle(
+    public async Task<BasePaginatedResponse<List<CategoryOutput>>> Handle(
         ListCategoriesInput request,
         CancellationToken cancellationToken
     )

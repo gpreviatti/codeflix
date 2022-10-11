@@ -4,4 +4,4 @@ using MediatR;
 
 namespace Application.Interfaces.UseCases;
 
-public interface IListCategories : IRequestHandler<ListCategoriesInput, BasePaginResponse<List<CategoryOutput>>> { }
+public interface IListCategories : IRequestHandler<ListCategoriesInput, BasePaginatedResponse<List<CategoryOutput>>> { }

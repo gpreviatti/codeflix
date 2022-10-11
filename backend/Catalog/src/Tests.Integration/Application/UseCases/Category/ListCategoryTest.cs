@@ -28,7 +28,7 @@ public class ListCategoryTest : CategoryTestFixture
 
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
-        output.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>().And.NotBeNull();
         output.Meta.Page.Should().Be(input.Page);
         output.Meta.Per_Page.Should().Be(input.Per_Page);
         output.Meta.Filtred.Should().Be(count);
@@ -52,7 +52,7 @@ public class ListCategoryTest : CategoryTestFixture
 
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
-        output.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>().And.NotBeNull();
         output.Meta.Page.Should().Be(input.Page);
         output.Meta.Per_Page.Should().Be(input.Per_Page);
         output.Meta.Filtred.Should().Be(categoriesFiltred.Count());

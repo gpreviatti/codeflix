@@ -1,7 +1,7 @@
 ﻿namespace Application.Messages;
-public class BasePaginResponse<TData> : BaseResponse<TData> where TData : class
+public class BasePaginatedResponse<TData> : BaseResponse<TData> where TData : class
 {
-    public BasePaginResponse(TData data, int page, int per_Page, int filtred, int total) : base(data)
+    public BasePaginatedResponse(TData data, int page, int per_Page, int filtred, int total) : base(data)
     {
         Meta = new(page, per_Page, filtred, total);
     }

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Dtos.Category;
 
-public class ListCategoriesInput : PaginatedListInput, IRequest<BasePaginResponse<List<CategoryOutput>>>
+public class ListCategoriesInput : PaginatedListInput, IRequest<BasePaginatedResponse<List<CategoryOutput>>>
 {
     public ListCategoriesInput(
         int page = 1,
