@@ -30,7 +30,7 @@ public class CategoriesController : ControllerBase
     {
         var output = await _mediator.Send(createCategoryInput, cancellationToken);
 
-        return CreatedAtAction(nameof(Create), new { output.Id }, output);
+        return CreatedAtAction(nameof(Create), new { output.Data.Id }, output);
     }
 
     [HttpGet("{id}")]

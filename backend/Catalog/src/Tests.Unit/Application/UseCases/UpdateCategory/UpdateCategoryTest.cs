@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.Category;
 using Application.Exceptions;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Domain.Entity;
 using Domain.Excpetions;
 using Tests.Common.Generators.Dtos;
@@ -39,9 +40,10 @@ public class UpdateCategoryTest : CategoryBaseFixture
         var output = await _updateCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Name.Should().Be(input.Name);
-        output.Description.Should().Be(input.Description);
-        output.Is_Active.Should().Be((bool)input.Is_Active!);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>();
+        output.Data.Name.Should().Be(input.Name);
+        output.Data.Description.Should().Be(input.Description);
+        output.Data.Is_Active.Should().Be((bool)input.Is_Active!);
 
         _repositoryMock.Verify(x => x.Get(
             category.Id,It.IsAny<CancellationToken>()), 
@@ -84,9 +86,10 @@ public class UpdateCategoryTest : CategoryBaseFixture
         var output = await _updateCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Name.Should().Be(input.Name);
-        output.Description.Should().Be(input.Description);
-        output.Is_Active.Should().Be(exampleCategory.IsActive);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>();
+        output.Data.Name.Should().Be(input.Name);
+        output.Data.Description.Should().Be(input.Description);
+        output.Data.Is_Active.Should().Be(exampleCategory.IsActive);
     
         _repositoryMock.Verify(
             x => x.Get(input.Id, It.IsAny<CancellationToken>()),
@@ -128,9 +131,10 @@ public class UpdateCategoryTest : CategoryBaseFixture
         var output = await _updateCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Name.Should().Be(input.Name);
-        output.Description.Should().Be(exampleCategory.Description);
-        output.Is_Active.Should().Be(exampleCategory.IsActive);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>();
+        output.Data.Name.Should().Be(input.Name);
+        output.Data.Description.Should().Be(exampleCategory.Description);
+        output.Data.Is_Active.Should().Be(exampleCategory.IsActive);
         
         _repositoryMock.Verify(
             x => x.Get(input.Id, It.IsAny<CancellationToken>()),

@@ -64,7 +64,13 @@ public class ApiClient
     }
 
     private static StringContent Serialize(object request) => new(
-        JsonSerializer.Serialize(request),
+        JsonSerializer.Serialize(
+            request,
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }
+        ),
         Encoding.UTF8,
         "application/json"
     );

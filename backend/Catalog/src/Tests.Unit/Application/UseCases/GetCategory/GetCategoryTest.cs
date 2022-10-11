@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.Category;
 using Application.Exceptions;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Tests.Common.Generators.Entities;
 using CategoryUseCase = Application.UseCases.Category;
 
@@ -29,11 +30,11 @@ public class GetCategoryTest : CategoryBaseFixture
         var output = await _getCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.GetType().Should().Be<CategoryOutput>();
-        output.Id.Should().Be(category.Id);
-        output.Description.Should().Be(category.Description);
-        output.Is_Active.Should().Be(category.IsActive);
-        output.Created_At.Should().NotBe(default);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>();
+        output.Data.Id.Should().Be(category.Id);
+        output.Data.Description.Should().Be(category.Description);
+        output.Data.Is_Active.Should().Be(category.IsActive);
+        output.Data.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()),

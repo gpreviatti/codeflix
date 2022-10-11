@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Category;
+using Application.Messages;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Tests.Common.Generators.Dtos;
@@ -13,18 +14,18 @@ public class CreateCategoryApiTest : CategoryApiTestFixture
         var input = CreateCategoryInputGenerator.GetCategoryInput();
 
         var (response, output) = await apiClient
-            .Post<CategoryOutput>(RESOURCE_URL, input);
+            .Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.Created);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
-        output!.Id.Should().NotBeEmpty();
-        output!.Name.Should().Be(input.Name);
-        output!.Description.Should().Be(input.Description);
-        output!.Is_Active.Should().BeTrue();
-        output!.Created_At.Should().NotBe(default);
+        output!.GetType().Should().Be<BaseResponse<CategoryOutput>>().And.NotBeNull();
+        output!.Data.Id.Should().NotBeEmpty();
+        output!.Data.Name.Should().Be(input.Name);
+        output!.Data.Description.Should().Be(input.Description);
+        output!.Data.Is_Active.Should().BeTrue();
+        output!.Data.Created_At.Should().NotBe(default);
     }
 
     [Theory(DisplayName = nameof(ErrorCantInstantiateAggregate))]

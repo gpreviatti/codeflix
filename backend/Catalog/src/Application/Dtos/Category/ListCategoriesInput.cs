@@ -1,10 +1,11 @@
 ﻿using Application.Dtos.Common;
+using Application.Messages;
 using Domain.SeedWork.SearchableRepository;
 using MediatR;
 
 namespace Application.Dtos.Category;
 
-public class ListCategoriesInput : PaginatedListInput, IRequest<ListCategoriesOutput>
+public class ListCategoriesInput : PaginatedListInput, IRequest<BasePaginResponse<List<CategoryOutput>>>
 {
     public ListCategoriesInput(
         int page = 1,

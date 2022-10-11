@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Domain.Entity;
 using Domain.SeedWork.SearchableRepository;
 using Tests.Common.Generators.Dtos;
@@ -44,12 +45,13 @@ public class ListCategoriesTest : CategoryBaseFixture
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.Per_Page.Should().Be(outputRepositorySearch.PerPage);
-        output.Total.Should().Be(outputRepositorySearch.Total);
-        output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
+        output.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>();
+        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
+        output.Meta.Total.Should().Be(outputRepositorySearch.Total);
+        output.Data.Should().HaveCount(outputRepositorySearch.Items.Count);
 
-        output.Items.ToList().ForEach(outputItem =>
+        output.Data.ToList().ForEach(outputItem =>
         {
             var repositoryCategory = outputRepositorySearch
                     .Items
@@ -100,10 +102,11 @@ public class ListCategoriesTest : CategoryBaseFixture
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.Per_Page.Should().Be(outputRepositorySearch.PerPage);
-        output.Total.Should().Be(0);
-        output.Items.Should().HaveCount(0);
+        output.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>();
+        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
+        output.Meta.Total.Should().Be(0);
+        output.Data.Should().HaveCount(0);
 
         _repositoryMock.Verify(x => x.Search(
             It.Is<SearchInput>(
@@ -148,12 +151,12 @@ public class ListCategoriesTest : CategoryBaseFixture
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.Per_Page.Should().Be(outputRepositorySearch.PerPage);
-        output.Total.Should().Be(outputRepositorySearch.Total);
-        output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
+        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
+        output.Meta.Total.Should().Be(outputRepositorySearch.Total);
+        output.Data.Should().HaveCount(outputRepositorySearch.Items.Count);
 
-        output.Items.ToList().ForEach(outputItem =>
+        output.Data.ToList().ForEach(outputItem =>
         {
             var repositoryCategory = outputRepositorySearch
                 .Items

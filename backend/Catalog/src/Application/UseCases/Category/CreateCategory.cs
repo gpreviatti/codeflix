@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Domain.Repository;
 
 namespace Application.UseCases.Category;
@@ -15,7 +16,7 @@ public class CreateCategory : ICreateCategory
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CategoryOutput> Handle(
+    public async Task<BaseResponse<CategoryOutput>> Handle(
         CreateCategoryInput input,
         CancellationToken cancellationToken
     )
@@ -30,6 +31,6 @@ public class CreateCategory : ICreateCategory
 
         await _unitOfWork.Commit(cancellationToken);
 
-        return CategoryOutput.FromCategory(category);
+        return new(CategoryOutput.FromCategory(category));
     }
 }

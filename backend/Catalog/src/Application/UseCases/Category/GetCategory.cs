@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Domain.Repository;
 
 namespace Application.UseCases.Category;
@@ -13,13 +14,13 @@ public class GetCategory : IGetCategory
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<CategoryOutput> Handle(
+    public async Task<BaseResponse<CategoryOutput>> Handle(
         GetCategoryInput input,
         CancellationToken cancellationToken
     )
     {
         var category = await _categoryRepository.Get(input.Id, cancellationToken);
 
-        return CategoryOutput.FromCategory(category);
+        return new(CategoryOutput.FromCategory(category));
     }
 }

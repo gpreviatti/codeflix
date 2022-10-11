@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Domain.Entity;
 using Domain.Excpetions;
 using Tests.Common.Generators;
@@ -28,12 +29,12 @@ public class CreateCategoryTest : CategoryBaseFixture
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.GetType().Should().Be<CategoryOutput>();
-        output.Id.Should().NotBeEmpty();
-        output.Name.Should().Be(input.Name);
-        output.Description.Should().Be(input.Description);
-        output.Is_Active.Should().Be(input.Is_Active);
-        output.Created_At.Should().NotBe(default);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>();
+        output.Data.Id.Should().NotBeEmpty();
+        output.Data.Name.Should().Be(input.Name);
+        output.Data.Description.Should().Be(input.Description);
+        output.Data.Is_Active.Should().Be(input.Is_Active);
+        output.Data.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
@@ -55,12 +56,12 @@ public class CreateCategoryTest : CategoryBaseFixture
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.GetType().Should().Be<CategoryOutput>();
-        output.Id.Should().NotBeEmpty();
-        output.Name.Should().Be(input.Name);
-        output.Description.Should().Be("");
-        output.Is_Active.Should().Be(true);
-        output.Created_At.Should().NotBe(default);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>();
+        output.Data.Id.Should().NotBeEmpty();
+        output.Data.Name.Should().Be(input.Name);
+        output.Data.Description.Should().Be("");
+        output.Data.Is_Active.Should().Be(true);
+        output.Data.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
@@ -81,12 +82,12 @@ public class CreateCategoryTest : CategoryBaseFixture
         var output = await _createCategory.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.GetType().Should().Be<CategoryOutput>();
-        output.Id.Should().NotBeEmpty();
-        output.Name.Should().Be(input.Name);
-        output.Description.Should().Be(input.Description);
-        output.Is_Active.Should().Be(true);
-        output.Created_At.Should().NotBe(default);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>();
+        output.Data.Id.Should().NotBeEmpty();
+        output.Data.Name.Should().Be(input.Name);
+        output.Data.Description.Should().Be(input.Description);
+        output.Data.Is_Active.Should().Be(true);
+        output.Data.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
             r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),

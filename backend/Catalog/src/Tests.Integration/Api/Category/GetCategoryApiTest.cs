@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Category;
+using Application.Messages;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Tests.Common.Generators.Dtos;
@@ -15,18 +16,18 @@ public class GetCategoryApiTest : CategoryApiTestFixture
             .Post<CategoryOutput>(RESOURCE_URL, input);
 
         var (response, output) = await apiClient
-            .Get<CategoryOutput>(RESOURCE_URL + "/" + outputCreate!.Id);
+            .Get<BaseResponse<CategoryOutput>>(RESOURCE_URL + "/" + outputCreate!.Id);
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
-        output!.Id.Should().Be(outputCreate.Id);
-        output!.Name.Should().Be(input.Name);
-        output!.Description.Should().Be(input.Description);
-        output!.Is_Active.Should().BeTrue();
-        output!.Created_At.Should().NotBe(default);
+        output!.GetType().Should().Be<BaseResponse<CategoryOutput>>().And.NotBeNull();
+        output!.Data.Id.Should().Be(outputCreate.Id);
+        output!.Data.Name.Should().Be(input.Name);
+        output!.Data.Description.Should().Be(input.Description);
+        output!.Data.Is_Active.Should().BeTrue();
+        output!.Data.Created_At.Should().NotBe(default);
     }
 
     [Fact(DisplayName = nameof(ErrorCategoryNotFound))]

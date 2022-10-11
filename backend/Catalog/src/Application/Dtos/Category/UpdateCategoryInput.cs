@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using Application.Messages;
+using MediatR;
 
 namespace Application.Dtos.Category;
 
-public class UpdateCategoryInput : IRequest<CategoryOutput>
+public class UpdateCategoryInput : IRequest<BaseResponse<CategoryOutput>>
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -13,11 +14,11 @@ public class UpdateCategoryInput : IRequest<CategoryOutput>
         Guid id,
         string name,
         string? description = null,
-        bool? isActive = null)
+        bool? is_Active = null)
     {
         Id = id;
         Name = name;
         Description = description;
-        Is_Active = isActive;
+        Is_Active = is_Active;
     }
 }

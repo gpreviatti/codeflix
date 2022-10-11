@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Application.UseCases.Category;
 using Tests.Common.Generators.Entities;
 
@@ -26,11 +27,11 @@ public class GetCategoryTest : CategoryTestFixture
 
         var output = await _getCategory.Handle(input, CancellationToken.None);
 
-        output.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
-        output.Id.Should().Be(category.Id);
-        output.Description.Should().Be(category.Description);
-        output.Is_Active.Should().Be(category.IsActive);
-        output.Created_At.Should().NotBe(default);
+        output.GetType().Should().Be<BaseResponse<CategoryOutput>>().And.NotBeNull();
+        output.Data.Id.Should().Be(category.Id);
+        output.Data.Description.Should().Be(category.Description);
+        output.Data.Is_Active.Should().Be(category.IsActive);
+        output.Data.Created_At.Should().NotBe(default);
     }
 
     [Fact]

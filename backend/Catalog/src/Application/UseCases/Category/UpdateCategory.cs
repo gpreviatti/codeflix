@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Domain.Repository;
 
 namespace Application.UseCases.Category;
@@ -18,7 +19,7 @@ public class UpdateCategory : IUpdateCategory
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CategoryOutput> Handle(
+    public async Task<BaseResponse<CategoryOutput>> Handle(
         UpdateCategoryInput request,
         CancellationToken cancellationToken
     )
@@ -37,6 +38,6 @@ public class UpdateCategory : IUpdateCategory
         await _categoryRepository.Update(category, cancellationToken);
         await _unitOfWork.Commit(cancellationToken);
 
-        return CategoryOutput.FromCategory(category);
+        return new(CategoryOutput.FromCategory(category));
     }
 }

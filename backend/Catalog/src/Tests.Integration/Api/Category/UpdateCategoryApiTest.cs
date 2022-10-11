@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Category;
+using Application.Messages;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Tests.Common.Generators.Dtos;
@@ -14,23 +15,23 @@ public class UpdateCategoryApiTest : CategoryApiTestFixture
         var inputCreate = CreateCategoryInputGenerator.GetCategoryInput();
 
         var (_, outputCreate) = await apiClient
-            .Post<CategoryOutput>(RESOURCE_URL, inputCreate);
+            .Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, inputCreate);
 
-        var inputUpdate = UpdateCategoryInputGenerator.GetCategory(outputCreate!.Id);
+        var inputUpdate = UpdateCategoryInputGenerator.GetCategory(outputCreate!.Data.Id);
 
         var (response, output) = await apiClient
-            .Put<CategoryOutput>(RESOURCE_URL, inputUpdate);
+            .Put<BaseResponse<CategoryOutput>>(RESOURCE_URL, inputUpdate);
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
-        output!.Id.Should().Be(outputCreate.Id);
-        output!.Name.Should().Be(inputUpdate.Name);
-        output!.Description.Should().Be(inputUpdate.Description);
-        output!.Is_Active.Should().BeTrue();
-        output!.Created_At.Should().NotBe(default);
+        output!.GetType().Should().Be<BaseResponse<CategoryOutput>>().And.NotBeNull();
+        output!.Data.Id.Should().Be(outputCreate!.Data.Id);
+        output!.Data.Name.Should().Be(inputUpdate.Name);
+        output!.Data.Description.Should().Be(inputUpdate.Description);
+        output!.Data.Is_Active.Should().BeTrue();
+        output!.Data.Created_At.Should().NotBe(default);
     }
 
     [Fact(DisplayName = nameof(UpdateOnlyName))]
@@ -39,26 +40,26 @@ public class UpdateCategoryApiTest : CategoryApiTestFixture
     {
         var inputCreate = CreateCategoryInputGenerator.GetCategoryInput();
         var (_, outputCreate) = await apiClient
-            .Post<CategoryOutput>(RESOURCE_URL, inputCreate);
+            .Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, inputCreate);
 
         var inputUpdate = new UpdateCategoryInput(
-            outputCreate!.Id, 
+            outputCreate!.Data.Id, 
             CategoryGenerator.GetProductName()
         );
 
         var (response, output) = await apiClient
-            .Put<CategoryOutput>(RESOURCE_URL, inputUpdate);
+            .Put<BaseResponse<CategoryOutput>>(RESOURCE_URL, inputUpdate);
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<CategoryOutput>().And.NotBeNull();
-        output!.Id.Should().Be(outputCreate.Id);
-        output!.Name.Should().Be(inputUpdate.Name);
-        output!.Description.Should().Be(outputCreate.Description);
-        output!.Is_Active.Should().Be(outputCreate.Is_Active);
-        output!.Created_At.Should().NotBe(default);
+        output!.GetType().Should().Be<BaseResponse<CategoryOutput>>().And.NotBeNull();
+        output!.Data.Id.Should().Be(outputCreate!.Data.Id);
+        output!.Data.Name.Should().Be(inputUpdate.Name);
+        output!.Data.Description.Should().Be(outputCreate.Data.Description);
+        output!.Data.Is_Active.Should().Be(outputCreate.Data.Is_Active);
+        output!.Data.Created_At.Should().NotBe(default);
     }
 
     [Fact(DisplayName = nameof(ErrorCategoryNotFound))]

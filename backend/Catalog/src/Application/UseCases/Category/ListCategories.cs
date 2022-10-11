@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Domain.Repository;
 
 namespace Application.UseCases.Category;
@@ -13,7 +14,7 @@ public class ListCategories : IListCategories
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<ListCategoriesOutput> Handle(
+    public async Task<BasePaginResponse<List<CategoryOutput>>> Handle(
         ListCategoriesInput request,
         CancellationToken cancellationToken
     )
@@ -32,11 +33,11 @@ public class ListCategories : IListCategories
         var items = searchOutput.Items.Select(CategoryOutput.FromCategory).ToList();
 
         return new(
+            items,
             searchOutput.CurrentPage,
             searchOutput.PerPage,
             searchOutput.Filtred,
-            searchOutput.Total,
-            items
+            searchOutput.Total
         );
     }
 }

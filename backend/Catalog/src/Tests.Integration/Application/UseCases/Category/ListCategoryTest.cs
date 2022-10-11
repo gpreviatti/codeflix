@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
+using Application.Messages;
 using Application.UseCases.Category;
 using Tests.Common.Generators.Entities;
 
@@ -27,12 +28,12 @@ public class ListCategoryTest : CategoryTestFixture
 
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
-        output.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
-        output.Page.Should().Be(input.Page);
-        output.Per_Page.Should().Be(input.Per_Page);
-        output.Filtred.Should().Be(count);
-        output.Total.Should().Be(count);
-        output.Items.Count.Should().Be(count);
+        output.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output.Meta.Page.Should().Be(input.Page);
+        output.Meta.Per_Page.Should().Be(input.Per_Page);
+        output.Meta.Filtred.Should().Be(count);
+        output.Meta.Total.Should().Be(count);
+        output.Data.Count.Should().Be(count);
     }
 
     [Fact]
@@ -51,11 +52,11 @@ public class ListCategoryTest : CategoryTestFixture
 
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
-        output.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
-        output.Page.Should().Be(input.Page);
-        output.Per_Page.Should().Be(input.Per_Page);
-        output.Filtred.Should().Be(categoriesFiltred.Count());
-        output.Items.Count.Should().Be(categoriesFiltred.Count());
-        output.Total.Should().Be(categories.Count);
+        output.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output.Meta.Page.Should().Be(input.Page);
+        output.Meta.Per_Page.Should().Be(input.Per_Page);
+        output.Meta.Filtred.Should().Be(categoriesFiltred.Count());
+        output.Meta.Total.Should().Be(categories.Count);
+        output.Data.Count.Should().Be(categoriesFiltred.Count());
     }
 }

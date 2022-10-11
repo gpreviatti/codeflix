@@ -14,15 +14,15 @@ public class CategoryOutput
         Guid id,
         string name,
         string description,
-        bool isActive,
-        DateTime createdAt
+        bool is_Active,
+        DateTime created_At
     )
     {
         Id = id;
         Name = name;
         Description = description;
-        Is_Active = isActive;
-        Created_At = createdAt;
+        Is_Active = is_Active;
+        Created_At = created_At;
     }
 
     public static CategoryOutput FromCategory(DomainEntity.Category category) => new(

@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Category;
+using Application.Messages;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Net;
 using Tests.Common.Generators.Entities;
@@ -14,18 +15,18 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
 
         inputs.ToList().ForEach(input =>
         {
-            _ = apiClient.Post<CategoryOutput>(RESOURCE_URL, input);
+            _ = apiClient.Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
         });
 
         var (response, output) = await apiClient
-            .Get<ListCategoriesOutput>(RESOURCE_URL + "/");
+            .Get<BasePaginResponse<List<CategoryOutput>>>(RESOURCE_URL + "/");
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
-        output!.Items.Should().NotBeNull();
+        output!.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output!.Data.Should().NotBeNull();
     }
 
     [Fact(DisplayName = nameof(ListWithPageParams))]
@@ -36,7 +37,7 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
 
         inputs.ToList().ForEach(input =>
         {
-            _ = apiClient.Post<CategoryOutput>(RESOURCE_URL, input);
+            _ = apiClient.Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
         });
 
         var page = 1;
@@ -49,18 +50,18 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
 
 
-        var (response, output) = await apiClient.Get<ListCategoriesOutput>(route);
+        var (response, output) = await apiClient.Get<BasePaginResponse<List<CategoryOutput>>>(route);
 
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
-        output!.Items.Should().NotBeNull();
-        output!.Page.Should().Be(page);
-        output!.Per_Page.Should().Be(perPage);
-        output!.Items.Count.Should().Be(perPage);
+        output!.GetType().Should().Be<BasePaginResponse<List<CategoryOutput>>>().And.NotBeNull();
+        output!.Data.Should().NotBeNull();
+        output!.Meta.Page.Should().Be(page);
+        output!.Meta.Per_Page.Should().Be(perPage);
+        output!.Data.Count.Should().Be(perPage);
     }
 
     [Fact(DisplayName = nameof(ListWithSearch))]
@@ -85,18 +86,18 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
 
 
-        var (response, output) = await apiClient.Get<ListCategoriesOutput>(route);
+        var (response, output) = await apiClient.Get<BasePaginResponse<List<CategoryOutput>>>(route);
 
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<ListCategoriesOutput>().And.NotBeNull();
-        output!.Items.Should().NotBeNull();
-        output!.Page.Should().Be(page);
-        output!.Per_Page.Should().Be(perPage);
-        output!.Items.Count.Should().Be(1);
-        output!.Items.FirstOrDefault()!.Name.Should().Be(search);
+        output!.GetType().Should().Be<BasePaginResponse<CategoryOutput>>().And.NotBeNull();
+        output!.Data.Should().NotBeNull();
+        output!.Meta.Page.Should().Be(page);
+        output!.Meta.Per_Page.Should().Be(perPage);
+        output!.Data.Count.Should().Be(1);
+        output!.Data.FirstOrDefault()!.Name.Should().Be(search);
     }
 }
