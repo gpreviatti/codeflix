@@ -1,4 +1,5 @@
 using Application.Dtos.Category;
+using Application.Messages;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CategoryOutput), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(BaseResponse<CategoryOutput>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult> Create(
@@ -34,7 +35,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(CategoryOutput), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<CategoryOutput>), StatusCodes.Status200OK)]
     public async Task<ActionResult> Get(
         [FromRoute] Guid id,
         CancellationToken cancellationToken
@@ -48,7 +49,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet()]
-    [ProducesResponseType(typeof(ListCategoriesOutput), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BasePaginResponse<List<CategoryOutput>>), StatusCodes.Status200OK)]
     public async Task<ActionResult> List(
         [FromQuery] ListCategoriesInput input,
         CancellationToken cancellationToken
@@ -60,7 +61,7 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut]
-    [ProducesResponseType(typeof(CategoryOutput), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseResponse<CategoryOutput>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     public async Task<ActionResult> Update(
