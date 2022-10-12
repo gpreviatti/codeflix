@@ -11,10 +11,10 @@ public abstract class BaseFixture
 
     public BaseFixture()
     {
-        dbContext = CreateDbContext(Guid.NewGuid());
+        dbContext = CreateDbContext();
     }
 
-    public static CatalogDbContext CreateDbContext(Guid guid)
+    public static CatalogDbContext CreateDbContext()
     {
         var connectionString = $"Server=localhost;Port=3306;Uid=root;Pwd=codeflix;Database=catalog_dev";
         return new(
@@ -25,6 +25,4 @@ public abstract class BaseFixture
     }
 
     public async Task<int> SaveChanges() => await dbContext.SaveChangesAsync();
-
-    //public void Dispose() => dbContext.Database.EnsureDeletedAsync();
 }

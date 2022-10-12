@@ -95,7 +95,7 @@ public class CategoryRepositoryTest : BaseFixture
 
         await repoistory.Delete(category, CancellationToken.None);
         await SaveChanges();
-        var result = await CreateDbContext(Guid.NewGuid()).Categories.FindAsync(category.Id);
+        var result = await CreateDbContext().Categories.FindAsync(category.Id);
 
         result.Should().BeNull();
     }
