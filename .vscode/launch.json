@@ -15,8 +15,7 @@
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "CONNECTION_STRING": "Server=localhost;Port=3306;Database=catalog_dev;Uid=root;Pwd=codeflix"
+                "ASPNETCORE_ENVIRONMENT": "Development"
             }
         }
     ]
