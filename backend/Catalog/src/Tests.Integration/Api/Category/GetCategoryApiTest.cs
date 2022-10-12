@@ -13,17 +13,17 @@ public class GetCategoryApiTest : CategoryApiTestFixture
     {
         var input = CreateCategoryInputGenerator.GetCategoryInput();
         var (_, outputCreate) = await apiClient
-            .Post<CategoryOutput>(RESOURCE_URL, input);
+            .Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
 
         var (response, output) = await apiClient
-            .Get<BaseResponse<CategoryOutput>>(RESOURCE_URL + "/" + outputCreate!.Id);
+            .Get<BaseResponse<CategoryOutput>>(RESOURCE_URL + "/" + outputCreate!.Data.Id);
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
         output!.GetType().Should().Be<BaseResponse<CategoryOutput>>().And.NotBeNull();
-        output!.Data.Id.Should().Be(outputCreate.Id);
+        output!.Data.Id.Should().Be(outputCreate.Data.Id);
         output!.Data.Name.Should().Be(input.Name);
         output!.Data.Description.Should().Be(input.Description);
         output!.Data.Is_Active.Should().BeTrue();

@@ -34,8 +34,8 @@ public class ListCategories : IListCategories
 
         return new(
             items,
-            searchOutput.CurrentPage,
-            searchOutput.PerPage,
+            searchOutput.Current_Page,
+            searchOutput.Per_Page,
             searchOutput.Filtred,
             searchOutput.Total
         );

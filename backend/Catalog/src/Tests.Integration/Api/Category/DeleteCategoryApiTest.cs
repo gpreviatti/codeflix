@@ -1,4 +1,5 @@
 ﻿using Application.Dtos.Category;
+using Application.Messages;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Tests.Common.Generators.Dtos;
@@ -12,19 +13,19 @@ public class DeleteCategoryApiTest : CategoryApiTestFixture
     {
         var input = CreateCategoryInputGenerator.GetCategoryInput();
         var (_, outputCreate) = await apiClient
-            .Post<CategoryOutput>(RESOURCE_URL, input);
+            .Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
 
+        
         var (responseDelete, _) = await apiClient
-            .Delete<object>(RESOURCE_URL + "/" + outputCreate!.Id);
+            .Delete<object>(RESOURCE_URL + "/" + outputCreate!.Data.Id);
 
         var (responseGet, outputGet) = await apiClient
-            .Get<ProblemDetails>(RESOURCE_URL + "/" + outputCreate!.Id);
+            .Get<ProblemDetails>(RESOURCE_URL + "/" + outputCreate!.Data.Id);
 
 
         responseDelete!.StatusCode.Should().Be(HttpStatusCode.NoContent);
         responseGet!.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
-        outputGet!.Detail.Should().Be($"Category '{outputCreate!.Id}' not found.");
-
+        outputGet!.Detail.Should().Be($"Category '{outputCreate!.Data.Id}' not found.");
     }
 
     [Fact(DisplayName = nameof(ErrorCategoryNotFound))]

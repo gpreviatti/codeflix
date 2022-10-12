@@ -11,15 +11,25 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
     [Trait("Integration/Api", "Category - List")]
     public async Task List()
     {
-        var inputs = CategoryGenerator.GetCategories(5);
+        var inputs = CategoryGenerator.GetCategories(1);
 
         inputs.ToList().ForEach(input =>
         {
             _ = apiClient.Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
         });
 
+        var page = 1;
+        var perPage = 3;
+        var parameters = new[] {
+            KeyValuePair.Create("page", page.ToString()),
+            KeyValuePair.Create("per_page", perPage.ToString()),
+        };
+
+        var route = QueryHelpers.AddQueryString(RESOURCE_URL, parameters!);
+
+
         var (response, output) = await apiClient
-            .Get<BasePaginatedResponse<List<CategoryOutput>>>(RESOURCE_URL + "/");
+            .Get<BasePaginatedResponse<List<CategoryOutput>>>(route);
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -72,7 +82,7 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
 
         inputs.ToList().ForEach(input =>
         {
-            _ = apiClient.Post<CategoryOutput>(RESOURCE_URL, input);
+            _ = apiClient.Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
         });
         var page = 1;
         var perPage = 10;

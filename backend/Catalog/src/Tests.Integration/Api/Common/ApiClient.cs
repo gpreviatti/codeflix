@@ -86,7 +86,7 @@ public class ApiClient
                 outputString,
                 new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = true
+                    PropertyNameCaseInsensitive = false
                 }
             );
         }

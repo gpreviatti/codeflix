@@ -123,7 +123,7 @@ public class CategoryRepositoryTest : BaseFixture
         var result = await repoistory.Search(input, CancellationToken.None);
 
         result.Should().NotBeNull();
-        result.CurrentPage.Should().Be(page);
+        result.Current_Page.Should().Be(page);
         result.Items.Count.Should().Be(perPage);
     }
 
@@ -146,9 +146,8 @@ public class CategoryRepositoryTest : BaseFixture
         var result = await repoistory.Search(input, CancellationToken.None);
 
         result.Should().NotBeNull();
-        result.CurrentPage.Should().Be(page);
+        result.Current_Page.Should().Be(page);
         result.Filtred.Should().Be(recordsFiltred);
-        result.Total.Should().Be(totalItens);
     }
 
     [Fact(DisplayName = nameof(SearcReturnsEmpty))]
@@ -162,7 +161,7 @@ public class CategoryRepositoryTest : BaseFixture
         var result = await repoistory.Search(input, CancellationToken.None);
 
         result.Should().NotBeNull();
-        result.CurrentPage.Should().Be(page);
+        result.Current_Page.Should().Be(page);
         result.Filtred.Should().Be(0);
         result.Items.Count.Should().Be(0);
         result.Total.Should().Be(0);

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Tests.Common.Generators;
 
 namespace Tests.Integration;
-public abstract class BaseFixture : IDisposable
+public abstract class BaseFixture
 {
     protected Faker Faker { get; set; } = CommonGenerator.GetFaker();
     protected CatalogDbContext dbContext;
@@ -14,13 +14,17 @@ public abstract class BaseFixture : IDisposable
         dbContext = CreateDbContext(Guid.NewGuid());
     }
 
-    public static CatalogDbContext CreateDbContext(Guid guid) => new(
-        new DbContextOptionsBuilder<CatalogDbContext>()
-            .UseInMemoryDatabase($"fc-db-integration-tests-{guid}")
-            .Options
-    );
+    public static CatalogDbContext CreateDbContext(Guid guid)
+    {
+        var connectionString = $"Server=localhost;Port=3306;Uid=root;Pwd=codeflix;Database=catalog_dev";
+        return new(
+            new DbContextOptionsBuilder<CatalogDbContext>()
+                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+                .Options
+        );
+    }
 
     public async Task<int> SaveChanges() => await dbContext.SaveChangesAsync();
 
-    public void Dispose() => dbContext.Database.EnsureDeleted();
+    //public void Dispose() => dbContext.Database.EnsureDeletedAsync();
 }

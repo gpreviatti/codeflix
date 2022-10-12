@@ -1,4 +1,5 @@
-﻿using DomainEntity = Domain.Entity;
+﻿using System.Text.Json.Serialization;
+using DomainEntity = Domain.Entity;
 
 namespace Application.Dtos.Category;
 
@@ -10,6 +11,7 @@ public class CategoryOutput
     public bool Is_Active { get; set; }
     public DateTime Created_At { get; set; }
 
+    [JsonConstructor]
     public CategoryOutput(
         Guid id,
         string name,

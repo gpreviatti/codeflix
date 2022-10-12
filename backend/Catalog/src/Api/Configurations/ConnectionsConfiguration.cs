@@ -10,7 +10,6 @@ public static class ConnectionsConfiguration
         string connectionString
     )
     {
-        Console.WriteLine(connectionString);
         services.AddDbContext<CatalogDbContext>(options =>
         {
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));

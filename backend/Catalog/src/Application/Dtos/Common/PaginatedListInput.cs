@@ -1,4 +1,5 @@
 ﻿using Domain.SeedWork.SearchableRepository;
+using System.Text.Json.Serialization;
 
 namespace Application.Dtos.Common;
 
@@ -9,6 +10,8 @@ public abstract class PaginatedListInput
     public string Search { get; set; }
     public string Sort { get; set; }
     public SearchOrder Dir { get; set; }
+
+    [JsonConstructor]
     public PaginatedListInput(
         int page,
         int per_page,

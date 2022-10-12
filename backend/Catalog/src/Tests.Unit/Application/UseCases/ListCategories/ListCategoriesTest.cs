@@ -46,8 +46,8 @@ public class ListCategoriesTest : CategoryBaseFixture
 
         output.Should().NotBeNull();
         output.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>();
-        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
+        output.Meta.Page.Should().Be(outputRepositorySearch.Current_Page);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.Per_Page);
         output.Meta.Total.Should().Be(outputRepositorySearch.Total);
         output.Data.Should().HaveCount(outputRepositorySearch.Items.Count);
 
@@ -103,8 +103,8 @@ public class ListCategoriesTest : CategoryBaseFixture
 
         output.Should().NotBeNull();
         output.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>();
-        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
+        output.Meta.Page.Should().Be(outputRepositorySearch.Current_Page);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.Per_Page);
         output.Meta.Total.Should().Be(0);
         output.Data.Should().HaveCount(0);
 
@@ -151,8 +151,8 @@ public class ListCategoriesTest : CategoryBaseFixture
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
-        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
+        output.Meta.Page.Should().Be(outputRepositorySearch.Current_Page);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.Per_Page);
         output.Meta.Total.Should().Be(outputRepositorySearch.Total);
         output.Data.Should().HaveCount(outputRepositorySearch.Items.Count);
 

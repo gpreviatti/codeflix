@@ -10,7 +10,11 @@ public class CatalogDbContext : DbContext
     //public DbSet<CastMember> CastMembers => Set<CastMember>();
     //public DbSet<GenresCategories> GenresCategories => Set<GenresCategories>();
 
-    public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options) { }
+    public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options) 
+    {
+        // Se tem uma migração nova faz no startup do projeto
+        Database.Migrate();
+    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
