@@ -3,7 +3,7 @@ using FluentValidation;
 using FluentValidation.TestHelper;
 using Tests.Common.Generators.Dtos;
 
-namespace Unit.Application.UseCases.UpdateCategory;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public class UpdateCategoryInputValidationTest
 {

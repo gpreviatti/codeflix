@@ -3,7 +3,7 @@ using Domain.Excpetions;
 using Domain.Validation;
 using Tests.Common.Generators;
 
-namespace Unit.Domain.Validation;
+namespace Tests.Unit.Domain.Validation;
 
 public class DomainValidationTest
 {

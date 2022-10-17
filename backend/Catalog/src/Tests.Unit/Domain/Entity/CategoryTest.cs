@@ -2,9 +2,9 @@
 using Domain.Excpetions;
 using Tests.Common.Generators;
 using Tests.Common.Generators.Entities;
-using Unit.Common;
+using Tests.Unit.Common;
 
-namespace Unit.Domain.Entity;
+namespace Tests.Unit.Domain.Entity;
 
 public class CategoryTest : BaseFixture
 {

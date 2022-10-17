@@ -2,13 +2,13 @@
 using Application.Exceptions;
 using Application.Interfaces.UseCases;
 using Application.Messages;
-using Domain.Entity;
+using DomainEntity = Domain.Entity;
 using Domain.Excpetions;
 using Tests.Common.Generators.Dtos;
 using Tests.Common.Generators.Entities;
 using UpdateCategoryUseCase = Application.UseCases.Category.UpdateCategory;
 
-namespace Unit.Application.UseCases.UpdateCategory;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public class UpdateCategoryTest : CategoryBaseFixture
 {
@@ -28,7 +28,7 @@ public class UpdateCategoryTest : CategoryBaseFixture
         MemberType = typeof(UpdateCategoryInputGenerator)
     )]
     public async Task UpdateCategory(
-        Category category,
+        DomainEntity.Category category,
         UpdateCategoryInput input
     )
     {
@@ -46,12 +46,12 @@ public class UpdateCategoryTest : CategoryBaseFixture
         output.Data.Is_Active.Should().Be((bool)input.Is_Active!);
 
         _repositoryMock.Verify(x => x.Get(
-            category.Id,It.IsAny<CancellationToken>()), 
+            category.Id, It.IsAny<CancellationToken>()),
             Times.Once
         );
 
         _repositoryMock.Verify(x => x.Update(
-            category,It.IsAny<CancellationToken>()), 
+            category, It.IsAny<CancellationToken>()),
             Times.Once
         );
 
@@ -69,7 +69,7 @@ public class UpdateCategoryTest : CategoryBaseFixture
         MemberType = typeof(UpdateCategoryInputGenerator)
     )]
     public async Task UpdateCategoryWithoutProvidingIsActive(
-        Category exampleCategory,
+        DomainEntity.Category exampleCategory,
         UpdateCategoryInput exampleInput
     )
     {
@@ -90,13 +90,13 @@ public class UpdateCategoryTest : CategoryBaseFixture
         output.Data.Name.Should().Be(input.Name);
         output.Data.Description.Should().Be(input.Description);
         output.Data.Is_Active.Should().Be(exampleCategory.IsActive);
-    
+
         _repositoryMock.Verify(
             x => x.Get(input.Id, It.IsAny<CancellationToken>()),
             Times.Once
         );
         _repositoryMock.Verify(
-            x => x.Update(exampleCategory, It.IsAny<CancellationToken>()), 
+            x => x.Update(exampleCategory, It.IsAny<CancellationToken>()),
             Times.Once
         );
 
@@ -115,7 +115,7 @@ public class UpdateCategoryTest : CategoryBaseFixture
         MemberType = typeof(UpdateCategoryInputGenerator)
     )]
     public async Task UpdateCategoryOnlyName(
-        Category exampleCategory,
+        DomainEntity.Category exampleCategory,
         UpdateCategoryInput exampleInput
     )
     {
@@ -135,14 +135,14 @@ public class UpdateCategoryTest : CategoryBaseFixture
         output.Data.Name.Should().Be(input.Name);
         output.Data.Description.Should().Be(exampleCategory.Description);
         output.Data.Is_Active.Should().Be(exampleCategory.IsActive);
-        
+
         _repositoryMock.Verify(
             x => x.Get(input.Id, It.IsAny<CancellationToken>()),
             Times.Once
         );
-        
+
         _repositoryMock.Verify(
-            x => x.Update( exampleCategory, It.IsAny<CancellationToken>()) , 
+            x => x.Update(exampleCategory, It.IsAny<CancellationToken>()),
             Times.Once
         );
 

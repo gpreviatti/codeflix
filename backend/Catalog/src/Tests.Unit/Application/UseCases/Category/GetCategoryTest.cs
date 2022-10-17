@@ -5,7 +5,7 @@ using Application.Messages;
 using Tests.Common.Generators.Entities;
 using CategoryUseCase = Application.UseCases.Category;
 
-namespace Unit.Application.UseCases.GetCategory;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public class GetCategoryTest : CategoryBaseFixture
 {
@@ -25,7 +25,7 @@ public class GetCategoryTest : CategoryBaseFixture
             .Setup(r => r.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(category);
 
-         var input = new GetCategoryInput(category.Id);
+        var input = new GetCategoryInput(category.Id);
 
         var output = await _getCategory.Handle(input, CancellationToken.None);
 

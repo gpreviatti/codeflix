@@ -1,9 +1,9 @@
 ﻿using Domain.Entity;
 using Domain.Repository;
 using Moq;
-using Unit.Common;
+using Tests.Unit.Common;
 
-namespace Unit.Application.UseCases;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public abstract class CategoryBaseFixture : BaseFixture
 {

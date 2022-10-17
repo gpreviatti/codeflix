@@ -3,7 +3,7 @@ using Application.Validation;
 using FluentValidation;
 using FluentValidation.TestHelper;
 
-namespace Unit.Application.UseCases.GetCategory;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public class GetCategoryInputValidatorTest
 {

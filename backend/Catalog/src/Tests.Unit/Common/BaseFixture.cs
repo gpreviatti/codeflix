@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using Tests.Common.Generators;
 
-namespace Unit.Common;
+namespace Tests.Unit.Common;
 
 public abstract class BaseFixture
 {

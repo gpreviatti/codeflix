@@ -1,13 +1,13 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
 using Application.Messages;
-using Domain.Entity;
+using DomainEntity = Domain.Entity;
 using Domain.SeedWork.SearchableRepository;
 using Tests.Common.Generators.Dtos;
 using Tests.Common.Generators.Entities;
 using CategoryUseCase = Application.UseCases.Category;
 
-namespace Unit.Application.UseCases.UpdateCategory;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public class ListCategoriesTest : CategoryBaseFixture
 {
@@ -24,7 +24,7 @@ public class ListCategoriesTest : CategoryBaseFixture
     {
         var categoriesExampleList = CategoryGenerator.GetCategories().ToList();
         var input = ListCategoriesInputGenerator.GetInput();
-        var outputRepositorySearch = new SearchOutput<Category>(
+        var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
             input.Page,
             input.Per_Page,
             new Random().Next(50, 200),
@@ -46,8 +46,8 @@ public class ListCategoriesTest : CategoryBaseFixture
 
         output.Should().NotBeNull();
         output.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>();
-        output.Meta.Page.Should().Be(outputRepositorySearch.Current_Page);
-        output.Meta.Per_Page.Should().Be(outputRepositorySearch.Per_Page);
+        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
         output.Meta.Total.Should().Be(outputRepositorySearch.Total);
         output.Data.Should().HaveCount(outputRepositorySearch.Items.Count);
 
@@ -81,11 +81,11 @@ public class ListCategoriesTest : CategoryBaseFixture
     public async Task ListOkWhenEmpty()
     {
         var input = ListCategoriesInputGenerator.GetInput();
-        var outputRepositorySearch = new SearchOutput<Category>(
+        var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
             input.Page,
             input.Per_Page,
             0,
-            new List<Category>().AsReadOnly()
+            new List<DomainEntity.Category>().AsReadOnly()
         );
 
         _repositoryMock.Setup(x => x.Search(
@@ -103,8 +103,8 @@ public class ListCategoriesTest : CategoryBaseFixture
 
         output.Should().NotBeNull();
         output.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>();
-        output.Meta.Page.Should().Be(outputRepositorySearch.Current_Page);
-        output.Meta.Per_Page.Should().Be(outputRepositorySearch.Per_Page);
+        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
         output.Meta.Total.Should().Be(0);
         output.Data.Should().HaveCount(0);
 
@@ -130,7 +130,7 @@ public class ListCategoriesTest : CategoryBaseFixture
     public async Task ListInputWithoutAllParameters(ListCategoriesInput input)
     {
         var categoriesExampleList = CategoryGenerator.GetCategories().ToList();
-        var outputRepositorySearch = new SearchOutput<Category>(
+        var outputRepositorySearch = new SearchOutput<DomainEntity.Category>(
             input.Page,
             input.Per_Page,
             new Random().Next(50, 200),
@@ -151,8 +151,8 @@ public class ListCategoriesTest : CategoryBaseFixture
         var output = await _listCategories.Handle(input, CancellationToken.None);
 
         output.Should().NotBeNull();
-        output.Meta.Page.Should().Be(outputRepositorySearch.Current_Page);
-        output.Meta.Per_Page.Should().Be(outputRepositorySearch.Per_Page);
+        output.Meta.Page.Should().Be(outputRepositorySearch.CurrentPage);
+        output.Meta.Per_Page.Should().Be(outputRepositorySearch.PerPage);
         output.Meta.Total.Should().Be(outputRepositorySearch.Total);
         output.Data.Should().HaveCount(outputRepositorySearch.Items.Count);
 

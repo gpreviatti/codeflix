@@ -4,7 +4,7 @@ using Application.Interfaces.UseCases;
 using Tests.Common.Generators.Entities;
 using CategoryUseCase = Application.UseCases.Category;
 
-namespace Unit.Application.UseCases.DeleteCategory;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public class DeleteCategoryTest : CategoryBaseFixture
 {
@@ -33,17 +33,17 @@ public class DeleteCategoryTest : CategoryBaseFixture
         await _deleteCategory.Handle(input, CancellationToken.None);
 
         _repositoryMock.Verify(
-            x => x.Get(categoryExample.Id, It.IsAny<CancellationToken>()), 
+            x => x.Get(categoryExample.Id, It.IsAny<CancellationToken>()),
             Times.Once
         );
-        
+
         _repositoryMock.Verify(
-            x => x.Delete(categoryExample, It.IsAny<CancellationToken>()), 
+            x => x.Delete(categoryExample, It.IsAny<CancellationToken>()),
             Times.Once
         );
 
         _unitOfWorkMock.Verify(
-            x => x.Commit(It.IsAny<CancellationToken>()), 
+            x => x.Commit(It.IsAny<CancellationToken>()),
             Times.Once
         );
     }
@@ -65,7 +65,7 @@ public class DeleteCategoryTest : CategoryBaseFixture
         await task.Should().ThrowAsync<NotFoundException>();
 
         _repositoryMock.Verify(
-            x => x.Get(exampleGuid,It.IsAny<CancellationToken>()), 
+            x => x.Get(exampleGuid, It.IsAny<CancellationToken>()),
             Times.Once
         );
     }

@@ -1,13 +1,13 @@
 ﻿using Application.Dtos.Category;
 using Application.Interfaces.UseCases;
 using Application.Messages;
-using Domain.Entity;
+using DomainEntity = Domain.Entity;
 using Domain.Excpetions;
 using Tests.Common.Generators;
 using Tests.Common.Generators.Dtos;
 using CategoryUseCases = Application.UseCases.Category;
 
-namespace Unit.Application.UseCases.CreateCategory;
+namespace Tests.Unit.Application.UseCases.Category;
 
 public class CreateCategoryTest : CategoryBaseFixture
 {
@@ -37,7 +37,7 @@ public class CreateCategoryTest : CategoryBaseFixture
         output.Data.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
-            r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
+            r => r.Insert(It.IsAny<DomainEntity.Category>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );
         _unitOfWorkMock.Verify(
@@ -64,7 +64,7 @@ public class CreateCategoryTest : CategoryBaseFixture
         output.Data.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
-            r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
+            r => r.Insert(It.IsAny<DomainEntity.Category>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );
         _unitOfWorkMock.Verify(
@@ -90,7 +90,7 @@ public class CreateCategoryTest : CategoryBaseFixture
         output.Data.Created_At.Should().NotBe(default);
 
         _repositoryMock.Verify(
-            r => r.Insert(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
+            r => r.Insert(It.IsAny<DomainEntity.Category>(), It.IsAny<CancellationToken>()),
             Times.Once()
         );
         _unitOfWorkMock.Verify(
