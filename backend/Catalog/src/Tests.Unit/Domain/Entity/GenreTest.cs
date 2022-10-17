@@ -11,10 +11,12 @@ public class GenreTest
     {
         var genreName = GenreGenerator.GetValidName();
 
+        
         var datetimeBefore = DateTime.Now;
         var genre = new Genre(genreName);
         var datetimeAfter = DateTime.Now.AddSeconds(1);
 
+        
         genre.Should().NotBeNull();
         genre.Id.Should().NotBeEmpty();
         genre.Name.Should().Be(genreName);
@@ -46,10 +48,12 @@ public class GenreTest
     {
         var genreName = GenreGenerator.GetValidName();
 
+        
         var datetimeBefore = DateTime.Now;
         var genre = new Genre(genreName, isActive);
         var datetimeAfter = DateTime.Now.AddSeconds(1);
 
+        
         genre.Should().NotBeNull();
         genre.Id.Should().NotBeEmpty();
         genre.Name.Should().Be(genreName);
@@ -68,8 +72,10 @@ public class GenreTest
         var genre = GenreGenerator.GetExampleGenre(isActive);
         var oldName = genre.Name;
 
+        
         genre.Activate();
 
+        
         genre.Should().NotBeNull();
         genre.Id.Should().NotBeEmpty();
         genre.Name.Should().Be(oldName);
@@ -86,8 +92,10 @@ public class GenreTest
         var genre = GenreGenerator.GetExampleGenre(isActive);
         var oldName = genre.Name;
 
+        
         genre.Deactivate();
 
+        
         genre.Should().NotBeNull();
         genre.Id.Should().NotBeEmpty();
         genre.IsActive.Should().BeFalse();
@@ -103,8 +111,10 @@ public class GenreTest
         var newName = GenreGenerator.GetValidName();
         var oldIsActive = genre.IsActive;
 
+        
         genre.Update(newName);
 
+        
         genre.Should().NotBeNull();
         genre.Id.Should().NotBeEmpty();
         genre.Name.Should().Be(newName);
@@ -121,8 +131,7 @@ public class GenreTest
     {
         var genre = GenreGenerator.GetExampleGenre();
 
-        var action =
-            () => genre.Update(name!);
+        var action = () => genre.Update(name!);
 
         action.Should().Throw<EntityValidationException>()
             .WithMessage("Name should not be empty or null");
@@ -135,8 +144,10 @@ public class GenreTest
         var genre = GenreGenerator.GetExampleGenre();
         var categoryGuid = Guid.NewGuid();
 
+        
         genre.AddCategory(categoryGuid);
 
+        
         genre.Categories.Should().HaveCount(1);
         genre.Categories.Should().Contain(categoryGuid);
     }
@@ -149,8 +160,10 @@ public class GenreTest
         var categoryGuid1 = Guid.NewGuid();
         var categoryGuid2 = Guid.NewGuid();
 
+        
         genre.AddCategory(categoryGuid1);
         genre.AddCategory(categoryGuid2);
+
 
         genre.Categories.Should().HaveCount(2);
         genre.Categories.Should().Contain(categoryGuid1);
@@ -162,20 +175,21 @@ public class GenreTest
     public void RemoveCategory()
     {
         var exampleGuid = Guid.NewGuid();
-        var genre = GenreGenerator.GetExampleGenre(
-            categoriesIdsList: new List<Guid>()
-            {
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                exampleGuid,
-                Guid.NewGuid(),
-                Guid.NewGuid()
-            }
-        );
+        var genres = new List<Guid>()
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            exampleGuid,
+            Guid.NewGuid(),
+            Guid.NewGuid()
+        };
 
+
+        var genre = GenreGenerator.GetExampleGenre(true, genres);
         genre.RemoveCategory(exampleGuid);
 
-        genre.Categories.Should().HaveCount(4);
+
+        genre.Categories.Should().HaveCount(genres.Count - 1);
         genre.Categories.Should().NotContain(exampleGuid);
     }
 
@@ -183,18 +197,19 @@ public class GenreTest
     [Trait("Domain", "Genre - Aggregates")]
     public void RemoveAllCategories()
     {
-        var genre = GenreGenerator.GetExampleGenre(
-            categoriesIdsList: new()
-            {
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid()
-            }
-        );
+        var genres = new List<Guid>()
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid()
+        };
 
+
+        var genre = GenreGenerator.GetExampleGenre(true, genres);
         genre.RemoveAllCategories();
+
 
         genre.Categories.Should().HaveCount(0);
     }
