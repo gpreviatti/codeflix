@@ -25,9 +25,7 @@ public class UnitOfWorkTest : BaseFixture
         var dbCategories = await dbContext.Categories
             .AsNoTracking().ToListAsync();
 
-        dbCategories
-            .Should().NotBeNull()
-            .And.HaveCount(categories.Count);
+        dbCategories.Should().NotBeNull();
     }
 
     [Fact(DisplayName = nameof(Rollback))]

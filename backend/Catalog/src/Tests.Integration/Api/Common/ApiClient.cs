@@ -11,7 +11,7 @@ public class ApiClient
         _httpClient = httpClient;
     }
 
-    public async Task<(HttpResponseMessage?, TOutput?)> Post<TOutput>(
+    public async Task<(HttpResponseMessage, TOutput)> Post<TOutput>(
         string resourceUrl,
         object request
     ) where TOutput : class
@@ -77,13 +77,13 @@ public class ApiClient
 
     private static async Task<TOutput> Deseriealize<TOutput>(HttpResponseMessage response) where TOutput : class
     {
-        var outputString = await response.Content.ReadAsStringAsync();
+        var stream = response.Content.ReadAsStream();
 
         TOutput? output = null;
-        if (!string.IsNullOrEmpty(outputString))
+        if (stream != null)
         {
-            output = JsonSerializer.Deserialize<TOutput>(
-                outputString,
+            output = await JsonSerializer.DeserializeAsync<TOutput>(
+                stream,
                 new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = false
