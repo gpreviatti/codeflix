@@ -121,8 +121,7 @@ public class GenreTest
     {
         var genre = GenreGenerator.GetExampleGenre();
 
-        var action =
-            () => genre.Update(name!);
+        var action = () => genre.Update(name!);
 
         action.Should().Throw<EntityValidationException>()
             .WithMessage("Name should not be empty or null");
@@ -162,20 +161,21 @@ public class GenreTest
     public void RemoveCategory()
     {
         var exampleGuid = Guid.NewGuid();
-        var genre = GenreGenerator.GetExampleGenre(
-            categoriesIdsList: new List<Guid>()
-            {
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                exampleGuid,
-                Guid.NewGuid(),
-                Guid.NewGuid()
-            }
-        );
+        var genres = new List<Guid>()
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            exampleGuid,
+            Guid.NewGuid(),
+            Guid.NewGuid()
+        };
 
+
+        var genre = GenreGenerator.GetExampleGenre(true, genres);
         genre.RemoveCategory(exampleGuid);
 
-        genre.Categories.Should().HaveCount(4);
+
+        genre.Categories.Should().HaveCount(genres.Count - 1);
         genre.Categories.Should().NotContain(exampleGuid);
     }
 
@@ -183,18 +183,19 @@ public class GenreTest
     [Trait("Domain", "Genre - Aggregates")]
     public void RemoveAllCategories()
     {
-        var genre = GenreGenerator.GetExampleGenre(
-            categoriesIdsList: new()
-            {
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid()
-            }
-        );
+        var genres = new List<Guid>()
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid()
+        };
 
+
+        var genre = GenreGenerator.GetExampleGenre(true, genres);
         genre.RemoveAllCategories();
+
 
         genre.Categories.Should().HaveCount(0);
     }
