@@ -16,8 +16,7 @@ public class DeleteCategoryApiTest : CategoryApiTestFixture
             .Post<BaseResponse<CategoryOutput>>(RESOURCE_URL, input);
 
         
-        var (responseDelete, _) = await apiClient
-            .Delete<object>(RESOURCE_URL + "/" + outputCreate!.Data.Id);
+        var responseDelete = await apiClient.Delete(RESOURCE_URL + "/" + outputCreate!.Data.Id);
 
         var (responseGet, outputGet) = await apiClient
             .Get<ProblemDetails>(RESOURCE_URL + "/" + outputCreate!.Data.Id);
@@ -35,17 +34,10 @@ public class DeleteCategoryApiTest : CategoryApiTestFixture
         var id = Guid.NewGuid();
         
         
-        var (response, output) = await apiClient
-            .Delete<ProblemDetails>(RESOURCE_URL + "/" + id);
+        var response = await apiClient.Delete(RESOURCE_URL + "/" + id);
 
 
         response.Should().NotBeNull();
         response!.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
-
-        output.Should().NotBeNull();
-        output!.Title.Should().Be("An unexpected error ocurred");
-        output!.Type.Should().Be("UnexpectedError");
-        output!.Status.Should().Be((int) HttpStatusCode.InternalServerError);
-        output!.Detail.Should().Be($"Category '{id}' not found.");
     }
 }

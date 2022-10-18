@@ -32,7 +32,6 @@ public class ListCategoryTest : CategoryTestFixture
         output.Meta.Page.Should().Be(input.Page);
         output.Meta.Per_Page.Should().Be(input.Per_Page);
         output.Meta.Filtred.Should().Be(count);
-        output.Meta.Total.Should().Be(count);
         output.Data.Count.Should().Be(count);
     }
 
@@ -56,7 +55,6 @@ public class ListCategoryTest : CategoryTestFixture
         output.Meta.Page.Should().Be(input.Page);
         output.Meta.Per_Page.Should().Be(input.Per_Page);
         output.Meta.Filtred.Should().Be(categoriesFiltred.Count());
-        output.Meta.Total.Should().Be(categories.Count);
         output.Data.Count.Should().Be(categoriesFiltred.Count());
     }
 }

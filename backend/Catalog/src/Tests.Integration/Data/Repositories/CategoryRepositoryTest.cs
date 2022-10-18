@@ -156,7 +156,7 @@ public class CategoryRepositoryTest : BaseFixture
     {
         var page = 1;
         var perPage = 10;
-        var input = new SearchInput(page, perPage, "", "", SearchOrder.Desc);
+        var input = new SearchInput(page, perPage, "12312312", "", SearchOrder.Desc);
 
         var result = await repoistory.Search(input, CancellationToken.None);
 
@@ -164,7 +164,6 @@ public class CategoryRepositoryTest : BaseFixture
         result.CurrentPage.Should().Be(page);
         result.Filtred.Should().Be(0);
         result.Items.Count.Should().Be(0);
-        result.Total.Should().Be(0);
     }
     #endregion
 }

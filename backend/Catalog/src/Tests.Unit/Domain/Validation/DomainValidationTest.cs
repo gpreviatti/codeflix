@@ -23,12 +23,11 @@ public class DomainValidationTest
     [Trait("Domain", "DomainValidation - Validation")]
     public void NotNullThrowWhenNull()
     {
-        var value = string.Empty;
         var fieldName = Faker.Commerce.ProductName().Replace(" ", "");
 
-        var action = () => DomainValidation.NotNull(value, fieldName);
+        var action = () => DomainValidation.NotNull(null, fieldName);
 
-        _=action.Should()
+        action.Should()
             .Throw<EntityValidationException>()
             .WithMessage($"{fieldName} should not be null");
     }

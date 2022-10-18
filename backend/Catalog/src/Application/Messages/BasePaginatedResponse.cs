@@ -1,9 +1,11 @@
 ﻿namespace Application.Messages;
 public class BasePaginatedResponse<TData> : BaseResponse<TData> where TData : class
 {
-    public BasePaginatedResponse(TData data, int page, int per_Page, int filtred, int total) : base(data)
+    public BasePaginatedResponse() { }
+
+    public BasePaginatedResponse(TData data, int page, int per_page, int filtred, int total) : base(data)
     {
-        Meta = new(page, per_Page, filtred, total);
+        Meta = new(page, per_page, filtred, total);
     }
 
     public Meta Meta { get; set; }
@@ -11,6 +13,8 @@ public class BasePaginatedResponse<TData> : BaseResponse<TData> where TData : cl
 
 public class Meta
 {
+    public Meta() {}
+
     public Meta(int page, int per_Page, int filtred, int total)
     {
         Page = page;

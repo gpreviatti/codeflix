@@ -11,7 +11,6 @@ public class CategoryOutput
     public bool Is_Active { get; set; }
     public DateTime Created_At { get; set; }
 
-    [JsonConstructor]
     public CategoryOutput(
         Guid id,
         string name,

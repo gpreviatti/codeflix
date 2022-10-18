@@ -54,14 +54,7 @@ public class ApiClient
         return (response, output);
     }
 
-    public async Task<(HttpResponseMessage?, TOutput?)> Delete<TOutput>(string resourceUrl) where TOutput : class
-    {
-        var response = await _httpClient.DeleteAsync(resourceUrl);
-
-        var output = await Deseriealize<TOutput>(response);
-
-        return (response, output);
-    }
+    public async Task<HttpResponseMessage?> Delete(string resourceUrl) => await _httpClient.DeleteAsync(resourceUrl);
 
     private static StringContent Serialize(object request) => new(
         JsonSerializer.Serialize(
@@ -75,7 +68,7 @@ public class ApiClient
         "application/json"
     );
 
-    private static async Task<TOutput> Deseriealize<TOutput>(HttpResponseMessage response) where TOutput : class
+    private async Task<TOutput> Deseriealize<TOutput>(HttpResponseMessage response) where TOutput : class
     {
         var stream = response.Content.ReadAsStream();
 
@@ -86,7 +79,7 @@ public class ApiClient
                 stream,
                 new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = false
+                    PropertyNameCaseInsensitive = true
                 }
             );
         }

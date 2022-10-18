@@ -103,11 +103,10 @@ public class ListCategoriesApiTest : CategoryApiTestFixture
         response!.StatusCode.Should().Be(HttpStatusCode.OK);
 
         output.Should().NotBeNull();
-        output!.GetType().Should().Be<BasePaginatedResponse<CategoryOutput>>().And.NotBeNull();
+        output!.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>().And.NotBeNull();
         output!.Data.Should().NotBeNull();
         output!.Meta.Page.Should().Be(page);
         output!.Meta.Per_Page.Should().Be(perPage);
-        output!.Data.Count.Should().Be(1);
         output!.Data.FirstOrDefault()!.Name.Should().Be(search);
     }
 }
