@@ -10,7 +10,7 @@ public class Genre : AggregateRoot
     public IReadOnlyList<Guid> Categories
         => _categories.AsReadOnly();
 
-    private List<Guid> _categories;
+    private readonly List<Guid> _categories;
 
     public Genre(string name, bool isActive = true)
     {
