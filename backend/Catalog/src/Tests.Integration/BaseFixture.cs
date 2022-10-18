@@ -16,7 +16,7 @@ public abstract class BaseFixture
 
     public static CatalogDbContext CreateDbContext()
     {
-        var connectionString = $"Server=localhost;Port=3306;Uid=root;Pwd=codeflix;Database=catalog_dev";
+        var connectionString = $"Server=localhost;Port=3306;Uid=root;Pwd=codeflix;Database=catalog_test";
         return new(
             new DbContextOptionsBuilder<CatalogDbContext>()
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))

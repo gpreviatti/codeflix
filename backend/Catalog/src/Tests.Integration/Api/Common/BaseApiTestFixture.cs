@@ -9,6 +9,9 @@ public class BaseApiTestFixture
 
     public BaseApiTestFixture()
     {
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Test");
+        Environment.SetEnvironmentVariable("CONNECTION_STRING", "Server=localhost;Port=3306;Uid=root;Pwd=codeflix;Database=catalog_test;");
+
         var application = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder => builder.UseEnvironment("Test"));
 

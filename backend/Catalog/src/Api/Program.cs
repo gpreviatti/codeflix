@@ -3,11 +3,13 @@ using Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("CatalogDb");
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (connectionString is null)
+    throw new Exception("Connection string variable not configured");
+
 builder.Services
     .AddUseCases()
-    .AddAppConnections(connectionString!)
+    .AddAppConnections(connectionString)
     .AddControllers(options => options.Filters.Add(typeof(ApiGlobalExceptionFilter)));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -17,7 +19,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Test"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
