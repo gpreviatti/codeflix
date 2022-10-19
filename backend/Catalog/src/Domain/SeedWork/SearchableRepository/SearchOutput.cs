@@ -2,7 +2,7 @@
 
 namespace Domain.SeedWork.SearchableRepository;
 
-public class SearchOutput<TAggregate> where TAggregate : AggregateRoot
+public class SearchOutput<TAggregate> where TAggregate : class
 {
     public int CurrentPage { get; set; }
     public int PerPage { get; set; }
