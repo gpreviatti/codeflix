@@ -1,5 +1,4 @@
-﻿using Application.Dtos.Category;
-using Application.Dtos.Genre;
+﻿using Application.Dtos.Genre;
 using Application.Interfaces.UseCases;
 using Application.Messages;
 using Domain.Repository;
@@ -16,7 +15,7 @@ public class ListGenres : IListGenres
         ICategoryRepository categoryRepository
     ) => (_genreRepository, _categoryRepository) = (genreRepository, categoryRepository);
 
-    public async Task<BasePaginatedResponse<ListGenresOutput>> Handle(
+    public async Task<BasePaginatedResponse<List<GenreOutput>>> Handle(
         ListGenresInput input,
         CancellationToken cancellationToken
     )
@@ -25,19 +24,24 @@ public class ListGenres : IListGenres
             input.ToSearchInput(), cancellationToken
         );
 
-        var items = searchOutput.Items.Select(GenreOutput.FromGenre).ToList();
+        var genres = searchOutput.Items.Select(GenreOutput.FromGenre).ToList();
 
-        var relatedCategoriesIds = items.SelectMany(item => item.Categories).Distinct().ToList();
+        var relatedCategoriesIds = genres.SelectMany(item => item.Categories).Distinct().ToList();
 
         if (relatedCategoriesIds.Count > 0)
         {
-            var categories = await _categoryRepository.GetListByIds(relatedCategoriesIds, cancellationToken);
+            var categories = await _categoryRepository.GetListByIds(
+                relatedCategoriesIds.Select(r => r.Id).ToList(), 
+                cancellationToken
+            );
 
-            items.FillWithCategoryNames(categories);
+            foreach (var genre in genres)
+                foreach (var categoryOutput in genre.Categories)
+                    categoryOutput.Name = categories.FirstOrDefault(category => category.Id == categoryOutput.Id)?.Name;
         }
 
         return new(
-            items,
+            genres,
             searchOutput.CurrentPage,
             searchOutput.PerPage,
             searchOutput.Filtred,

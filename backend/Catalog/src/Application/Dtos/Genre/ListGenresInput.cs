@@ -4,7 +4,7 @@ using Domain.SeedWork.SearchableRepository;
 using MediatR;
 
 namespace Application.Dtos.Genre;
-public class ListGenresInput : PaginatedListInput, IRequest<BasePaginatedResponse<ListGenresOutput>>
+public class ListGenresInput : PaginatedListInput, IRequest<BasePaginatedResponse<List<GenreOutput>>>
 {
     public ListGenresInput(
     int page = 1,

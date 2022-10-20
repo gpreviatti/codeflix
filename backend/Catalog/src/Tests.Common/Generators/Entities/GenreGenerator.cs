@@ -19,7 +19,7 @@ public class GenreGenerator : CommonGenerator
         return genre;
     }
 
-    public List<Genre> GetExampleGenresList(int count = 10) => Enumerable.Range(1, count)
+    public static List<Genre> GetExampleGenresList(int count = 10) => Enumerable.Range(1, count)
         .Select(_ => {
             var genre = new Genre(
                 GetValidName(),
@@ -29,7 +29,7 @@ public class GenreGenerator : CommonGenerator
             return genre;
         }).ToList();
 
-    public List<Guid> GetRandomIdsList(int? count = null) => Enumerable
+    public static List<Guid> GetRandomIdsList(int? count = null) => Enumerable
         .Range(1, count ?? (new Random()).Next(1, 10))
         .Select(_ => Guid.NewGuid())
         .ToList();

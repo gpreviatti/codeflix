@@ -20,10 +20,7 @@ public class DeleteGenre : IDeleteGenre
 
     public async Task<Unit> Handle(DeleteGenreInput input, CancellationToken cancellationToken)
     {
-        var genre = await _genreRepository.Get(
-            input.Id,
-            cancellationToken
-        );
+        var genre = await _genreRepository.Get(input.Id, cancellationToken);
 
         await _genreRepository.Delete(genre, cancellationToken);
         

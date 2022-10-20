@@ -40,6 +40,5 @@ public class GenreModelOutputCategory
     public Guid Id { get; set; }
     public string? Name { get; set; }
 
-    public GenreModelOutputCategory(Guid id, string? name = null)
-        => (Id, Name) = (id, name);
+    public GenreModelOutputCategory(Guid id, string? name = null) => (Id, Name) = (id, name);
 }
