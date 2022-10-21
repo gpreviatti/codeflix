@@ -31,13 +31,16 @@ public class ListGenres : IListGenres
         if (relatedCategoriesIds.Count > 0)
         {
             var categories = await _categoryRepository.GetListByIds(
-                relatedCategoriesIds.Select(r => r.Id).ToList(), 
+                relatedCategoriesIds.Select(r => r.Id).ToList(),
                 cancellationToken
             );
 
-            foreach (var genre in genres)
-                foreach (var categoryOutput in genre.Categories)
-                    categoryOutput.Name = categories.FirstOrDefault(category => category.Id == categoryOutput.Id)?.Name;
+            if (categories != null)
+            {
+                foreach (var genre in genres)
+                    foreach (var categoryOutput in genre.Categories)
+                        categoryOutput.Name = categories.FirstOrDefault(category => category.Id == categoryOutput.Id)?.Name;
+            }
         }
 
         return new(
@@ -47,5 +50,6 @@ public class ListGenres : IListGenres
             searchOutput.Filtred,
             searchOutput.Total
         );
+        
     }
 }
