@@ -1,4 +1,5 @@
 ﻿using Application.UseCases.Category;
+using Application.UseCases.Genre;
 using Domain.Repository;
 using Infra.Data;
 using Infra.Data.Repositories;
@@ -14,6 +15,7 @@ public static class UseCasesConfiguration
     {
         // adicionar referencia de qualquer use case que implemente o handler do mediatR
         services.AddMediatR(typeof(CreateCategory));
+        services.AddMediatR(typeof(CreateGenre));
         services.AddRepositories();
 
         return services;
@@ -22,6 +24,7 @@ public static class UseCasesConfiguration
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddTransient<ICategoryRepository, CategoryRepository>();
+        services.AddTransient<IGenreRepository, GenreRepository>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         return services;
     }
