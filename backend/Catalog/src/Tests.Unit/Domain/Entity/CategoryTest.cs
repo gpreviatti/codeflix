@@ -2,11 +2,10 @@
 using Domain.Excpetions;
 using Tests.Common.Generators;
 using Tests.Common.Generators.Entities;
-using Tests.Unit.Common;
 
 namespace Tests.Unit.Domain.Entity;
 
-public class CategoryTest : BaseFixture
+public class CategoryTest
 {
     #region Instantiate
     [Fact(DisplayName = nameof(Instantiate))]

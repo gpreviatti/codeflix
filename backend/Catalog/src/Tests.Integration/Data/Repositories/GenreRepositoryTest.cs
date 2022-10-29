@@ -1,6 +1,7 @@
 ﻿using Application.Exceptions;
 using Domain.Repository;
 using Domain.SeedWork;
+using Domain.SeedWork.SearchableRepository;
 using Infra.Data.Models;
 using Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -224,5 +225,308 @@ public class GenreRepositoryTest : BaseFixture
         });
     }
 
+    [Fact(DisplayName = nameof(UpdateRemovingRelations))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task UpdateRemovingRelations()
+    {
+        var exampleGenre = GenreGenerator.GetExampleGenre();
 
+        var categoriesListExample = CategoryGenerator.GetCategories(3);
+        categoriesListExample.ToList().ForEach(
+            category => exampleGenre.AddCategory(category.Id)
+        );
+
+        await dbContext.Categories.AddRangeAsync(categoriesListExample);
+
+        await dbContext.Genres.AddAsync(exampleGenre);
+
+        foreach (var categoryId in exampleGenre.Categories)
+        {
+            var relation = new GenresCategories(categoryId, exampleGenre.Id);
+            await dbContext.GenresCategories.AddAsync(relation);
+        }
+        dbContext.SaveChanges();
+
+
+        exampleGenre.Update(exampleGenre.Name);
+        if (exampleGenre.IsActive)
+            exampleGenre.Deactivate();
+        else
+            exampleGenre.Activate();
+
+        await repoistory.Update(exampleGenre, CancellationToken.None);
+        
+        await dbContext.SaveChangesAsync();
+
+
+        var dbGenre = await dbContext.Genres.FindAsync(exampleGenre.Id);
+
+        dbGenre.Should().NotBeNull();
+        dbGenre!.Name.Should().Be(exampleGenre.Name);
+        dbGenre.IsActive.Should().Be(exampleGenre.IsActive);
+        dbGenre.CreatedAt.Should().Be(exampleGenre.CreatedAt);
+        
+        var genreCategoriesRelations = await dbContext
+            .GenresCategories.Where(r => r.GenreId == exampleGenre.Id)
+            .ToListAsync();
+        
+        genreCategoriesRelations.Should().HaveCount(0);
+    }
+
+    [Fact(DisplayName = nameof(SearchReturnsItemsAndTotal))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task SearchReturnsItemsAndTotal()
+    {   
+        var exampleGenresList = GenreGenerator.GetExampleGenresList(10);
+
+        await dbContext.Genres.AddRangeAsync(exampleGenresList);
+        
+        dbContext.SaveChanges();
+        
+        var searchInput = new SearchInput(1, 20, "", "", SearchOrder.Asc);
+
+
+        var searchResult = await repoistory.Search(
+            searchInput,
+            CancellationToken.None
+        );
+
+
+        searchResult.Should().NotBeNull();
+        searchResult.CurrentPage.Should().Be(searchInput.Page);
+        searchResult.PerPage.Should().Be(searchInput.PerPage);
+        searchResult.Items.Should().HaveCount(exampleGenresList.Count);
+
+        foreach (var resultItem in searchResult.Items)
+        {
+            var exampleGenre = exampleGenresList.Find(x => x.Id == resultItem.Id);
+            exampleGenre.Should().NotBeNull();
+            resultItem!.Name.Should().Be(exampleGenre!.Name);
+            resultItem.IsActive.Should().Be(exampleGenre.IsActive);
+            resultItem.CreatedAt.Should().Be(exampleGenre.CreatedAt);
+        }
+    }
+
+    [Fact(DisplayName = nameof(SearchReturnsEmptyWhenPersistenceIsEmpty))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task SearchReturnsEmptyWhenPersistenceIsEmpty()
+    {
+        var searchInput = new SearchInput(1, 20, "", "", SearchOrder.Asc);
+
+
+        var searchResult = await repoistory.Search(
+            searchInput,
+            CancellationToken.None
+        );
+
+
+        searchResult.Should().NotBeNull();
+        searchResult.CurrentPage.Should().Be(searchInput.Page);
+        searchResult.PerPage.Should().Be(searchInput.PerPage);
+    }
+
+    [Fact(DisplayName = nameof(SearchReturnsRelations))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    public async Task SearchReturnsRelations()
+    {
+        var exampleGenresList = GenreGenerator.GetExampleGenresList(10);
+        await dbContext.Genres.AddRangeAsync(exampleGenresList);
+        var random = new Random();
+
+        exampleGenresList.ForEach(exampleGenre => {
+            var categoriesListToRelation = CategoryGenerator.GetCategories(random.Next(0, 4));
+
+            if (categoriesListToRelation.Count > 0)
+            {
+                categoriesListToRelation.ToList().ForEach(
+                    category => exampleGenre.AddCategory(category.Id)
+                );
+
+                dbContext.Categories.AddRange(categoriesListToRelation);
+                var relationsToAdd = categoriesListToRelation
+                    .Select(category
+                        => new GenresCategories(category.Id, exampleGenre.Id)
+                    )
+                    .ToList();
+                dbContext.GenresCategories.AddRange(relationsToAdd);
+            }
+        });
+
+        dbContext.SaveChanges();
+
+        var searchInput = new SearchInput(1, 20, "", "", SearchOrder.Asc);
+
+
+        var searchResult = await repoistory.Search(
+            searchInput,
+            CancellationToken.None
+        );
+
+
+        searchResult.Should().NotBeNull();
+        searchResult.CurrentPage.Should().Be(searchInput.Page);
+        searchResult.PerPage.Should().Be(searchInput.PerPage);
+        searchResult.Total.Should().Be(exampleGenresList.Count);
+        searchResult.Items.Should().HaveCount(exampleGenresList.Count);
+
+        foreach (var resultItem in searchResult.Items)
+        {
+            var exampleGenre = exampleGenresList
+                .Find(x => x.Id == resultItem.Id);
+            exampleGenre.Should().NotBeNull();
+            resultItem!.Name.Should().Be(exampleGenre!.Name);
+            resultItem.IsActive.Should().Be(exampleGenre.IsActive);
+            resultItem.CreatedAt.Should().Be(exampleGenre.CreatedAt);
+            resultItem.Categories.Should()
+                .HaveCount(exampleGenre.Categories.Count);
+            resultItem.Categories.Should()
+                .BeEquivalentTo(exampleGenre.Categories);
+        }
+    }
+
+    [Theory(DisplayName = nameof(SearchReturnsPaginated))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    [InlineData(10, 1, 5, 5)]
+    [InlineData(10, 2, 5, 5)]
+    [InlineData(7, 2, 5, 2)]
+    [InlineData(7, 3, 5, 0)]
+    public async Task SearchReturnsPaginated(
+        int quantityToGenerate,
+        int page,
+        int perPage,
+        int expectedQuantityItems
+    )
+    {
+        var exampleGenresList = GenreGenerator.GetExampleGenresList(quantityToGenerate);
+
+        await dbContext.Genres.AddRangeAsync(exampleGenresList);
+        var random = new Random();
+        
+        exampleGenresList.ForEach(exampleGenre => {
+            var categoriesListToRelation = CategoryGenerator.GetCategories(random.Next(0, 4));
+
+            if (categoriesListToRelation.Count > 0)
+            {
+                categoriesListToRelation.ToList().ForEach(
+                    category => exampleGenre.AddCategory(category.Id)
+                );
+
+                dbContext.Categories.AddRange(categoriesListToRelation);
+                
+                var relationsToAdd = categoriesListToRelation
+                    .Select(category
+                        => new GenresCategories(category.Id, exampleGenre.Id)
+                    )
+                    .ToList();
+
+                dbContext.GenresCategories.AddRange(relationsToAdd);
+            }
+        });
+        dbContext.SaveChanges();
+
+        var searchInput = new SearchInput(page, perPage, "", "", SearchOrder.Asc);
+
+
+        var searchResult = await repoistory.Search(
+            searchInput,
+            CancellationToken.None
+        );
+
+
+        searchResult.Should().NotBeNull();
+        searchResult.CurrentPage.Should().Be(searchInput.Page);
+        searchResult.PerPage.Should().Be(searchInput.PerPage);
+        searchResult.Total.Should().Be(exampleGenresList.Count);
+        searchResult.Items.Should().HaveCount(expectedQuantityItems);
+
+        foreach (var resultItem in searchResult.Items)
+        {
+            var exampleGenre = exampleGenresList
+                .Find(x => x.Id == resultItem.Id);
+            exampleGenre.Should().NotBeNull();
+            resultItem!.Name.Should().Be(exampleGenre!.Name);
+            resultItem.IsActive.Should().Be(exampleGenre.IsActive);
+            resultItem.CreatedAt.Should().Be(exampleGenre.CreatedAt);
+            resultItem.Categories.Should()
+                .HaveCount(exampleGenre.Categories.Count);
+            resultItem.Categories.Should()
+                .BeEquivalentTo(exampleGenre.Categories);
+        }
+    }
+
+    [Theory(DisplayName = nameof(SearchByText))]
+    [Trait("Integration/Infra.Data", "GenreRepository - Repositories")]
+    [InlineData("Action", 1, 5, 1, 1)]
+    [InlineData("Horror", 1, 5, 3, 3)]
+    [InlineData("Horror", 2, 5, 0, 3)]
+    [InlineData("Sci-fi", 1, 5, 4, 4)]
+    [InlineData("Sci-fi", 1, 2, 2, 4)]
+    [InlineData("Sci-fi", 2, 3, 1, 4)]
+    [InlineData("Sci-fi Other", 1, 3, 0, 0)]
+    [InlineData("Robots", 1, 5, 2, 2)]
+    public async Task SearchByText(
+        string search,
+        int page,
+        int perPage,
+        int expectedQuantityItemsReturned,
+        int expectedQuantityTotalItems
+    )
+    {
+        var exampleGenresList = GenreGenerator.GetExampleGenresList(10);
+
+        await dbContext.Genres.AddRangeAsync(exampleGenresList);
+        
+        var random = new Random();
+        exampleGenresList.ForEach(exampleGenre => {
+            var categoriesListToRelation =
+                CategoryGenerator.GetCategories(random.Next(0, 4));
+
+            if (categoriesListToRelation.Count > 0)
+            {
+                categoriesListToRelation.ToList().ForEach(
+                    category => exampleGenre.AddCategory(category.Id)
+                );
+
+                dbContext.Categories.AddRange(categoriesListToRelation);
+                
+                var relationsToAdd = categoriesListToRelation
+                    .Select(category
+                        => new GenresCategories(category.Id, exampleGenre.Id)
+                    )
+                    .ToList();
+                
+                dbContext.GenresCategories.AddRange(relationsToAdd);
+            }
+        });
+        dbContext.SaveChanges();
+
+        var searchInput = new SearchInput(page, perPage, search, "", SearchOrder.Asc);
+
+        
+        var searchResult = await repoistory.Search(
+            searchInput,
+            CancellationToken.None
+        );
+
+        
+        searchResult.Should().NotBeNull();
+        searchResult.CurrentPage.Should().Be(searchInput.Page);
+        searchResult.PerPage.Should().Be(searchInput.PerPage);
+        searchResult.Total.Should().Be(expectedQuantityTotalItems);
+        searchResult.Items.Should().HaveCount(expectedQuantityItemsReturned);
+        
+        foreach (var resultItem in searchResult.Items)
+        {
+            var exampleGenre = exampleGenresList
+                .Find(x => x.Id == resultItem.Id);
+            exampleGenre.Should().NotBeNull();
+            resultItem!.Name.Should().Be(exampleGenre!.Name);
+            resultItem.IsActive.Should().Be(exampleGenre.IsActive);
+            resultItem.CreatedAt.Should().Be(exampleGenre.CreatedAt);
+            resultItem.Categories.Should()
+                .HaveCount(exampleGenre.Categories.Count);
+            resultItem.Categories.Should()
+                .BeEquivalentTo(exampleGenre.Categories);
+        }
+    }
 }
