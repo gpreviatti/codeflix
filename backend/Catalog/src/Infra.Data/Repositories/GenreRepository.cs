@@ -49,10 +49,7 @@ public class GenreRepository : IGenreRepository
         return genre;
     }
 
-    public Task Delete(
-        Genre aggregate,
-        CancellationToken cancellationToken
-    )
+    public Task Delete(Genre aggregate, CancellationToken cancellationToken)
     {
         _genresCategories.RemoveRange(
             _genresCategories.Where(x => x.GenreId == aggregate.Id)
@@ -82,10 +79,7 @@ public class GenreRepository : IGenreRepository
         }
     }
 
-    public async Task<SearchOutput<Genre>> Search(
-        SearchInput input, 
-        CancellationToken cancellationToken
-    )
+    public async Task<SearchOutput<Genre>> Search(SearchInput input, CancellationToken cancellationToken)
     {
         var toSkip = (input.Page - 1) * input.PerPage;
         var query = _genres.AsNoTracking();
@@ -122,7 +116,7 @@ public class GenreRepository : IGenreRepository
         return new(input.Page, input.PerPage, total, genres);
     }
 
-    private IQueryable<Genre> AddOrderToQuery(
+    private static IQueryable<Genre> AddOrderToQuery(
         IQueryable<Genre> query,
         string orderProperty,
         SearchOrder order
