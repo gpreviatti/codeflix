@@ -12,7 +12,7 @@ public class UpdateCategoryTest : CategoryTestFixture
 
     public UpdateCategoryTest()
     {
-        _updateCategory = new UpdateCategory(_categoryRepository, _unitOfWork);
+        _updateCategory = new UpdateCategory(categoryRepository, unitOfWork);
     }
 
     [Fact]

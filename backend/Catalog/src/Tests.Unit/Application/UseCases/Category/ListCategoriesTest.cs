@@ -28,6 +28,7 @@ public class ListCategoriesTest : CategoryBaseFixture
             input.Page,
             input.Per_Page,
             new Random().Next(50, 200),
+            10,
             categoriesExampleList
         );
 
@@ -85,6 +86,7 @@ public class ListCategoriesTest : CategoryBaseFixture
             input.Page,
             input.Per_Page,
             0,
+            10,
             new List<DomainEntity.Category>().AsReadOnly()
         );
 
@@ -134,6 +136,7 @@ public class ListCategoriesTest : CategoryBaseFixture
             input.Page,
             input.Per_Page,
             new Random().Next(50, 200),
+            10,
             categoriesExampleList
         );
 

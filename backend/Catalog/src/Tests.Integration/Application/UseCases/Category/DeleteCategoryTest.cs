@@ -12,7 +12,7 @@ public class DeleteCategoryTest : CategoryTestFixture
 
     public DeleteCategoryTest()
     {
-        _deleteCategory = new DeleteCategory(_categoryRepository, _unitOfWork);
+        _deleteCategory = new DeleteCategory(categoryRepository, unitOfWork);
     }
 
     [Fact]

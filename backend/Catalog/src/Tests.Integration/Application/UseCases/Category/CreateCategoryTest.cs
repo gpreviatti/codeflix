@@ -12,7 +12,7 @@ public class CreateCategoryTest : CategoryTestFixture
 
     public CreateCategoryTest()
     {
-        _createCategory = new CreateCategory(_categoryRepository, _unitOfWork);
+        _createCategory = new CreateCategory(categoryRepository, unitOfWork);
     }
 
     [Fact]

@@ -12,7 +12,7 @@ public class GetCategoryTest : CategoryTestFixture
 
     public GetCategoryTest()
     {
-        _getCategory = new GetCategory(_categoryRepository);
+        _getCategory = new GetCategory(categoryRepository);
     }
 
     [Fact]

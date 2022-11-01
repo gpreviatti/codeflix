@@ -82,19 +82,21 @@ public class GenreRepository : IGenreRepository
     public async Task<SearchOutput<Genre>> Search(SearchInput input, CancellationToken cancellationToken)
     {
         var toSkip = (input.Page - 1) * input.PerPage;
-        var query = _genres.AsNoTracking();
 
+        var query = _genres.AsNoTracking();
         query = AddOrderToQuery(query, input.OrderBy, input.Order);
+
+        var total = await query.CountAsync(cancellationToken: cancellationToken);
 
         if (!string.IsNullOrWhiteSpace(input.Search))
             query = query.Where(genre => genre.Name.Contains(input.Search));
+
+        var filtred = await query.CountAsync(cancellationToken);
 
         var genres = await query
             .Skip(toSkip)
             .Take(input.PerPage)
             .ToListAsync(cancellationToken: cancellationToken);
-
-        var total = await query.CountAsync(cancellationToken: cancellationToken);
 
         var genresIds = genres.Select(genre => genre.Id).ToList();
 
@@ -113,7 +115,7 @@ public class GenreRepository : IGenreRepository
                 .ForEach(relation => genre.AddCategory(relation.CategoryId));
         });
 
-        return new(input.Page, input.PerPage, total, genres);
+        return new(input.Page, input.PerPage, total, filtred, genres);
     }
 
     private static IQueryable<Genre> AddOrderToQuery(

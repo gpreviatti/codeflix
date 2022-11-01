@@ -50,12 +50,14 @@ public class CategoryRepository : ICategoryRepository
         if (!string.IsNullOrWhiteSpace(input.Search))
             query = query.Where(x => x.Name.Contains(input.Search));
 
+        var filtred = await query.CountAsync(cancellationToken);
+
         var items = await query
             .Skip(toSkip)
             .Take(input.PerPage)
             .ToListAsync(cancellationToken);
 
-        return new(input.Page, input.PerPage, total, items);
+        return new(input.Page, input.PerPage, total, filtred, items);
     }
 
     private static IQueryable<Category> AddOrderToQuery(

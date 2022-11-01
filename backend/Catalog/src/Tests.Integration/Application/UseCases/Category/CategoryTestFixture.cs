@@ -5,12 +5,12 @@ using Infra.Data.Repositories;
 namespace Tests.Integration.Application.UseCases.Category;
 public abstract class CategoryTestFixture : BaseFixture
 {
-    protected ICategoryRepository _categoryRepository;
-    protected IUnitOfWork _unitOfWork;
+    protected ICategoryRepository categoryRepository;
+    protected IUnitOfWork unitOfWork;
 
     public CategoryTestFixture()
 	{
-		_categoryRepository = new CategoryRepository(dbContext);
-        _unitOfWork = new UnitOfWork(dbContext);
+		categoryRepository = new CategoryRepository(dbContext);
+        unitOfWork = new UnitOfWork(dbContext);
     }
 }

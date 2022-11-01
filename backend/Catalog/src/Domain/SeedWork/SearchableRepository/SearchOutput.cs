@@ -14,6 +14,7 @@ public class SearchOutput<TAggregate> where TAggregate : class
         int currentPage,
         int perPage,
         int total,
+        int filtred,
         IReadOnlyList<TAggregate> items
     )
     {
@@ -21,6 +22,6 @@ public class SearchOutput<TAggregate> where TAggregate : class
         PerPage = perPage;
         Total = total;
         Items = items;
-        Filtred = items.Count;
+        Filtred = filtred;
     }
 }

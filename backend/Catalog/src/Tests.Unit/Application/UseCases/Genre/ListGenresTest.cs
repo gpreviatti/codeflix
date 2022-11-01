@@ -26,10 +26,11 @@ public class ListGenresTest : GenreBaseFixture
         var input = new ListGenresInput(1, 3, "", "");
 
         var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
-            currentPage: input.Page,
-            perPage: input.Per_Page,
-            items: genresListExample,
-            total: new Random().Next(5, 10)
+            input.Page,
+            input.Per_Page,
+            new Random().Next(5, 10),
+            10,
+            genresListExample
         );
 
         _repositoryMock.Setup(x => x.Search(
@@ -96,10 +97,11 @@ public class ListGenresTest : GenreBaseFixture
         var input = new ListGenresInput(1, 10, "", "");
 
         var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
-            currentPage: input.Page,
-            perPage: input.Per_Page,
-            items: (IReadOnlyList<DomainEntity.Genre>)new List<DomainEntity.Genre>(),
-            total: new Random().Next(50, 200)
+            input.Page,
+            input.Per_Page,
+            new Random().Next(50, 200),
+            10,
+            new List<DomainEntity.Genre>()
         );
 
         _repositoryMock.Setup(x => x.Search(
@@ -142,10 +144,11 @@ public class ListGenresTest : GenreBaseFixture
     public async Task ListUsingDefaultInputValues()
     {
         var outputRepositorySearch = new SearchOutput<DomainEntity.Genre>(
-            currentPage: 1,
-            perPage: 15,
-            items: new List<DomainEntity.Genre>(),
-            total: 0
+            1,
+            15,
+            0,
+            10,
+            new List<DomainEntity.Genre>()
         );
 
         _repositoryMock.Setup(x => x.Search(

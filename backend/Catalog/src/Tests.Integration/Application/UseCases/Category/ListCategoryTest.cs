@@ -12,7 +12,7 @@ public class ListCategoryTest : CategoryTestFixture
 
     public ListCategoryTest()
     {
-        _listCategories = new ListCategories(_categoryRepository);
+        _listCategories = new ListCategories(categoryRepository);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class ListCategoryTest : CategoryTestFixture
         output.GetType().Should().Be<BasePaginatedResponse<List<CategoryOutput>>>().And.NotBeNull();
         output.Meta.Page.Should().Be(input.Page);
         output.Meta.Per_Page.Should().Be(input.Per_Page);
-        output.Meta.Filtred.Should().Be(count);
+        output.Meta.Filtred.Should().Be(output.Meta.Total);
         output.Data.Count.Should().Be(count);
     }
 
