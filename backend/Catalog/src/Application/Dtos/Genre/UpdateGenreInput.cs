@@ -6,19 +6,19 @@ public class UpdateGenreInput : IRequest<BaseResponse<GenreOutput>>
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public bool? IsActive { get; set; }
+    public bool? Is_Active { get; set; }
     public List<Guid>? CategoriesIds { get; set; }
 
     public UpdateGenreInput(
         Guid id,
         string name,
-        bool? isActive = null,
+        bool? is_Active = null,
         List<Guid>? categoriesIds = null
     )
     {
         Id = id;
         Name = name;
-        IsActive = isActive;
+        Is_Active = is_Active;
         CategoriesIds = categoriesIds;
     }
 }

@@ -29,8 +29,8 @@ public class CreateGenreTest : GenreTestFixture
 
         output.Data.Id.Should().NotBeEmpty();
         output.Data.Name.Should().Be(input.Name);
-        output.Data.IsActive.Should().Be(input.IsActive);
-        output.Data.CreatedAt.Should().NotBe(default);
+        output.Data.Is_Active.Should().Be(input.Is_Active);
+        output.Data.Created_At.Should().NotBe(default);
         output.Data.Categories.Should().HaveCount(0);
     }
 }

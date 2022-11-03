@@ -30,12 +30,12 @@ public class CreateGenre : ICreateGenre
     {
         var genre = new DomainEntity.Genre(
             request.Name,
-            request.IsActive
+            request.Is_Active
         );
-        if ((request.CategoriesIds?.Count ?? 0) > 0)
+        if ((request.Categories_Ids?.Count ?? 0) > 0)
         {
             await ValidateCategoriesIds(request, cancellationToken);
-            request.CategoriesIds?.ForEach(genre.AddCategory);
+            request.Categories_Ids?.ForEach(genre.AddCategory);
         }
         
         await _genreRepository.Insert(genre, cancellationToken);
@@ -51,12 +51,12 @@ public class CreateGenre : ICreateGenre
     {
         var IdsInPersistence = await _categoryRepository
             .GetIdsListByIds(
-                request.CategoriesIds!,
+                request.Categories_Ids!,
                 cancellationToken
             );
-        if (IdsInPersistence.Count < request.CategoriesIds!.Count)
+        if (IdsInPersistence.Count < request.Categories_Ids!.Count)
         {
-            var notFoundIds = request.CategoriesIds
+            var notFoundIds = request.Categories_Ids
                 .FindAll(x => !IdsInPersistence.Contains(x));
             var notFoundIdsAsString = String.Join(", ", notFoundIds);
             throw new RelatedAggregateException(

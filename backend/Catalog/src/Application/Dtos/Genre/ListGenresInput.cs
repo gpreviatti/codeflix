@@ -8,9 +8,9 @@ public class ListGenresInput : PaginatedListInput, IRequest<BasePaginatedRespons
 {
     public ListGenresInput(
     int page = 1,
-    int perPage = 15,
+    int per_Page = 15,
     string search = "",
     string sort = "",
     SearchOrder dir = SearchOrder.Asc
-    ) : base(page, perPage, search, sort, dir) { }
+    ) : base(page, per_Page, search, sort, dir) { }
 }

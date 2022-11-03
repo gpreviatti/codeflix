@@ -44,8 +44,8 @@ public class UpdateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().Be(exampleGenre.Id);
         output.Data.Name.Should().Be(newNameExample);
-        output.Data.IsActive.Should().Be(newIsActive);
-        output.Data.CreatedAt.Should().BeSameDateAs(exampleGenre.CreatedAt);
+        output.Data.Is_Active.Should().Be(newIsActive);
+        output.Data.Created_At.Should().BeSameDateAs(exampleGenre.CreatedAt);
         output.Data.Categories.Should().HaveCount(0);
         _repositoryMock.Verify(
             x => x.Update(
@@ -138,8 +138,8 @@ public class UpdateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().Be(exampleGenre.Id);
         output.Data.Name.Should().Be(newNameExample);
-        output.Data.IsActive.Should().Be(isActive);
-        output.Data.CreatedAt.Should().BeSameDateAs(exampleGenre.CreatedAt);
+        output.Data.Is_Active.Should().Be(isActive);
+        output.Data.Created_At.Should().BeSameDateAs(exampleGenre.CreatedAt);
         output.Data.Categories.Should().HaveCount(0);
 
         _repositoryMock.Verify(
@@ -186,8 +186,8 @@ public class UpdateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().Be(exampleGenre.Id);
         output.Data.Name.Should().Be(newNameExample);
-        output.Data.IsActive.Should().Be(newIsActive);
-        output.Data.CreatedAt.Should().BeSameDateAs(exampleGenre.CreatedAt);
+        output.Data.Is_Active.Should().Be(newIsActive);
+        output.Data.Created_At.Should().BeSameDateAs(exampleGenre.CreatedAt);
         output.Data.Categories.Should().HaveCount(exampleCategoriesIdsList.Count);
         exampleCategoriesIdsList.ForEach(
             expectedId => output.Data.Categories.Should().Contain(relation => relation.Id == expectedId)
@@ -239,8 +239,8 @@ public class UpdateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().Be(exampleGenre.Id);
         output.Data.Name.Should().Be(newNameExample);
-        output.Data.IsActive.Should().Be(newIsActive);
-        output.Data.CreatedAt.Should().BeSameDateAs(exampleGenre.CreatedAt);
+        output.Data.Is_Active.Should().Be(newIsActive);
+        output.Data.Created_At.Should().BeSameDateAs(exampleGenre.CreatedAt);
         output.Data.Categories.Should().HaveCount(exampleCategoriesIdsList.Count);
         exampleCategoriesIdsList.ForEach(
             expectedId => output.Data.Categories.Should().Contain(relation => relation.Id == expectedId)
@@ -335,8 +335,8 @@ public class UpdateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().Be(exampleGenre.Id);
         output.Data.Name.Should().Be(newNameExample);
-        output.Data.IsActive.Should().Be(newIsActive);
-        output.Data.CreatedAt.Should().BeSameDateAs(exampleGenre.CreatedAt);
+        output.Data.Is_Active.Should().Be(newIsActive);
+        output.Data.Created_At.Should().BeSameDateAs(exampleGenre.CreatedAt);
         output.Data.Categories.Should().HaveCount(exampleCategoriesIdsList.Count);
         exampleCategoriesIdsList.ForEach(
             expectedId => output.Data.Categories.Should().Contain(relation => relation.Id == expectedId)
@@ -384,8 +384,8 @@ public class UpdateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().Be(exampleGenre.Id);
         output.Data.Name.Should().Be(newNameExample);
-        output.Data.IsActive.Should().Be(newIsActive);
-        output.Data.CreatedAt.Should().BeSameDateAs(exampleGenre.CreatedAt);
+        output.Data.Is_Active.Should().Be(newIsActive);
+        output.Data.Created_At.Should().BeSameDateAs(exampleGenre.CreatedAt);
         output.Data.Categories.Should().HaveCount(0);
 
         _repositoryMock.Verify(

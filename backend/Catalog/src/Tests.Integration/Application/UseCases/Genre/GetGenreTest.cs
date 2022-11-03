@@ -35,6 +35,6 @@ public class GetGenreTest : GenreTestFixture
         output.Data.Should().NotBeNull();
         output.Data.Id.Should().Be(genre.Id);
         output.Data.Name.Should().Be(genre.Name);
-        output.Data.IsActive.Should().Be(genre.IsActive);
+        output.Data.Is_Active.Should().Be(genre.IsActive);
     }
 }

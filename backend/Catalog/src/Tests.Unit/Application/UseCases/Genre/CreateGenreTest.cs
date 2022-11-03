@@ -43,11 +43,11 @@ public class CreateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().NotBeEmpty();
         output.Data.Name.Should().Be(input.Name);
-        output.Data.IsActive.Should().Be(input.IsActive);
+        output.Data.Is_Active.Should().Be(input.Is_Active);
         output.Data.Categories.Should().HaveCount(0);
-        output.Data.CreatedAt.Should().NotBeSameDateAs(default);
-        (output.Data.CreatedAt >= datetimeBefore).Should().BeTrue();
-        (output.Data.CreatedAt <= datetimeAfter).Should().BeTrue();
+        output.Data.Created_At.Should().NotBeSameDateAs(default);
+        (output.Data.Created_At >= datetimeBefore).Should().BeTrue();
+        (output.Data.Created_At <= datetimeAfter).Should().BeTrue();
     }
 
     [Fact(DisplayName = nameof(CreateWithRelatedCategories))]
@@ -59,7 +59,7 @@ public class CreateGenreTest : GenreBaseFixture
             x => x.GetIdsListByIds(
                 It.IsAny<List<Guid>>(), It.IsAny<CancellationToken>()
             ))
-            .ReturnsAsync(input.CategoriesIds!);
+            .ReturnsAsync(input.Categories_Ids!);
 
         var output = await _createGenre.Handle(input, CancellationToken.None);
 
@@ -74,12 +74,12 @@ public class CreateGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().NotBeEmpty();
         output.Data.Name.Should().Be(input.Name);
-        output.Data.IsActive.Should().Be(input.IsActive);
-        output.Data.Categories.Should().HaveCount(input.CategoriesIds?.Count ?? 0);
-        input.CategoriesIds?.ForEach(id =>
+        output.Data.Is_Active.Should().Be(input.Is_Active);
+        output.Data.Categories.Should().HaveCount(input.Categories_Ids?.Count ?? 0);
+        input.Categories_Ids?.ForEach(id =>
             output.Data.Categories.Should().Contain(relation => relation.Id == id)
         );
-        output.Data.CreatedAt.Should().NotBeSameDateAs(default);
+        output.Data.Created_At.Should().NotBeSameDateAs(default);
     }
 
     [Fact(DisplayName = nameof(CreateThrowWhenRelatedCategoryNotFound))]
@@ -87,14 +87,14 @@ public class CreateGenreTest : GenreBaseFixture
     public async Task CreateThrowWhenRelatedCategoryNotFound()
     {
         var input = CreateGenreInputGenerator.GetExampleInputWithCategories();
-        var exampleGuid = input.CategoriesIds![^1];
+        var exampleGuid = input.Categories_Ids![^1];
         _categoryRepositoryMock.Setup(
             x => x.GetIdsListByIds(
                 It.IsAny<List<Guid>>(),
                 It.IsAny<CancellationToken>()
             )
         ).ReturnsAsync(
-            input.CategoriesIds
+            input.Categories_Ids
                 .FindAll(x => x != exampleGuid)
         );
 

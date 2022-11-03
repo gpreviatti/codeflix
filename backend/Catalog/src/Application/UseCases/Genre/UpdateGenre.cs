@@ -31,9 +31,9 @@ public class UpdateGenre : IUpdateGenre
 
         genre.Update(request.Name);
         
-        if (request.IsActive is not null && request.IsActive != genre.IsActive)
+        if (request.Is_Active is not null && request.Is_Active != genre.IsActive)
         {
-            if ((bool)request.IsActive) genre.Activate();
+            if ((bool)request.Is_Active) genre.Activate();
             else genre.Deactivate();
         }
 

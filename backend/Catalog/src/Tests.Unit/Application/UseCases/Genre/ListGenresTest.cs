@@ -53,8 +53,8 @@ public class ListGenresTest : GenreBaseFixture
             outputItem.Should().NotBeNull();
             repositoryGenre.Should().NotBeNull();
             outputItem.Name.Should().Be(repositoryGenre!.Name);
-            outputItem.IsActive.Should().Be(repositoryGenre.IsActive);
-            outputItem.CreatedAt.Should().Be(repositoryGenre!.CreatedAt);
+            outputItem.Is_Active.Should().Be(repositoryGenre.IsActive);
+            outputItem.Created_At.Should().Be(repositoryGenre!.CreatedAt);
             outputItem.Categories.Should()
                 .HaveCount(repositoryGenre.Categories.Count);
             foreach (var expectedId in repositoryGenre.Categories)

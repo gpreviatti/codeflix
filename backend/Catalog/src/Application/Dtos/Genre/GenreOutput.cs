@@ -6,22 +6,22 @@ public class GenreOutput
     public GenreOutput(
     Guid id,
     string name,
-    bool isActive,
-    DateTime createdAt,
+    bool is_Active,
+    DateTime created_At,
     IReadOnlyList<GenreModelOutputCategory> categories
 )
     {
         Id = id;
         Name = name;
-        IsActive = isActive;
-        CreatedAt = createdAt;
+        Is_Active = is_Active;
+        Created_At = created_At;
         Categories = categories;
     }
 
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public bool IsActive { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public bool Is_Active { get; set; }
+    public DateTime Created_At { get; set; }
     public IReadOnlyList<GenreModelOutputCategory> Categories { get; set; }
 
     public static GenreOutput FromGenre(DomainEntity.Genre genre) => new(

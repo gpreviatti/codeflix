@@ -36,8 +36,8 @@ public class GetGenreTest : GenreBaseFixture
         output.Should().NotBeNull();
         output.Data.Id.Should().Be(exampleGenre.Id);
         output.Data.Name.Should().Be(exampleGenre.Name);
-        output.Data.IsActive.Should().Be(exampleGenre.IsActive);
-        output.Data.CreatedAt.Should().BeSameDateAs(exampleGenre.CreatedAt);
+        output.Data.Is_Active.Should().Be(exampleGenre.IsActive);
+        output.Data.Created_At.Should().BeSameDateAs(exampleGenre.CreatedAt);
         output.Data.Categories.Should().HaveCount(exampleGenre.Categories.Count);
         
         foreach (var expectedId in exampleGenre.Categories)
