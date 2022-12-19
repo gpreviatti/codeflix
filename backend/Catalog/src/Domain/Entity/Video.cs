@@ -16,9 +16,9 @@ public class Video : AggregateRoot
     public DateTime CreatedAt { get; private set; }
     public Rating Rating { get; private set; }
 
-    //public Image? Thumb { get; private set; }
-    //public Image? ThumbHalf { get; private set; }
-    //public Image? Banner { get; private set; }
+    public ValueObject.Image? Thumb { get; private set; }
+    public ValueObject.Image? ThumbHalf { get; private set; }
+    public ValueObject.Image? Banner { get; private set; }
 
     public Media? Media { get; private set; }
     public Media? Trailer { get; private set; }
@@ -75,11 +75,11 @@ public class Video : AggregateRoot
         Duration = duration;
     }
 
-    //public void UpdateThumb(string path) => Thumb = new Image(path);
+    public void UpdateThumb(string path) => Thumb = new ValueObject.Image(path);
 
-    //public void UpdateThumbHalf(string path) => ThumbHalf = new Image(path);
+    public void UpdateThumbHalf(string path) => ThumbHalf = new ValueObject.Image(path);
 
-    //public void UpdateBanner(string path) => Banner = new Image(path);
+    public void UpdateBanner(string path) => Banner = new ValueObject.Image(path);
 
     public void UpdateMedia(string path)
         => Media = new Media(path);
