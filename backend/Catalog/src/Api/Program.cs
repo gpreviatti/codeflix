@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 if (connectionString is null)
-    connectionString = "Server=localhost;Port=3306;Uid=root;Pwd=codeflix;Database=catalog_dev;";
+    connectionString = "Server=localhost;Port=32006;Uid=root;Pwd=codeflix;Database=catalog_dev;";
 
 builder.Services
     .AddUseCases()

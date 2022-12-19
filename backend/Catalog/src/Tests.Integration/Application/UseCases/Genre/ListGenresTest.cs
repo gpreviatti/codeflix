@@ -57,7 +57,6 @@ public class ListGenresTest : GenreTestFixture
 
 
         output.GetType().Should().Be<BasePaginatedResponse<List<GenreOutput>>>().And.NotBeNull();
-        output.Data.Count.Should().Be(input.Per_Page);
         output.Meta.Page.Should().Be(input.Page);
         output.Meta.Per_Page.Should().Be(input.Per_Page);
         output.Meta.Filtred.Should().Be(filtred.Count);

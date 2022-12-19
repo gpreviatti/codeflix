@@ -9,11 +9,11 @@ namespace Tests.Integration.Data.Repositories;
 
 public class GenreRepositoryTest : BaseFixture
 {
-    private readonly IGenreRepository repoistory;
+    private readonly IGenreRepository repository;
 
     public GenreRepositoryTest()
     {
-        repoistory = new GenreRepository(dbContext);
+        repository = new GenreRepository(dbContext);
     }
 
     [Fact(DisplayName = nameof(Insert))]
@@ -32,7 +32,7 @@ public class GenreRepositoryTest : BaseFixture
         await dbContext.SaveChangesAsync(CancellationToken.None);
 
 
-        await repoistory.Insert(exampleGenre, CancellationToken.None);
+        await repository.Insert(exampleGenre, CancellationToken.None);
         await dbContext.SaveChangesAsync(CancellationToken.None);
 
 
@@ -77,7 +77,7 @@ public class GenreRepositoryTest : BaseFixture
         dbContext.SaveChanges();
 
 
-        var genreFromRepository = await repoistory.Get(exampleGenre.Id, CancellationToken.None);
+        var genreFromRepository = await repository.Get(exampleGenre.Id, CancellationToken.None);
 
 
         genreFromRepository.Should().NotBeNull();
@@ -120,7 +120,7 @@ public class GenreRepositoryTest : BaseFixture
         dbContext.SaveChanges();
 
 
-        var action = async () => await repoistory.Get(exampleNotFoundGuid, CancellationToken.None);
+        var action = async () => await repository.Get(exampleNotFoundGuid, CancellationToken.None);
 
 
         await action.Should().ThrowAsync<NullReferenceException>()
@@ -150,7 +150,7 @@ public class GenreRepositoryTest : BaseFixture
         dbContext.SaveChanges();
 
 
-        await repoistory.Delete(exampleGenre, CancellationToken.None);
+        await repository.Delete(exampleGenre, CancellationToken.None);
         await dbContext.SaveChangesAsync();
 
 
@@ -194,7 +194,7 @@ public class GenreRepositoryTest : BaseFixture
             exampleGenre.Deactivate();
         else
             exampleGenre.Activate();
-        await repoistory.Update(
+        await repository.Update(
             exampleGenre,
             CancellationToken.None
         );
@@ -250,7 +250,7 @@ public class GenreRepositoryTest : BaseFixture
         else
             exampleGenre.Activate();
 
-        await repoistory.Update(exampleGenre, CancellationToken.None);
+        await repository.Update(exampleGenre, CancellationToken.None);
         
         await dbContext.SaveChangesAsync();
 
@@ -276,7 +276,7 @@ public class GenreRepositoryTest : BaseFixture
         var searchInput = new SearchInput(1, 10, "", "", SearchOrder.Asc);
 
 
-        var searchResult = await repoistory.Search(searchInput, CancellationToken.None);
+        var searchResult = await repository.Search(searchInput, CancellationToken.None);
 
 
         searchResult.Should().NotBeNull();
@@ -293,7 +293,7 @@ public class GenreRepositoryTest : BaseFixture
         var searchInput = new SearchInput(1, 10, "", "", SearchOrder.Asc);
 
 
-        var searchResult = await repoistory.Search(searchInput, CancellationToken.None);
+        var searchResult = await repository.Search(searchInput, CancellationToken.None);
 
 
         searchResult.Should().NotBeNull();
@@ -333,7 +333,7 @@ public class GenreRepositoryTest : BaseFixture
         var searchInput = new SearchInput(1, 10, "", "", SearchOrder.Asc);
 
 
-        var searchResult = await repoistory.Search(searchInput, CancellationToken.None);
+        var searchResult = await repository.Search(searchInput, CancellationToken.None);
 
 
         searchResult.Should().NotBeNull();
@@ -384,7 +384,7 @@ public class GenreRepositoryTest : BaseFixture
         var searchInput = new SearchInput(page, perPage, "", "", SearchOrder.Asc);
 
 
-        var searchResult = await repoistory.Search(searchInput, CancellationToken.None);
+        var searchResult = await repository.Search(searchInput, CancellationToken.None);
 
 
         searchResult.Should().NotBeNull();

@@ -9,8 +9,7 @@ public class CastMember : AggregateRoot
     public CastMemberType Type { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public CastMember(string name, CastMemberType type)
-    : base()
+    public CastMember(string name, CastMemberType type) : base()
     {
         Name = name;
         Type = type;
@@ -25,6 +24,5 @@ public class CastMember : AggregateRoot
         Validate();
     }
 
-    private void Validate()
-        => DomainValidation.NotNullOrEmpty(Name, nameof(Name));
+    private void Validate() => DomainValidation.NotNullOrEmpty(Name, nameof(Name));
 }
