@@ -24,9 +24,9 @@ public class DeleteCategory : IDeleteCategory
         CancellationToken cancellationToken
     )
     {
-        var category = await _categoryRepository.Get(request.Id, cancellationToken);
+        var entity = await _categoryRepository.Get(request.Id, cancellationToken);
 
-        await _categoryRepository.Delete(category, cancellationToken);
+        await _categoryRepository.Delete(entity, cancellationToken);
 
         await _unitOfWork.Commit(cancellationToken);
 

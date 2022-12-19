@@ -19,8 +19,8 @@ public class GetCategory : IGetCategory
         CancellationToken cancellationToken
     )
     {
-        var category = await _categoryRepository.Get(input.Id, cancellationToken);
+        var entity = await _categoryRepository.Get(input.Id, cancellationToken);
 
-        return new(CategoryOutput.FromCategory(category));
+        return new(CategoryOutput.FromCategory(entity));
     }
 }
