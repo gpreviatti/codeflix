@@ -6,11 +6,11 @@ using Tests.Common.Generators.Entities;
 namespace Tests.Integration.Data.Repositories;
 public class CategoryRepositoryTest : BaseFixture
 {
-    private ICategoryRepository repoistory;
+    private ICategoryRepository repository;
 
     public CategoryRepositoryTest()
     {
-        repoistory = new CategoryRepository(dbContext);
+        repository = new CategoryRepository(dbContext);
     }
 
     [Fact(DisplayName = nameof(Insert))]
@@ -19,7 +19,7 @@ public class CategoryRepositoryTest : BaseFixture
     {
         var category = CategoryGenerator.GetCategory();
 
-        await repoistory.Insert(category, CancellationToken.None);
+        await repository.Insert(category, CancellationToken.None);
         await SaveChanges();
 
         var dbCategory = await dbContext.Categories.FindAsync(category.Id);
@@ -39,7 +39,7 @@ public class CategoryRepositoryTest : BaseFixture
         await dbContext.AddAsync(category);
         await SaveChanges();
 
-        var result = await repoistory.Get(category.Id, CancellationToken.None);
+        var result = await repository.Get(category.Id, CancellationToken.None);
 
         result.Should().NotBeNull();
         result.Name.Should().Be(category.Name);
@@ -54,7 +54,7 @@ public class CategoryRepositoryTest : BaseFixture
     {
         var exampleId = Guid.NewGuid();
 
-        var task = async () => await repoistory
+        var task = async () => await repository
             .Get(exampleId, CancellationToken.None);
 
         await task.Should()
@@ -73,9 +73,9 @@ public class CategoryRepositoryTest : BaseFixture
         var newName = Faker.Commerce.ProductName();
         category.Update(newName);
         category.Deactivate();
-        repoistory = new CategoryRepository(dbContext);
+        repository = new CategoryRepository(dbContext);
 
-        await repoistory.Update(category, CancellationToken.None);
+        await repository.Update(category, CancellationToken.None);
         await SaveChanges();
         var dbCategory = await dbContext.Categories.FindAsync(category.Id);
 
@@ -93,7 +93,7 @@ public class CategoryRepositoryTest : BaseFixture
         await dbContext.AddAsync(category);
         await SaveChanges();
 
-        await repoistory.Delete(category, CancellationToken.None);
+        await repository.Delete(category, CancellationToken.None);
         await SaveChanges();
         var result = await CreateDbContext().Categories.FindAsync(category.Id);
 
@@ -120,7 +120,7 @@ public class CategoryRepositoryTest : BaseFixture
         var perPage = 10;
         var input = new SearchInput(page, perPage, "", order, searchOrder);
 
-        var result = await repoistory.Search(input, CancellationToken.None);
+        var result = await repository.Search(input, CancellationToken.None);
 
         result.Should().NotBeNull();
         result.CurrentPage.Should().Be(page);
@@ -142,7 +142,7 @@ public class CategoryRepositoryTest : BaseFixture
         var perPage = 10;
         var input = new SearchInput(page, perPage, searchTerm, "name", SearchOrder.Desc);
 
-        var result = await repoistory.Search(input, CancellationToken.None);
+        var result = await repository.Search(input, CancellationToken.None);
 
         result.Should().NotBeNull();
         result.CurrentPage.Should().Be(page);
@@ -157,7 +157,7 @@ public class CategoryRepositoryTest : BaseFixture
         var perPage = 10;
         var input = new SearchInput(page, perPage, "12312312", "", SearchOrder.Desc);
 
-        var result = await repoistory.Search(input, CancellationToken.None);
+        var result = await repository.Search(input, CancellationToken.None);
 
         result.Should().NotBeNull();
         result.CurrentPage.Should().Be(page);

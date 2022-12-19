@@ -10,7 +10,7 @@ public class CatalogDbContext : DbContext
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<GenresCategories> GenresCategories => Set<GenresCategories>();
 
-    //public DbSet<CastMember> CastMembers => Set<CastMember>();
+    public DbSet<CastMember> CastMembers => Set<CastMember>();
 
     public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options) 
     {
@@ -23,5 +23,6 @@ public class CatalogDbContext : DbContext
         builder.ApplyConfiguration(new CategoryConfiguration());
         builder.ApplyConfiguration(new GenreConfiguration());
         builder.ApplyConfiguration(new GenreCategoriesConfiguration());
+        builder.ApplyConfiguration(new CastMemberConfiguration());
     }
 }
