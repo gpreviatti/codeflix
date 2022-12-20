@@ -9,7 +9,6 @@ public class CatalogDbContext : DbContext
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<GenresCategories> GenresCategories => Set<GenresCategories>();
-
     public DbSet<CastMember> CastMembers => Set<CastMember>();
 
     public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options) 
