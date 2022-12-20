@@ -2,9 +2,9 @@
 using Domain.Excpetions;
 using Domain.SeedWork;
 using Domain.Validation;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Domain.Entity;
+
 public class Video : AggregateRoot
 {
     public string Title { get; private set; }
@@ -65,7 +65,9 @@ public class Video : AggregateRoot
         int yearLaunched,
         bool opened,
         bool published,
-        int duration)
+        int duration,
+        Rating? rating = null
+    )
     {
         Title = title;
         Description = description;
@@ -73,6 +75,7 @@ public class Video : AggregateRoot
         Opened = opened;
         Published = published;
         Duration = duration;
+        Rating = rating ?? Rating;
     }
 
     public void UpdateThumb(string path) => Thumb = new ValueObject.Image(path);

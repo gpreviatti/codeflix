@@ -13,8 +13,7 @@ public class Media
         Status = MediaStatus.Pending;
     }
 
-    public void UpdateAsSentToEncode()
-        => Status = MediaStatus.Processing;
+    public void UpdateAsSentToEncode() => Status = MediaStatus.Processing;
 
     public void UpdateAsEncoded(string encodedExamplePath)
     {
