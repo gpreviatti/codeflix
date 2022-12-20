@@ -3,4 +3,15 @@ using Domain.SeedWork.SearchableRepository;
 using Domain.SeedWork;
 
 namespace Domain.Repository;
-public interface IGenreRepository : IGenericRepository<Genre>, ISearchableRepository<Genre> { }
+public interface IGenreRepository : IGenericRepository<Genre>, ISearchableRepository<Genre> 
+{
+    public Task<IReadOnlyList<Guid>> GetIdsListByIds(
+        List<Guid> ids,
+        CancellationToken cancellationToken
+    );
+
+    public Task<IReadOnlyList<Genre>> GetListByIds(
+        List<Guid> ids,
+        CancellationToken cancellationToken
+    );
+}

@@ -51,7 +51,7 @@ public class UpdateVideo : IUpdateVideo
         video.Validate(validationHandler);
 
         if (validationHandler.HasErrors())
-            throw new ArgumentException("There are validation errors",validationHandler.Errors);
+            throw new EntityValidationException("There are validation errors");
 
         await ValidateAndAddRelations(input, video, cancellationToken);
 

@@ -118,6 +118,12 @@ public class GenreRepository : IGenreRepository
         return new(input.Page, input.PerPage, total, filtred, genres);
     }
 
+    public Task<IReadOnlyList<Guid>> GetIdsListByIds(List<Guid> ids, CancellationToken cancellationToken)
+    => throw new NotImplementedException();
+
+    public Task<IReadOnlyList<Genre>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken)
+        => throw new NotImplementedException();
+
     private static IQueryable<Genre> AddOrderToQuery(
         IQueryable<Genre> query,
         string orderProperty,

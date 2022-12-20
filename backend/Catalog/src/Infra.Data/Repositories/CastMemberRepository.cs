@@ -55,6 +55,9 @@ public class CastMemberRepository : ICastMemberRepository
     public Task Update(CastMember aggregate, CancellationToken cancellationToken)
         => Task.FromResult(_castMembers.Update(aggregate));
 
+    public Task<IReadOnlyList<Guid>> GetIdsListByIds(List<Guid> ids, CancellationToken cancellationToken) => 
+        throw new NotImplementedException();
+
     private IQueryable<CastMember> AddOrderToQuery(
         IQueryable<CastMember> query,
         string orderProperty,
