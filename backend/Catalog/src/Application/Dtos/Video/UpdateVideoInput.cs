@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Dtos.Video;
 public record UpdateVideoInput(
-    Guid VideoId,
+    Guid Id,
     string Title,
     string Description,
     int YearLaunched,

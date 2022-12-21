@@ -4,6 +4,7 @@ using Application.Exceptions;
 using Application.Interfaces.UseCases;
 using Domain.Extensions;
 using Domain.Repository;
+using System.IO;
 using Tests.Common.Generators.Dtos;
 using DomainEntity = Domain.Entity;
 using UseCase = Application.UseCases.Video;
@@ -33,16 +34,19 @@ public class UpdateVideoTest : VideoBaseFixture
     public async Task UpdateVideosBasicInfo()
     {
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id);
+        var input = UpdateVideoInputGenerator.CreateValidInputWithAllMedias(exampleVideo.Id);
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
         .ReturnsAsync(exampleVideo);
 
+
         var output = await _useCase.Handle(input, CancellationToken.None);
 
+
         _videoRepositoryMock.VerifyAll();
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 ((video.Id == exampleVideo.Id) &&
@@ -55,7 +59,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.Duration == input.Duration)))
             , It.IsAny<CancellationToken>())
             , Times.Once);
+
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
+
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
         output.CreatedAt.Should().NotBe(default(DateTime));
@@ -85,18 +91,18 @@ public class UpdateVideoTest : VideoBaseFixture
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
-        _genreRepositoryMock.Setup(x =>
-            x.GetIdsListByIds(
-                It.Is<List<Guid>>(idsList =>
-                    idsList.Count == examplesGenreIds.Count &&
-                    idsList.All(id => examplesGenreIds.Contains(id))),
-                It.IsAny<CancellationToken>()))
+
+        _genreRepositoryMock
+            .Setup(x => x.GetIdsListByIds(It.IsAny<List<Guid>>(), CancellationToken.None))
             .ReturnsAsync(examplesGenreIds);
+
 
         var output = await _useCase.Handle(input, CancellationToken.None);
 
+
         _videoRepositoryMock.VerifyAll();
         _genreRepositoryMock.VerifyAll();
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 ((video.Id == exampleVideo.Id) &&
@@ -111,7 +117,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.Genres.Count == examplesGenreIds.Count))))
             , It.IsAny<CancellationToken>())
         , Times.Once);
+
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
+
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
         output.CreatedAt.Should().NotBe(default(DateTime));
@@ -133,21 +141,25 @@ public class UpdateVideoTest : VideoBaseFixture
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
         var examplesGenreIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
+        
         var examplesCastMembersIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
+
         var examplesCategoriesIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
 
         var input = UpdateVideoInputGenerator.CreateValidInput(
-            categoryIds: examplesCategoriesIds,
-            genreIds: examplesGenreIds,
-            castMemberIds: examplesCastMembersIds);
+            examplesCategoriesIds,
+            examplesGenreIds,
+            examplesCastMembersIds
+        );
         
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
+
         _genreRepositoryMock.Setup(x =>
             x.GetIdsListByIds(
                 It.Is<List<Guid>>(idsList =>
@@ -170,7 +182,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(examplesCategoriesIds);
 
-        VideoOutput output = await _useCase.Handle(input, CancellationToken.None);
+
+        var output = await _useCase.Handle(input, CancellationToken.None);
+
 
         _videoRepositoryMock.VerifyAll();
         _genreRepositoryMock.VerifyAll();
@@ -194,7 +208,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.CastMembers.Count == examplesCastMembersIds.Count)
             ), It.IsAny<CancellationToken>())
         , Times.Once);
+
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
+
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
         output.CreatedAt.Should().NotBe(default(DateTime));
@@ -217,29 +233,33 @@ public class UpdateVideoTest : VideoBaseFixture
     [Trait("Application", "UpdateVideo - Use Cases")]
     public async Task UpdateVideosWithRelationsToOtherRelations()
     {
-        var exampleVideo = UpdateVideoInputGenerator.GetValidVideoWithAllProperties();
+        var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+
         var examplesGenreIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
+        
         var examplesCastMembersIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
+        
         var examplesCategoriesIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            genreIds: examplesGenreIds,
-            categoryIds: examplesCategoriesIds,
-            castMemberIds: examplesCastMembersIds);
+        
+        var input = UpdateVideoInputGenerator.CreateValidInput(
+            examplesGenreIds,
+            examplesCategoriesIds,
+            examplesCastMembersIds
+        );
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
-        _genreRepositoryMock.Setup(x =>
-            x.GetIdsListByIds(
-                It.Is<List<Guid>>(idsList =>
-                    idsList.Count == examplesGenreIds.Count &&
-                    idsList.All(id => examplesGenreIds.Contains(id))),
-                It.IsAny<CancellationToken>()))
+
+        _genreRepositoryMock
+            .Setup(x => x.GetIdsListByIds(It.IsAny<List<Guid>>(), CancellationToken.None))
             .ReturnsAsync(examplesGenreIds);
+
         _castMemberRepositoryMock.Setup(x =>
             x.GetIdsListByIds(
                 It.Is<List<Guid>>(idsList =>
@@ -247,6 +267,7 @@ public class UpdateVideoTest : VideoBaseFixture
                     idsList.All(id => examplesCastMembersIds.Contains(id))),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(examplesCastMembersIds);
+        
         _categoryRepositoryMock.Setup(x =>
             x.GetIdsListByIds(
                 It.Is<List<Guid>>(idsList =>
@@ -255,7 +276,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(examplesCategoriesIds);
 
-        VideoOutput output = await _useCase.Handle(input, CancellationToken.None);
+
+        var output = await _useCase.Handle(input, CancellationToken.None);
+
 
         _videoRepositoryMock.VerifyAll();
         _genreRepositoryMock.VerifyAll();
@@ -279,6 +302,7 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.CastMembers.Count == examplesCastMembersIds.Count)
             ), It.IsAny<CancellationToken>())
         , Times.Once);
+
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
@@ -302,18 +326,19 @@ public class UpdateVideoTest : VideoBaseFixture
     [Trait("Application", "UpdateVideo - Use Cases")]
     public async Task UpdateVideosWithRelationsRemovingRelations()
     {
-        var exampleVideo = UpdateVideoInputGenerator.GetValidVideoWithAllProperties();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            genreIds: new(),
-            categoryIds: new(),
-            castMemberIds: new());
+        var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+
+        var input = UpdateVideoInputGenerator.CreateValidInput(new(), new(), new());
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
 
+
         VideoOutput output = await _useCase.Handle(input, CancellationToken.None);
+
 
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
@@ -329,6 +354,7 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Categories.Should().BeEmpty();
         output.CastMembers.Should().BeEmpty();
         _videoRepositoryMock.VerifyAll();
+
         _genreRepositoryMock.Verify(x => x.GetIdsListByIds(
             It.IsAny<List<Guid>>(),
             It.IsAny<CancellationToken>()
@@ -363,19 +389,20 @@ public class UpdateVideoTest : VideoBaseFixture
     [Trait("Application", "UpdateVideo - Use Cases")]
     public async Task UpdateVideosWithRelationsKeepRelationWhenReceiveNullInRelations()
     {
-        var exampleVideo = UpdateVideoInputGenerator.GetValidVideoWithAllProperties();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            genreIds: null,
-            categoryIds: null,
-            castMemberIds: null);
+        var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+
+        var input = UpdateVideoInputGenerator.CreateValidInput(null, null, null, null);
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
 
+        
         var output = await _useCase.Handle(input, CancellationToken.None);
 
+        
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
         output.CreatedAt.Should().NotBe(default(DateTime));
@@ -392,19 +419,24 @@ public class UpdateVideoTest : VideoBaseFixture
             .Should().BeEquivalentTo(exampleVideo.Categories);
         output.CastMembers.Select(castMember => castMember.Id).AsEnumerable()
             .Should().BeEquivalentTo(exampleVideo.CastMembers);
+        
         _videoRepositoryMock.VerifyAll();
+        
         _genreRepositoryMock.Verify(x => x.GetIdsListByIds(
             It.IsAny<List<Guid>>(),
             It.IsAny<CancellationToken>()
         ), Times.Never);
+        
         _categoryRepositoryMock.Verify(x => x.GetIdsListByIds(
             It.IsAny<List<Guid>>(),
             It.IsAny<CancellationToken>()
         ), Times.Never);
+        
         _castMemberRepositoryMock.Verify(x => x.GetIdsListByIds(
             It.IsAny<List<Guid>>(),
             It.IsAny<CancellationToken>()
-        ), Times.Never); ;
+        ), Times.Never);
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 (video.Id == exampleVideo.Id) &&
@@ -433,12 +465,15 @@ public class UpdateVideoTest : VideoBaseFixture
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
         var exampleIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id, categoryIds: exampleIds);
+
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
+
         _categoryRepositoryMock.Setup(x =>
             x.GetIdsListByIds(
                 It.Is<List<Guid>>(idsList =>
@@ -447,10 +482,13 @@ public class UpdateVideoTest : VideoBaseFixture
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleIds);
 
-        VideoOutput output = await _useCase.Handle(input, CancellationToken.None);
+        
+        var output = await _useCase.Handle(input, CancellationToken.None);
+
 
         _videoRepositoryMock.VerifyAll();
         _genreRepositoryMock.VerifyAll();
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 ((video.Id == exampleVideo.Id) &&
@@ -465,7 +503,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.Categories.Count == exampleIds.Count))))
             , It.IsAny<CancellationToken>())
         , Times.Once);
+
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
+        
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
         output.CreatedAt.Should().NotBe(default(DateTime));
@@ -476,7 +516,8 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Rating.Should().Be(input.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
-        output.Categories.Select(categrory => categrory.Id).AsEnumerable()
+        output.Categories
+            .Select(categrory => categrory.Id).AsEnumerable()
             .Should().BeEquivalentTo(exampleIds);
     }
 
@@ -485,10 +526,12 @@ public class UpdateVideoTest : VideoBaseFixture
     public async Task UpdateVideosWithCastMemberIds()
     {
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+        
         var exampleIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            castMemberIds: exampleIds);
+
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
@@ -502,7 +545,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleIds);
 
+        
         var output = await _useCase.Handle(input, CancellationToken.None);
+
 
         _videoRepositoryMock.VerifyAll();
         _genreRepositoryMock.VerifyAll();
@@ -520,7 +565,9 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.CastMembers.Count == exampleIds.Count))))
             , It.IsAny<CancellationToken>())
         , Times.Once);
+        
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
+
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
         output.CreatedAt.Should().NotBe(default(DateTime));
@@ -540,18 +587,23 @@ public class UpdateVideoTest : VideoBaseFixture
     public async Task UpdateVideosThrowsWhenInvalidGenreId()
     {
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+        
         var examplesIds = Enumerable.Range(1, 5)
             .Select(_ => Guid.NewGuid()).ToList();
+
         var invalidId = Guid.NewGuid();
+        
         var inputInvalidIdsList = examplesIds
             .Concat(new List<Guid>() { invalidId }).ToList();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            castMemberIds: inputInvalidIdsList);
+
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
+        
         _castMemberRepositoryMock.Setup(x =>
             x.GetIdsListByIds(
                 It.IsAny<List<Guid>>(),
@@ -577,8 +629,9 @@ public class UpdateVideoTest : VideoBaseFixture
         var invalidId = Guid.NewGuid();
         var inputInvalidIdsList = exampleIds
             .Concat(new List<Guid>() { invalidId }).ToList();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            categoryIds: inputInvalidIdsList);
+
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
@@ -609,7 +662,9 @@ public class UpdateVideoTest : VideoBaseFixture
         var invalidGenreId = Guid.NewGuid();
         var inputInvalidIdsList = examplesGenreIds
             .Concat(new List<Guid>() { invalidGenreId }).ToList();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id, inputInvalidIdsList);
+
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
@@ -634,7 +689,8 @@ public class UpdateVideoTest : VideoBaseFixture
     [Trait("Application", "UpdateVideo - Use Cases")]
     public async Task UpdateVideosThrowsWhenVideoNotFound()
     {
-        var input = UpdateVideoInputGenerator.CreateValidInput(Guid.NewGuid());
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
         .ThrowsAsync(new NotFoundException("Video not found"));
@@ -654,25 +710,24 @@ public class UpdateVideoTest : VideoBaseFixture
     public async Task UpdateVideosWithBannerWhenVideoHasNoBanner()
     {
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            banner: UpdateVideoInputGenerator.GetValidImageFileInput());
+        
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
         var bannerPath = $"storage/banner.{input.Banner!.Extension}";
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
-        _storageService.Setup(x => x.Upload(
-            It.Is<string>(name => (name == StorageFileName.Create(
-                exampleVideo.Id,
-                nameof(exampleVideo.Banner),
-                input.Banner!.Extension))
-            ),
-            It.IsAny<MemoryStream>(),
-            It.IsAny<CancellationToken>())
-        ).ReturnsAsync(bannerPath);
+
+        _storageServiceMock
+            .Setup(x => x.Upload(It.IsAny<string>(), It.IsAny<Stream>(), CancellationToken.None))
+            .ReturnsAsync(bannerPath);
+
 
         var output = await _useCase.Handle(input, CancellationToken.None);
+
 
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
@@ -685,8 +740,11 @@ public class UpdateVideoTest : VideoBaseFixture
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
         output.BannerFileUrl.Should().Be(bannerPath);
+        
         _videoRepositoryMock.VerifyAll();
-        _storageService.VerifyAll();
+        
+        _storageServiceMock.VerifyAll();
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 (video.Id == exampleVideo.Id) &&
@@ -707,16 +765,16 @@ public class UpdateVideoTest : VideoBaseFixture
     [Trait("Application", "UpdateVideo - Use Cases")]
     public async Task UpdateVideosKeepBannerWhenReceiveNull()
     {
-        var exampleVideo = UpdateVideoInputGenerator.GetValidVideoWithAllProperties();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            banner: null);
-        _videoRepositoryMock.Setup(repository =>
-            repository.Get(
-                It.Is<Guid>(id => id == exampleVideo.Id),
-                It.IsAny<CancellationToken>()))
+        var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+
+        _videoRepositoryMock.Setup(x => x.Get(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
 
+
         var output = await _useCase.Handle(input, CancellationToken.None);
+
 
         output.Should().NotBeNull();
         output.Id.Should().NotBeEmpty();
@@ -729,12 +787,16 @@ public class UpdateVideoTest : VideoBaseFixture
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
         output.BannerFileUrl.Should().Be(exampleVideo.Banner!.Path);
+        
         _videoRepositoryMock.VerifyAll();
-        _storageService.Verify(x => x.Upload(
+
+        _storageServiceMock.Verify(x => x.Upload(
             It.IsAny<string>(),
             It.IsAny<Stream>(),
-            It.IsAny<CancellationToken>())
-        , Times.Never);
+            It.IsAny<CancellationToken>()), 
+            Times.Never
+        );
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 (video.Id == exampleVideo.Id) &&
@@ -748,6 +810,7 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.Banner!.Path == exampleVideo.Banner!.Path)
             ), It.IsAny<CancellationToken>())
         , Times.Once);
+
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -756,23 +819,20 @@ public class UpdateVideoTest : VideoBaseFixture
     public async Task UpdateVideosWithThumbWhenVideoHasNoThumb()
     {
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            thumb: UpdateVideoInputGenerator.GetValidImageFileInput());
+
+        var input = UpdateVideoInputGenerator.CreateValidInput();
+        
         var path = $"storage/thumb.{input.Thumb!.Extension}";
+        
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
-        _storageService.Setup(x => x.Upload(
-            It.Is<string>(name => (name == StorageFileName.Create(
-                exampleVideo.Id,
-                nameof(exampleVideo.Thumb),
-                input.Thumb!.Extension))
-            ),
-            It.IsAny<MemoryStream>(),
-            It.IsAny<CancellationToken>())
-        ).ReturnsAsync(path);
+
+        _storageServiceMock
+            .Setup(x => x.Upload(It.IsAny<string>(), It.IsAny<Stream>(), CancellationToken.None))
+            .ReturnsAsync(path);
 
         var output = await _useCase.Handle(input, CancellationToken.None);
 
@@ -787,8 +847,11 @@ public class UpdateVideoTest : VideoBaseFixture
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
         output.ThumbFileUrl.Should().Be(path);
+        
         _videoRepositoryMock.VerifyAll();
-        _storageService.VerifyAll();
+
+        _storageServiceMock.VerifyAll();
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 (video.Id == exampleVideo.Id) &&
@@ -802,6 +865,7 @@ public class UpdateVideoTest : VideoBaseFixture
                 (video.Thumb!.Path == path)
             ), It.IsAny<CancellationToken>())
         , Times.Once);
+
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -809,9 +873,10 @@ public class UpdateVideoTest : VideoBaseFixture
     [Trait("Application", "UpdateVideo - Use Cases")]
     public async Task UpdateVideosKeepThumbWhenReceiveNull()
     {
-        var exampleVideo = UpdateVideoInputGenerator.GetValidVideoWithAllProperties();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            thumb: null);
+        var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+
+        var input = UpdateVideoInputGenerator.CreateValidInputWithAllMedias(exampleVideo.Id);
+
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
@@ -832,7 +897,7 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Opened.Should().Be(input.Opened);
         output.ThumbFileUrl.Should().Be(exampleVideo.Thumb!.Path);
         _videoRepositoryMock.VerifyAll();
-        _storageService.Verify(x => x.Upload(
+        _storageServiceMock.Verify(x => x.Upload(
             It.IsAny<string>(),
             It.IsAny<Stream>(),
             It.IsAny<CancellationToken>())
@@ -858,23 +923,18 @@ public class UpdateVideoTest : VideoBaseFixture
     public async Task UpdateVideosWithThumbHalfWhenVideoHasNoThumbHalf()
     {
         var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            thumbHalf: UpdateVideoInputGenerator.GetValidImageFileInput());
+        var input = UpdateVideoInputGenerator.CreateValidInputWithAllMedias(exampleVideo.Id);
+
         var path = $"storage/thumb-half.{input.ThumbHalf!.Extension}";
         _videoRepositoryMock.Setup(repository =>
             repository.Get(
                 It.Is<Guid>(id => id == exampleVideo.Id),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(exampleVideo);
-        _storageService.Setup(x => x.Upload(
-            It.Is<string>(name => (name == StorageFileName.Create(
-                exampleVideo.Id,
-                nameof(exampleVideo.ThumbHalf),
-                input.ThumbHalf!.Extension))
-            ),
-            It.IsAny<MemoryStream>(),
-            It.IsAny<CancellationToken>())
-        ).ReturnsAsync(path);
+
+        _storageServiceMock
+            .Setup(x => x.Upload(It.IsAny<string>(), It.IsAny<Stream>(), CancellationToken.None))
+            .ReturnsAsync(path);
 
         var output = await _useCase.Handle(input, CancellationToken.None);
 
@@ -890,7 +950,9 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Opened.Should().Be(input.Opened);
         output.ThumbHalfFileUrl.Should().Be(path);
         _videoRepositoryMock.VerifyAll();
-        _storageService.VerifyAll();
+        
+        _storageServiceMock.VerifyAll();
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 (video.Id == exampleVideo.Id) &&
@@ -911,14 +973,14 @@ public class UpdateVideoTest : VideoBaseFixture
     [Trait("Application", "UpdateVideo - Use Cases")]
     public async Task UpdateVideosKeepThumbHalfWhenReceiveNull()
     {
-        var exampleVideo = UpdateVideoInputGenerator.GetValidVideoWithAllProperties();
-        var input = UpdateVideoInputGenerator.CreateValidInput(exampleVideo.Id,
-            thumbHalf: null);
-        _videoRepositoryMock.Setup(repository =>
-            repository.Get(
-                It.Is<Guid>(id => id == exampleVideo.Id),
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(exampleVideo);
+        var exampleVideo = UpdateVideoInputGenerator.GetValidVideo();
+
+        var input = UpdateVideoInputGenerator.CreateValidInputWithAllMedias(exampleVideo.Id);
+
+        _videoRepositoryMock.Setup(repository => repository.Get(
+            It.Is<Guid>(id => id == exampleVideo.Id),
+            It.IsAny<CancellationToken>()))
+        .ReturnsAsync(exampleVideo);
 
         var output = await _useCase.Handle(input, CancellationToken.None);
 
@@ -934,11 +996,13 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Opened.Should().Be(input.Opened);
         output.ThumbHalfFileUrl.Should().Be(exampleVideo.ThumbHalf!.Path);
         _videoRepositoryMock.VerifyAll();
-        _storageService.Verify(x => x.Upload(
+
+        _storageServiceMock.Verify(x => x.Upload(
             It.IsAny<string>(),
             It.IsAny<Stream>(),
             It.IsAny<CancellationToken>())
         , Times.Never);
+
         _videoRepositoryMock.Verify(repository => repository.Update(
             It.Is<DomainEntity.Video>(video =>
                 (video.Id == exampleVideo.Id) &&

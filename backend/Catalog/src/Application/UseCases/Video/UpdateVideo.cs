@@ -37,7 +37,7 @@ public class UpdateVideo : IUpdateVideo
         UpdateVideoInput input,
         CancellationToken cancellationToken)
     {
-        var video = await _videoRepository.Get(input.VideoId, cancellationToken);
+        var video = await _videoRepository.Get(input.Id, cancellationToken);
         video.Update(
             input.Title,
             input.Description,
