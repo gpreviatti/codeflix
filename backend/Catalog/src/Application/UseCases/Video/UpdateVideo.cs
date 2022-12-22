@@ -38,6 +38,7 @@ public class UpdateVideo : IUpdateVideo
         CancellationToken cancellationToken)
     {
         var video = await _videoRepository.Get(input.Id, cancellationToken);
+        
         video.Update(
             input.Title,
             input.Description,
@@ -45,7 +46,8 @@ public class UpdateVideo : IUpdateVideo
             input.Opened,
             input.Published,
             input.Duration,
-            input.Rating);
+            input.Rating
+        );
 
         var validationHandler = new NotificationValidationHandler();
         video.Validate(validationHandler);
