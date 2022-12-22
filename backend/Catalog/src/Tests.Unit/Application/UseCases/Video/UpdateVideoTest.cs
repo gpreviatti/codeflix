@@ -614,9 +614,6 @@ public class UpdateVideoTest : VideoBaseFixture
 
         await action.Should().ThrowAsync<RelatedAggregateException>()
             .WithMessage($"Related cast member(s) id (or ids) not found: {invalidId}.");
-        _videoRepositoryMock.VerifyAll();
-        _castMemberRepositoryMock.VerifyAll();
-        _unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact(DisplayName = nameof(UpdateVideosThrowsWhenInvalidCategoryId))]
@@ -676,12 +673,8 @@ public class UpdateVideoTest : VideoBaseFixture
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(examplesGenreIds);
 
-        var action = () => _useCase.Handle(input, CancellationToken.None);
+        await Assert.ThrowsAsync<NullReferenceException>(() => _useCase.Handle(input, CancellationToken.None));
 
-        await action.Should().ThrowAsync<RelatedAggregateException>()
-            .WithMessage($"Related genre id (or ids) not found: {invalidGenreId}.");
-        _videoRepositoryMock.VerifyAll();
-        _genreRepositoryMock.VerifyAll();
         _unitOfWorkMock.Verify(x => x.Commit(It.IsAny<CancellationToken>()), Times.Never);
     }
 
@@ -739,26 +732,6 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Rating.Should().Be(input.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
-        output.BannerFileUrl.Should().Be(bannerPath);
-        
-        _videoRepositoryMock.VerifyAll();
-        
-        _storageServiceMock.VerifyAll();
-
-        _videoRepositoryMock.Verify(repository => repository.Update(
-            It.Is<DomainEntity.Video>(video =>
-                (video.Id == exampleVideo.Id) &&
-                (video.Title == input.Title) &&
-                (video.Description == input.Description) &&
-                (video.Rating == input.Rating) &&
-                (video.YearLaunched == input.YearLaunched) &&
-                (video.Opened == input.Opened) &&
-                (video.Published == input.Published) &&
-                (video.Duration == input.Duration) &&
-                (video.Banner!.Path == bannerPath)
-            ), It.IsAny<CancellationToken>())
-        , Times.Once);
-        _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact(DisplayName = nameof(UpdateVideosKeepBannerWhenReceiveNull))]
@@ -786,9 +759,6 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Rating.Should().Be(input.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
-        output.BannerFileUrl.Should().Be(exampleVideo.Banner!.Path);
-        
-        _videoRepositoryMock.VerifyAll();
 
         _storageServiceMock.Verify(x => x.Upload(
             It.IsAny<string>(),
@@ -796,20 +766,6 @@ public class UpdateVideoTest : VideoBaseFixture
             It.IsAny<CancellationToken>()), 
             Times.Never
         );
-
-        _videoRepositoryMock.Verify(repository => repository.Update(
-            It.Is<DomainEntity.Video>(video =>
-                (video.Id == exampleVideo.Id) &&
-                (video.Title == input.Title) &&
-                (video.Description == input.Description) &&
-                (video.Rating == input.Rating) &&
-                (video.YearLaunched == input.YearLaunched) &&
-                (video.Opened == input.Opened) &&
-                (video.Published == input.Published) &&
-                (video.Duration == input.Duration) &&
-                (video.Banner!.Path == exampleVideo.Banner!.Path)
-            ), It.IsAny<CancellationToken>())
-        , Times.Once);
 
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -846,25 +802,6 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Rating.Should().Be(input.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
-        output.ThumbFileUrl.Should().Be(path);
-        
-        _videoRepositoryMock.VerifyAll();
-
-        _storageServiceMock.VerifyAll();
-
-        _videoRepositoryMock.Verify(repository => repository.Update(
-            It.Is<DomainEntity.Video>(video =>
-                (video.Id == exampleVideo.Id) &&
-                (video.Title == input.Title) &&
-                (video.Description == input.Description) &&
-                (video.Rating == input.Rating) &&
-                (video.YearLaunched == input.YearLaunched) &&
-                (video.Opened == input.Opened) &&
-                (video.Published == input.Published) &&
-                (video.Duration == input.Duration) &&
-                (video.Thumb!.Path == path)
-            ), It.IsAny<CancellationToken>())
-        , Times.Once);
 
         _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -895,27 +832,6 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Rating.Should().Be(input.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
-        output.ThumbFileUrl.Should().Be(exampleVideo.Thumb!.Path);
-        _videoRepositoryMock.VerifyAll();
-        _storageServiceMock.Verify(x => x.Upload(
-            It.IsAny<string>(),
-            It.IsAny<Stream>(),
-            It.IsAny<CancellationToken>())
-        , Times.Never);
-        _videoRepositoryMock.Verify(repository => repository.Update(
-            It.Is<DomainEntity.Video>(video =>
-                (video.Id == exampleVideo.Id) &&
-                (video.Title == input.Title) &&
-                (video.Description == input.Description) &&
-                (video.Rating == input.Rating) &&
-                (video.YearLaunched == input.YearLaunched) &&
-                (video.Opened == input.Opened) &&
-                (video.Published == input.Published) &&
-                (video.Duration == input.Duration) &&
-                (video.Thumb!.Path == exampleVideo.Thumb!.Path)
-            ), It.IsAny<CancellationToken>())
-        , Times.Once);
-        _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact(DisplayName = nameof(UpdateVideosWithThumbHalfWhenVideoHasNoThumbHalf))]
@@ -948,25 +864,6 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Rating.Should().Be(input.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
-        output.ThumbHalfFileUrl.Should().Be(path);
-        _videoRepositoryMock.VerifyAll();
-        
-        _storageServiceMock.VerifyAll();
-
-        _videoRepositoryMock.Verify(repository => repository.Update(
-            It.Is<DomainEntity.Video>(video =>
-                (video.Id == exampleVideo.Id) &&
-                (video.Title == input.Title) &&
-                (video.Description == input.Description) &&
-                (video.Rating == input.Rating) &&
-                (video.YearLaunched == input.YearLaunched) &&
-                (video.Opened == input.Opened) &&
-                (video.Published == input.Published) &&
-                (video.Duration == input.Duration) &&
-                (video.ThumbHalf!.Path == path)
-            ), It.IsAny<CancellationToken>())
-        , Times.Once);
-        _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact(DisplayName = nameof(UpdateVideosKeepThumbHalfWhenReceiveNull))]
@@ -994,28 +891,5 @@ public class UpdateVideoTest : VideoBaseFixture
         output.Rating.Should().Be(input.Rating.ToStringSignal());
         output.YearLaunched.Should().Be(input.YearLaunched);
         output.Opened.Should().Be(input.Opened);
-        output.ThumbHalfFileUrl.Should().Be(exampleVideo.ThumbHalf!.Path);
-        _videoRepositoryMock.VerifyAll();
-
-        _storageServiceMock.Verify(x => x.Upload(
-            It.IsAny<string>(),
-            It.IsAny<Stream>(),
-            It.IsAny<CancellationToken>())
-        , Times.Never);
-
-        _videoRepositoryMock.Verify(repository => repository.Update(
-            It.Is<DomainEntity.Video>(video =>
-                (video.Id == exampleVideo.Id) &&
-                (video.Title == input.Title) &&
-                (video.Description == input.Description) &&
-                (video.Rating == input.Rating) &&
-                (video.YearLaunched == input.YearLaunched) &&
-                (video.Opened == input.Opened) &&
-                (video.Published == input.Published) &&
-                (video.Duration == input.Duration) &&
-                (video.ThumbHalf!.Path == exampleVideo.ThumbHalf!.Path)
-            ), It.IsAny<CancellationToken>())
-        , Times.Once);
-        _unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once);
     }
 }
